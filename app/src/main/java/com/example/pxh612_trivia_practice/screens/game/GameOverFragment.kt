@@ -1,4 +1,4 @@
-package com.example.pxh612_trivia_practice
+package com.example.pxh612_trivia_practice.screens.game
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import com.example.pxh612_trivia_practice.R
 import com.example.pxh612_trivia_practice.databinding.FragmentGameOverBinding
 
 
@@ -16,7 +17,7 @@ class GameOverFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_over,container,false)
 
         binding.retry.setOnClickListener(this)

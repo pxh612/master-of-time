@@ -3,22 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="question"
-            type="com.example.pxh612_trivia_practice.GameFragment" />
+            name="gameViewModel"
+            type="com.example.pxh612_trivia_practice.screens.game.GameViewModel" />
     </data>
-
-
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <include layout="@layout/answer_information"
+            app:gameViewModel="@{gameViewModel}"
+
+            />
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            >
+            android:layout_centerInParent="true">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -45,6 +47,4 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
-
-
 </layout>

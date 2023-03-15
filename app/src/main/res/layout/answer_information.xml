@@ -1,0 +1,39 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <data>
+                <variable
+                    name="gameViewModel"
+                    type="com.example.pxh612_trivia_practice.screens.game.GameViewModel" />
+        </data>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="40dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/current_question_count"
+                    android:text="@{@string/current_question_count_format(gameViewModel.currentQuestionCount,gameViewModel.totalRound)}"
+                    android:textSize="@dimen/text_size_info" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/your_answer_message"
+                    android:textSize="@dimen/text_size_info"
+                    android:text="@{@string/your_answer_format(gameViewModel.userAnswer)}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_info"
+                    android:id="@+id/correct_answer_message"
+                    android:text="@{@string/correct_answer_format(gameViewModel.lastCorrectSum)}" />
+
+        </LinearLayout>
+
+</layout>

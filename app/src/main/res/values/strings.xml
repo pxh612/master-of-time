@@ -2,4 +2,8 @@
     <string name="app_name">pxh612-trivia-practice</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="current_question_count_format">Question: %d/%d</string>
+    <string name="your_answer_format">Your answer was: %d</string>
+    <string name="correct_answer_format">Correct answer: %d</string>
+    <string name="equation_format">%d + %d</string>
 </resources>
