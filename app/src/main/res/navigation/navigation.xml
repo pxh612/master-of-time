@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
-        android:name="com.example.pxh612_trivia_practice.screens.game.GameFragment"
+        android:name="com.example.pxh612_trivia_practice.screens.game.UIcontroller.GameFragment"
         android:label="GameFragment"
         tools:layout="@layout/fragment_game" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameOverFragment"
-        android:name="com.example.pxh612_trivia_practice.screens.game.GameOverFragment"
+        android:name="com.example.pxh612_trivia_practice.screens.game.UIcontroller.GameOverFragment"
         android:label="GameOverFragment"
         tools:layout="@layout/fragment_game_over"
         >
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameWinFragment"
-        android:name="com.example.pxh612_trivia_practice.screens.game.GameWinFragment"
+        android:name="com.example.pxh612_trivia_practice.screens.game.UIcontroller.GameWinFragment"
         android:label="GameWinFragment"
         tools:layout="@layout/fragment_game_win"
         >

@@ -1,4 +1,4 @@
-package com.example.pxh612_trivia_practice.screens.game
+package com.example.pxh612_trivia_practice.screens.game.UIcontroller
 
 import android.os.Bundle
 import android.util.Log
@@ -13,41 +13,40 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.pxh612_trivia_practice.R
 import com.example.pxh612_trivia_practice.databinding.FragmentGameBinding
-import timber.log.Timber
+import com.example.pxh612_trivia_practice.screens.game.GameViewModel
+import com.example.pxh612_trivia_practice.screens.game.GameViewModelFactory
 
 class GameFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding : FragmentGameBinding
 
+    /** ViewModel */
     private lateinit var viewModel: GameViewModel
     private lateinit var viewModelFactory: GameViewModelFactory
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
+        /** init DataBiding */
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_game,
             container,
             false
         )
-        Timber.d("GameFragment creating...")
 
-//        viewModelFactory = GameViewModelFactory(GameViewModelArgs.from)
+        /** init ViewModel */
         viewModel = ViewModelProvider(this)[GameViewModel::class.java]
         binding.gameViewModel = viewModel
 
-        /** initialize View */
+        /** init View */
         displayQuestion()
         binding.submit.setOnClickListener(this)
 
-        /** LiveData Observer */
+        /**  LiveData Observer */
+        binding.lifecycleOwner = viewLifecycleOwner
         viewModel.isGameWin.observe(viewLifecycleOwner, Observer { isGameWin ->
             if(isGameWin){
-                Timber.d("observed: Game won.")
                 showGameWin()
-            }
-            else{
-                Timber.d("observed: Game not win.")
             }
         })
         viewModel.isGameLose.observe(viewLifecycleOwner, Observer { isGameLose ->
@@ -56,21 +55,12 @@ class GameFragment : Fragment(), View.OnClickListener {
             }
         })
 
-        binding.lifecycleOwner = viewLifecycleOwner
-
         return binding.root
     }
 
     private fun displayQuestion() {
-        val answerInfoViewVisibility = when(viewModel.isFirstQuestion()) {
-            true -> View.INVISIBLE
-            false -> View.VISIBLE
-        }
-//        binding.answerInfo.correctAnswerMessage.visibility = answerInfoViewVisibility
-//        binding.answerInfo.yourAnswerMessage.visibility = answerInfoViewVisibility
         binding.input.text = null
         binding.invalidateAll()
-        Timber.d("Passthrough: binding.invalidateAll()")
     }
 
     override fun onClick(view: View) {

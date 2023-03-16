@@ -1,26 +1,44 @@
-package com.example.pxh612_trivia_practice.screens.game
+package com.example.pxh612_trivia_practice.screens.game.UIcontroller
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.pxh612_trivia_practice.R
 import com.example.pxh612_trivia_practice.databinding.FragmentGameOverBinding
+import com.example.pxh612_trivia_practice.screens.game.GameViewModel
 
 
-class GameOverFragment : Fragment(), View.OnClickListener {
+class GameOverFragment : Fragment(), OnClickListener {
 
     private lateinit var binding : FragmentGameOverBinding
+    /** ViewModel */
+    private lateinit var viewModel: GameViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_over,container,false)
+        /** init DataBiding */
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_game_over,
+            container,
+            false
+        )
 
+        /** init ViewModel */
+        viewModel = ViewModelProvider(this)[GameViewModel::class.java]
+        binding.gameViewModel = viewModel
+
+        /** init Buttons */
         binding.retry.setOnClickListener(this)
+
         return binding.root
     }
 

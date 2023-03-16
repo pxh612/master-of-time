@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.example.pxh612_trivia_practice.module.MathQuestion
 import timber.log.Timber
-import kotlin.random.Random
 
 class GameViewModel : ViewModel(){
     companion object {
@@ -19,9 +19,10 @@ class GameViewModel : ViewModel(){
         private const val ONE_SECOND = 1000L
 
         // Total time for the game
-        private const val COUNTDOWN_TIME = 10000L
-
+        private const val COUNTDOWN_TIME = 10 * ONE_SECOND
     }
+
+
 
     /** Time setting */
     private val _currentTime = MutableLiveData<Long>()
@@ -30,106 +31,105 @@ class GameViewModel : ViewModel(){
     val currentTimeString = Transformations.map(currentTime) { time ->
         DateUtils.formatElapsedTime(time)
     }
-    private val timer: CountDownTimer
+    private var timer: CountDownTimer
 
 
     /** Game setting */
-    val totalRound = 1
+    val totalRound = 10
 
     /** Ongoing game's status */
-    private val _isGameWin = MutableLiveData<Boolean>()
-    val isGameWin: LiveData<Boolean>
-        get() = _isGameWin
-
-    private val _isGameLose = MutableLiveData<Boolean>()
-    val isGameLose: LiveData<Boolean>
-        get() = _isGameLose
-
-    private val _isRoundWin = MutableLiveData<Boolean>()
-    val isRoundWin: LiveData<Boolean>
-        get() = _isRoundWin
-
+    private lateinit var mathQuestion : MathQuestion
     var totalRoundWin : Int = 0
     var currentQuestionCount = 0
     var correctAnswerCount : Int = 0
 
+    /** Ongoing game's status - LiveData to UI_controller */
+    private val _isGameWin = MutableLiveData<Boolean>()
+    val isGameWin: LiveData<Boolean>
+        get() = _isGameWin
+    private val _isGameLose = MutableLiveData<Boolean>()
+    val isGameLose: LiveData<Boolean>
+        get() = _isGameLose
+    var answerHintDisplay : String? = null /** Warning: this is updated through binding.invalidateAll() */
+
+    /** Ongoing game's status - LiveData to XML_layout */
+    private val _currentQuestionDisplay = MutableLiveData<String>()
+    val currentQuestionDisplay: LiveData<String>
+        get() = _currentQuestionDisplay
+
+
     /** Question setting */
-    private val INTEGER_LIMIT_CEIL = 500
+    private val INTEGER_LIMIT_CEIL = 20
     var currentDifficulty : Int = 1
-    var correctSum : Int = 0
-    var lastCorrectSum : Int = 0
-    var numberOne : Int = 0
-    var numberTwo : Int = 0
+
 
     /** User input */
-    lateinit var userAnswerString : String
     var userAnswer : Int = 0
 
 
     init{
-        Timber.v("GameViewModel created.")
+        Timber.v("enter...")
 
-        _isGameWin.value = false
-        _isGameLose.value = false
-        generateNewQuestion()
-
-        /** Timer init  */
+        /** init Timer   */
         timer = object : CountDownTimer(COUNTDOWN_TIME, ONE_SECOND) {
-
             override fun onTick(millisUntilFinished: Long) {
                 _currentTime.value = millisUntilFinished/ONE_SECOND
-                Timber.d("currentTimeString = $currentTimeString")
             }
-
             override fun onFinish() {
                 _currentTime.value = DONE
-                Timber.d("currentTimeString = $currentTimeString")
                 onTimeOver()
             }
         }
 
+        /** start Game */
+        startNewRound()
+    }
+
+    private fun startNewTimer() {
+        Timber.v("enter...")
+
+        timer.cancel()
         timer.start()
-        Timber.d("currentTimeString = $currentTimeString")
     }
 
     private fun onTimeOver() {
+//        generateNewQuestion()
         _isGameWin.value = false
         _isGameLose.value = true
     }
 
     override fun onCleared() {
+        Timber.v("enter...")
+
         super.onCleared()
-        Timber.d("GameViewModel destroyed.")
     }
 
+    internal fun startNewRound() {
+        Timber.v("enter...")
 
-    internal fun generateNewQuestion() {
+        /** update status */
         currentQuestionCount++
-        numberOne = Random.nextInt(INTEGER_LIMIT_CEIL)
-        numberTwo = Random.nextInt(INTEGER_LIMIT_CEIL)
-        lastCorrectSum = correctSum
-        correctSum = numberOne + numberTwo
-        Timber.i("correctSum = $correctSum")
-        Timber.i("currentQuestionCount = $currentQuestionCount")
+        startNewTimer()
+
+        /** generate technical question */
+        currentDifficulty = (currentQuestionCount-1)/2+1
+        mathQuestion = MathQuestion(currentDifficulty)
+
+        /** LiveData display */
+        _currentQuestionDisplay.value = mathQuestion.getEquationString()
     }
     internal fun processGame(){
-        if(checkAnswerisCorrect()){
-            _isRoundWin.value = true
+        if(mathQuestion.isLowerThanCorrectAnswer(userAnswer)) {
+            answerHintDisplay = "Higher!"
+        } else if(mathQuestion.isHigherThanCorrectAnswer(userAnswer)){
+            answerHintDisplay = "Lower!"
+        } else if(mathQuestion.isEqualToCorrectAnswer(userAnswer)){
+            answerHintDisplay = null
+
             totalRoundWin++
             if(totalRoundWin == totalRound) _isGameWin.value = true
-            else generateNewQuestion()
+            else startNewRound()
         }
-        else{
-            _isRoundWin.value = false
-        }
-    }
-    internal fun checkAnswerisCorrect(): Boolean {
-        Timber.i("userAnswer = $userAnswer")
-        return userAnswer == correctSum
-    }
-
-    fun isFirstQuestion(): Boolean {
-        return currentQuestionCount == 1
     }
 
     fun takeUserInput(userAnswerString: String) {

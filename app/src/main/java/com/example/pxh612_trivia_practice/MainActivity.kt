@@ -12,14 +12,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.plant(MyTimberDebugTree())
-        Timber.v("main activity...")
         super.onCreate(savedInstanceState)
-        Timber.v("super onCreate...")
         @Suppress("UNUSED_VARIABLE")
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this,
             R.layout.activity_main
         )
-        Timber.v("setContentView..")
 
     }
 }

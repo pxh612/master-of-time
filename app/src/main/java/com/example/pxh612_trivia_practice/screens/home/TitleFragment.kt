@@ -15,10 +15,10 @@ class TitleFragment : Fragment(), View.OnClickListener {
     private lateinit var binding : FragmentTitleBinding
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
+
         binding = DataBindingUtil.inflate<FragmentTitleBinding>(inflater,
             R.layout.fragment_title,container,false)
         binding.playButton.setOnClickListener(this)
-        Timber.d("create title fragment...")
         return binding.root
     }
 

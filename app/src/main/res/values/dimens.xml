@@ -2,4 +2,6 @@
 <resources>
     <dimen name="number_size">30sp</dimen>
     <dimen name="text_size_info">25sp</dimen>
+    <dimen name="answer_hint_textSize">20sp</dimen>
+    <dimen name="layout_information_vertical_bias">0.3</dimen>
 </resources>
