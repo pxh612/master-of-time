@@ -5,4 +5,9 @@
     <string name="current_question_count_format">Question: %d/%d</string>
     <string name="your_answer_format">Your answer was: %d</string>
     <string name="correct_answer_format">Correct answer: %d</string>
+    <string name="welcomeMessage_fragmentTitle">Calculate the sum of 2 numbers. \n Can you do it?</string>
+    <string name="playButton_fragmentTitle">PLAY</string>
+    <string name="answerButton_fragmentGame">answer</string>
+    <string name="message_fragmentGameOver">Game over</string>
+    <string name="retryButton_fragmentGameOver">RETRY ?</string>
 </resources>

@@ -41,10 +41,10 @@ open class MyTimberDebugTree : Timber.Tree() {
         val classNameIndex = packageNameIndex + PACKAGE_NAME.length
         val className = fullPath.substring(classNameIndex + 1)
 
-        var functionName = element.methodName
+        val functionName = element.methodName
         val lineNumber = element.lineNumber
         val fileName = element.fileName
-        var lineRedirection = String.format("(%s:%d)", fileName, lineNumber)
+        val lineRedirection = String.format("(%s:%d)", fileName, lineNumber)
 
         val mTag = forewordTag
         val mMessage = String.format("%s > %s %s:    \n    %s", className, functionName, lineRedirection, message)
@@ -53,6 +53,5 @@ open class MyTimberDebugTree : Timber.Tree() {
 
     companion object {
         private const val PACKAGE_NAME = BuildConfig.APPLICATION_ID
-        private val ANONYMOUS_CLASS = Pattern.compile("(\\$\\d+)+$")
     }
 }

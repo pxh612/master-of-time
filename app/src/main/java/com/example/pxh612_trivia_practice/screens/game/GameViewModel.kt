@@ -28,9 +28,6 @@ class GameViewModel : ViewModel(){
     private val _currentTime = MutableLiveData<Long>()
     val currentTime: LiveData<Long>
         get() = _currentTime
-    val currentTimeString = Transformations.map(currentTime) { time ->
-        DateUtils.formatElapsedTime(time)
-    }
     private var timer: CountDownTimer
 
 
@@ -41,7 +38,6 @@ class GameViewModel : ViewModel(){
     private lateinit var mathQuestion : MathQuestion
     var totalRoundWin : Int = 0
     var currentQuestionCount = 0
-    var correctAnswerCount : Int = 0
 
     /** Ongoing game's status - LiveData to UI_controller */
     private val _isGameWin = MutableLiveData<Boolean>()
@@ -59,7 +55,6 @@ class GameViewModel : ViewModel(){
 
 
     /** Question setting */
-    private val INTEGER_LIMIT_CEIL = 20
     var currentDifficulty : Int = 1
 
 
@@ -93,7 +88,6 @@ class GameViewModel : ViewModel(){
     }
 
     private fun onTimeOver() {
-//        generateNewQuestion()
         _isGameWin.value = false
         _isGameLose.value = true
     }

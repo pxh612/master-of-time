@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         Timber.plant(MyTimberDebugTree())
         super.onCreate(savedInstanceState)
         @Suppress("UNUSED_VARIABLE")
-        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this,
+        binding = DataBindingUtil.setContentView<ActivityMainBinding>(this,
             R.layout.activity_main
         )
 

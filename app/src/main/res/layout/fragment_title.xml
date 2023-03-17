@@ -11,24 +11,23 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/welcome_message"
+
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:text="Calculate the sum of 2 numbers. \n
-                Can you do it?"/>
+            android:text="@string/welcomeMessage_fragmentTitle"
+            android:id="@+id/welcomeMessage" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/play_button"
-            android:text="PLAY"
-            app:layout_constraintTop_toBottomOf="@id/welcome_message"
+            android:text="@string/playButton_fragmentTitle"
+            app:layout_constraintTop_toBottomOf="@id/welcomeMessage"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="28dp"
             android:background="@color/cardview_light_background"
-            />
+            android:id="@+id/playButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

@@ -24,11 +24,8 @@ class TitleFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when(view.id){
-            R.id.play_button -> {
+            R.id.playButton -> {
                 view.findNavController().navigate(R.id.action_titleFragment_to_gameFragment)
-            }
-            else -> {
-
             }
         }
     }

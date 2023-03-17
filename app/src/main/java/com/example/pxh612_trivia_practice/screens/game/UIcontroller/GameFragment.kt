@@ -44,16 +44,16 @@ class GameFragment : Fragment(), View.OnClickListener {
 
         /**  LiveData Observer */
         binding.lifecycleOwner = viewLifecycleOwner
-        viewModel.isGameWin.observe(viewLifecycleOwner, Observer { isGameWin ->
-            if(isGameWin){
+        viewModel.isGameWin.observe(viewLifecycleOwner) { isGameWin ->
+            if(isGameWin) {
                 showGameWin()
             }
-        })
-        viewModel.isGameLose.observe(viewLifecycleOwner, Observer { isGameLose ->
+        }
+        viewModel.isGameLose.observe(viewLifecycleOwner) { isGameLose ->
             if(isGameLose){
                 showGameOver()
             }
-        })
+        }
 
         return binding.root
     }
@@ -67,7 +67,6 @@ class GameFragment : Fragment(), View.OnClickListener {
         when(view.id){
             R.id.submit -> {
                 val userInputString = binding.input.text.toString()
-                Log.d("HuyPX", "onClick: " )
 
                 if (userInputString.isEmpty()) {
                     notifyEmptyAnswer()
