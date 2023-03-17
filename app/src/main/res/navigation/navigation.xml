@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/titleFragment">
+    app:startDestination="@id/alarmsFragment">
 
     <fragment
         android:id="@+id/titleFragment"
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
-        android:name="com.example.pxh612_trivia_practice.screens.game.UIcontroller.GameFragment"
+        android:name="com.example.pxh612_trivia_practice.screens.game.ui_controller.GameFragment"
         android:label="GameFragment"
         tools:layout="@layout/fragment_game" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameOverFragment"
-        android:name="com.example.pxh612_trivia_practice.screens.game.UIcontroller.GameOverFragment"
+        android:name="com.example.pxh612_trivia_practice.screens.game.ui_controller.GameOverFragment"
         android:label="GameOverFragment"
         tools:layout="@layout/fragment_game_over"
         >
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameWinFragment"
-        android:name="com.example.pxh612_trivia_practice.screens.game.UIcontroller.GameWinFragment"
+        android:name="com.example.pxh612_trivia_practice.screens.game.ui_controller.GameWinFragment"
         android:label="GameWinFragment"
         tools:layout="@layout/fragment_game_win"
         >

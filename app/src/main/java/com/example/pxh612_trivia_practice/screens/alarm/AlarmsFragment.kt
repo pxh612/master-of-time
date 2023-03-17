@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pxh612_trivia_practice.R
 import com.example.pxh612_trivia_practice.databinding.FragmentAlarmsBinding
 import timber.log.Timber
@@ -17,31 +18,44 @@ class AlarmsFragment : Fragment() {
 
     private lateinit var binding : FragmentAlarmsBinding
     private lateinit var viewModel : AlarmsViewModel
-    private lateinit var adapter : AlarmAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-
-        /** init DataBinding */
-        Timber.d("GameFragment creating...")
+        /** inflate view with DataBinding */
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_alarms,
             container,
             false
         )
+        return binding.root
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         /** init ViewModel */
         viewModel = ViewModelProvider(this).get(AlarmsViewModel::class.java)
-        binding.alarmListViewModel = viewModel
 
-        /** init Adapter */
-        adapter = AlarmAdapter(AlarmListener {
-            val message = "AlarmAdapter listened"
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-        })
+        /** init RecyclerView - Layout Manager */
+        val manager = GridLayoutManager(activity, 2)
+//        manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup()
+
+        /** init RecyclerView - Adapter */
+//        val adapter = AlarmAdapter()
+
+        /** init DataBinding */
+        binding.apply {
+            alarmListViewModel = viewModel
+            lifecycleOwner = viewLifecycleOwner
+
+            /** RecycleView */
+//            alarmRecycleView.adapter = adapter
+            alarmRecycleView.layoutManager = manager
+        }
 
 
-        return binding.root
     }
+
+
 }

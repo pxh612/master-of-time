@@ -1,4 +1,4 @@
-package com.example.pxh612_trivia_practice.screens.game.UIcontroller
+package com.example.pxh612_trivia_practice.screens.game.ui_controller
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -34,7 +34,9 @@ class GameOverFragment : Fragment(), OnClickListener {
         )
 
         /** init ViewModel */
-        viewModel = ViewModelProvider(this)[GameViewModel::class.java]
+//        viewModel = ViewModelProvider(this)[GameViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity()).get(GameViewModel::class.java)
+
         binding.gameViewModel = viewModel
         Timber.d("Value: current question count = ${viewModel.currentQuestionCount} & ${viewModel.currentQuestionCountDisplay.value}")
 

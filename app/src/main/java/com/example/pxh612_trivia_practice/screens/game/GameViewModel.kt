@@ -1,12 +1,10 @@
 package com.example.pxh612_trivia_practice.screens.game
 
 import android.os.CountDownTimer
-import android.text.format.DateUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.pxh612_trivia_practice.module.MathQuestion
+import com.example.pxh612_trivia_practice.module.question.MathQuestion
 import timber.log.Timber
 
 class GameViewModel : ViewModel(){
@@ -131,5 +129,11 @@ class GameViewModel : ViewModel(){
 
     fun takeUserInput(userAnswerString: String) {
         userAnswer = Integer.parseInt(userAnswerString)
+    }
+
+    fun onClickButtonTest(){
+        Timber.v("enter...")
+
+        TODO("android:onClick worked with GameViewModel but not GameFragment")
     }
 }

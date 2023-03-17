@@ -15,8 +15,8 @@ open class MyTimberDebugTree : Timber.Tree() {
     */
 
     /** Log searching:
-     package:mine ( tag:PXH612 | FATAL ) level:DEBUG
-     */
+    package:mine ( tag:PXH612 | FATAL ) level:DEBUG | (level:VERBOSE & message:onClickButtonTest)
+     **/
     private val fqcnIgnore = listOf(
         Timber::class.java.name,
         Timber.Forest::class.java.name,

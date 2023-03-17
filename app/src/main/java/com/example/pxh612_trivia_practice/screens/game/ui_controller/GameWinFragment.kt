@@ -1,4 +1,4 @@
-package com.example.pxh612_trivia_practice.screens.game.UIcontroller
+package com.example.pxh612_trivia_practice.screens.game.ui_controller
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

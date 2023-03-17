@@ -6,6 +6,9 @@
         <variable
             name="gameViewModel"
             type="com.example.pxh612_trivia_practice.screens.game.GameViewModel" />
+        <variable
+            name="gameFragment"
+            type="com.example.pxh612_trivia_practice.screens.game.ui_controller.GameFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

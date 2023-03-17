@@ -1,4 +1,4 @@
-package com.example.pxh612_trivia_practice.module
+package com.example.pxh612_trivia_practice.module.question
 
 import timber.log.Timber
 import kotlin.random.Random

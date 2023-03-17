@@ -1,20 +1,19 @@
-package com.example.pxh612_trivia_practice.screens.game.UIcontroller
+package com.example.pxh612_trivia_practice.screens.game.ui_controller
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.pxh612_trivia_practice.R
 import com.example.pxh612_trivia_practice.databinding.FragmentGameBinding
 import com.example.pxh612_trivia_practice.screens.game.GameViewModel
-import com.example.pxh612_trivia_practice.screens.game.GameViewModelFactory
+import timber.log.Timber
 
 class GameFragment : Fragment(), View.OnClickListener {
 
@@ -22,27 +21,43 @@ class GameFragment : Fragment(), View.OnClickListener {
 
     /** ViewModel */
     private lateinit var viewModel: GameViewModel
+//    private var viewModel: GameViewModel by activityViewModels()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        /** init DataBiding */
+        /** inflate view with DataBinding */
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_game,
             container,
             false
         )
+        return binding.root
+
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Timber.v("enter...")
 
         /** init ViewModel */
-        viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
-        binding.gameViewModel = viewModel
+//        viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
+//        viewModel = activity.run(ViewModelProviders.of(this).get(GameViewModel::class.java))
+        viewModel = ViewModelProvider(requireActivity()).get(GameViewModel::class.java)
 
-        /** init View */
-        displayQuestion()
+
+        /** Button */
         binding.submit.setOnClickListener(this)
 
+        /** init DataBiding */
+        binding.apply {
+            gameFragment = this@GameFragment
+            gameViewModel = viewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
+
+
         /**  LiveData Observer */
-        binding.lifecycleOwner = viewLifecycleOwner
         viewModel.isGameWin.observe(viewLifecycleOwner) { isGameWin ->
             if(isGameWin) {
                 showGameWin()
@@ -53,17 +68,12 @@ class GameFragment : Fragment(), View.OnClickListener {
                 showGameOver()
             }
         }
-
-
-        return binding.root
     }
 
-    private fun displayQuestion() {
-        binding.input.text = null
-        binding.invalidateAll()
-    }
 
     override fun onClick(view: View) {
+        Timber.v("enter...")
+
         when(view.id){
             R.id.submit -> {
                 val userInputString = binding.input.text.toString()
@@ -77,6 +87,11 @@ class GameFragment : Fragment(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    private fun displayQuestion() {
+        binding.input.text = null
+        binding.invalidateAll()
     }
 
     private fun notifyEmptyAnswer() {
@@ -94,3 +109,5 @@ class GameFragment : Fragment(), View.OnClickListener {
 
 
 }
+
+
