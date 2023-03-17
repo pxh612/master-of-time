@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import com.example.pxh612_trivia_practice.R
 import com.example.pxh612_trivia_practice.databinding.FragmentGameOverBinding
 import com.example.pxh612_trivia_practice.screens.game.GameViewModel
+import timber.log.Timber
 
 
 class GameOverFragment : Fragment(), OnClickListener {
@@ -35,6 +36,7 @@ class GameOverFragment : Fragment(), OnClickListener {
         /** init ViewModel */
         viewModel = ViewModelProvider(this)[GameViewModel::class.java]
         binding.gameViewModel = viewModel
+        Timber.d("Value: current question count = ${viewModel.currentQuestionCount} & ${viewModel.currentQuestionCountDisplay.value}")
 
         /** init Buttons */
         binding.retry.setOnClickListener(this)

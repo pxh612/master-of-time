@@ -15,7 +15,6 @@ class AlarmAdapter(val alarmListener: AlarmListener) : ListAdapter<DataItem, Rec
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         TODO("Not yet implemented")
     }
-
 }
 
 

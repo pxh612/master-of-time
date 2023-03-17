@@ -26,6 +26,7 @@ class MathQuestion(difficulty : Int) {
         numberTwo = Random.nextInt(integerLimit)
         Timber.i("Value: correctAnswer = $correctAnswer")
     }
+
     fun isLowerThanCorrectAnswer(userAnswer: Int): Boolean {
         return userAnswer < correctAnswer
     }

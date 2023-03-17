@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
             name="gameViewModel"
@@ -14,36 +14,37 @@
 
         <include
             layout="@layout/answer_information"
-            app:gameViewModel="@{gameViewModel}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            app:gameViewModel="@{gameViewModel}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintVertical_bias="@dimen/layout_information_vertical_bias"
-            android:id="@+id/answer_info"/>
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/marginTop_answerInfo"
+            android:id="@+id/answerInfo" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{gameViewModel.currentTime.toString()}"
+            tools:text="9"
             android:textSize="50sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/answer_info"
+            app:layout_constraintTop_toBottomOf="@id/answerInfo"
             android:id="@+id/timer" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{gameViewModel.answerHintDisplay}"
+            tools:text="lower!"
             android:textColor="@color/design_default_color_error"
             android:textSize="@dimen/answer_hint_textSize"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/timer"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.3"
+            android:layout_marginTop="@dimen/marginTop_answerHintDisplay_fragmentGame"
             android:id="@+id/answer_hint" />
 
 
@@ -51,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{gameViewModel.currentQuestionDisplay}"
+            tools:text="234 + 5496"
             android:textSize="@dimen/number_size"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

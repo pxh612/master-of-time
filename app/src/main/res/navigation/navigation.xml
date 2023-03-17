@@ -47,4 +47,9 @@
             android:id="@+id/action_gameWinFragment_to_titleFragment"
             app:destination="@id/titleFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/alarmsFragment"
+        android:name="com.example.pxh612_trivia_practice.screens.alarm.AlarmsFragment"
+        android:label="fragment_alarms"
+        tools:layout="@layout/fragment_alarms" />
 </navigation>

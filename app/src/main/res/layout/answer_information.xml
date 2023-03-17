@@ -1,4 +1,5 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
         <data>
                 <variable
@@ -6,19 +7,12 @@
                     type="com.example.pxh612_trivia_practice.screens.game.GameViewModel" />
         </data>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="40dp">
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/current_question_count"
-            android:text="@{@string/current_question_count_format(gameViewModel.currentQuestionCount,gameViewModel.totalRound)}"
-            android:textSize="@dimen/text_size_info" />
-
-        </LinearLayout>
+            android:text="@{gameViewModel.currentQuestionCountDisplay}"
+            tools:text="Question: 7/10"
+            android:textSize="@dimen/text_size_info"
+            android:id="@+id/currentQuestionCount" />
 
 </layout>

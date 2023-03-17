@@ -13,17 +13,16 @@ open class MyTimberDebugTree : Timber.Tree() {
         implementation 'com.jakewharton.timber:timber:5.0.1'
     }
     */
+
+    /** Log searching:
+     package:mine ( tag:PXH612 | FATAL ) level:DEBUG
+     */
     private val fqcnIgnore = listOf(
         Timber::class.java.name,
         Timber.Forest::class.java.name,
         Timber.Tree::class.java.name,
         MyTimberDebugTree::class.java.name
     )
-
-    fun todo(TODO: String) : Boolean{
-        e(TODO)
-        return false
-    }
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         val forewordTag = "pxh612"
 

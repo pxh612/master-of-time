@@ -4,4 +4,6 @@
     <dimen name="text_size_info">25sp</dimen>
     <dimen name="answer_hint_textSize">20sp</dimen>
     <dimen name="layout_information_vertical_bias">0.3</dimen>
+    <dimen name="marginTop_answerHintDisplay_fragmentGame">90dp</dimen>
+    <dimen name="marginTop_answerInfo">50dp</dimen>
 </resources>

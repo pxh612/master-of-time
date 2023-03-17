@@ -22,7 +22,6 @@ class GameFragment : Fragment(), View.OnClickListener {
 
     /** ViewModel */
     private lateinit var viewModel: GameViewModel
-    private lateinit var viewModelFactory: GameViewModelFactory
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -35,7 +34,7 @@ class GameFragment : Fragment(), View.OnClickListener {
         )
 
         /** init ViewModel */
-        viewModel = ViewModelProvider(this)[GameViewModel::class.java]
+        viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
         binding.gameViewModel = viewModel
 
         /** init View */
@@ -54,6 +53,7 @@ class GameFragment : Fragment(), View.OnClickListener {
                 showGameOver()
             }
         }
+
 
         return binding.root
     }

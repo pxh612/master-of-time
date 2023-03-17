@@ -52,7 +52,9 @@ class GameViewModel : ViewModel(){
     private val _currentQuestionDisplay = MutableLiveData<String>()
     val currentQuestionDisplay: LiveData<String>
         get() = _currentQuestionDisplay
-
+    private val _currentQuestionCountDisplay = MutableLiveData<String>()
+    val currentQuestionCountDisplay: LiveData<String>
+        get() = _currentQuestionCountDisplay
 
     /** Question setting */
     var currentDifficulty : Int = 1
@@ -111,6 +113,7 @@ class GameViewModel : ViewModel(){
 
         /** LiveData display */
         _currentQuestionDisplay.value = mathQuestion.getEquationString()
+        _currentQuestionCountDisplay.value = "Question: $currentQuestionCount/$totalRound"
     }
     internal fun processGame(){
         if(mathQuestion.isLowerThanCorrectAnswer(userAnswer)) {
