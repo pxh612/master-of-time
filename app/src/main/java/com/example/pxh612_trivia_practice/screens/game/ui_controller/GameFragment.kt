@@ -56,19 +56,21 @@ class GameFragment : Fragment(), View.OnClickListener {
             lifecycleOwner = viewLifecycleOwner
         }
 
+        observeLivedata()
+    }
 
-        /**  LiveData Observer */
-        viewModel.isGameWin.observe(viewLifecycleOwner) { isGameWin ->
-            if(isGameWin) {
+    private fun observeLivedata() { viewModel.run {
+        isGameWin.observe(viewLifecycleOwner) { isGameWin ->
+            if (isGameWin) {
                 showGameWin()
             }
         }
-        viewModel.isGameLose.observe(viewLifecycleOwner) { isGameLose ->
-            if(isGameLose){
+        isGameLose.observe(viewLifecycleOwner) { isGameLose ->
+            if (isGameLose) {
                 showGameOver()
             }
         }
-    }
+    }}
 
 
     override fun onClick(view: View) {

@@ -15,7 +15,7 @@ open class MyTimberDebugTree : Timber.Tree() {
     */
 
     /** Log searching:
-    package:mine ( tag:PXH612 | FATAL ) level:DEBUG | (level:VERBOSE & message:onClickButtonTest)
+    package:mine ( message:logged_by_pxh612 | FATAL ) level:DEBUG
      **/
     private val fqcnIgnore = listOf(
         Timber::class.java.name,
@@ -37,7 +37,8 @@ open class MyTimberDebugTree : Timber.Tree() {
 
         val fullPath = element!!.className
         val packageNameIndex = fullPath.indexOf(PACKAGE_NAME)
-        val classNameIndex = packageNameIndex + PACKAGE_NAME.length
+//        val classNameIndex = packageNameIndex + PACKAGE_NAME.length
+        val classNameIndex = fullPath.lastIndexOf('.')
         val className = fullPath.substring(classNameIndex + 1)
 
         val functionName = element.methodName
@@ -45,8 +46,10 @@ open class MyTimberDebugTree : Timber.Tree() {
         val fileName = element.fileName
         val lineRedirection = String.format("(%s:%d)", fileName, lineNumber)
 
-        val mTag = forewordTag
-        val mMessage = String.format("%s > %s %s:    \n    %s", className, functionName, lineRedirection, message)
+        val logSearching = "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + "logged_by_pxh612"
+
+        val mTag = className
+        val mMessage = String.format("%s %s:    \n    %s %s", functionName, lineRedirection, message, logSearching)
         Log.println(priority, mTag, mMessage)
     }
 

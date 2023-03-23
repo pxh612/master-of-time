@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/alarmsFragment">
+    app:startDestination="@id/dailyDayFragment">
 
     <fragment
         android:id="@+id/titleFragment"
@@ -52,4 +52,9 @@
         android:name="com.example.pxh612_trivia_practice.screens.alarm.AlarmsFragment"
         android:label="fragment_alarms"
         tools:layout="@layout/fragment_alarms" />
+    <fragment
+        android:id="@+id/dailyDayFragment"
+        android:name="com.example.pxh612_trivia_practice.screens.d_day.DailyDayFragment"
+        android:label="fragment_daily_day"
+        tools:layout="@layout/fragment_daily_day" />
 </navigation>
