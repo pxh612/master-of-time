@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/titleFragment"
-        android:name="com.example.pxh612_trivia_practice.screens.home.TitleFragment"
+        android:name="com.example.master_of_time.screens.home.TitleFragment"
         android:label="TitleFragment"
         tools:layout="@layout/fragment_title">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
-        android:name="com.example.pxh612_trivia_practice.screens.game.ui_controller.GameFragment"
+        android:name="com.example.master_of_time.screens.game.ui.GameFragment"
         android:label="GameFragment"
         tools:layout="@layout/fragment_game" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameOverFragment"
-        android:name="com.example.pxh612_trivia_practice.screens.game.ui_controller.GameOverFragment"
+        android:name="com.example.master_of_time.screens.game.ui.GameOverFragment"
         android:label="GameOverFragment"
         tools:layout="@layout/fragment_game_over"
         >
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameWinFragment"
-        android:name="com.example.pxh612_trivia_practice.screens.game.ui_controller.GameWinFragment"
+        android:name="com.example.master_of_time.screens.game.ui.GameWinFragment"
         android:label="GameWinFragment"
         tools:layout="@layout/fragment_game_win"
         >
@@ -49,12 +49,12 @@
     </fragment>
     <fragment
         android:id="@+id/alarmsFragment"
-        android:name="com.example.pxh612_trivia_practice.screens.alarm.AlarmsFragment"
+        android:name="com.example.master_of_time.screens.alarm.AlarmsFragment"
         android:label="fragment_alarms"
         tools:layout="@layout/fragment_alarms" />
     <fragment
         android:id="@+id/dailyDayFragment"
-        android:name="com.example.pxh612_trivia_practice.screens.d_day.DailyDayFragment"
+        android:name="com.example.master_of_time.screens.dailyday.DailyDayFragment"
         android:label="fragment_daily_day"
         tools:layout="@layout/fragment_daily_day" />
 </navigation>

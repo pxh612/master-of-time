@@ -7,7 +7,7 @@
     <data>
         <variable
             name="alarmListViewModel"
-            type="com.example.pxh612_trivia_practice.screens.alarm.AlarmsViewModel" />
+            type="com.example.master_of_time.screens.alarm.AlarmsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -4,7 +4,7 @@
         <data>
                 <variable
                     name="gameViewModel"
-                    type="com.example.pxh612_trivia_practice.screens.game.GameViewModel" />
+                    type="com.example.master_of_time.screens.game.GameViewModel" />
         </data>
 
         <TextView
