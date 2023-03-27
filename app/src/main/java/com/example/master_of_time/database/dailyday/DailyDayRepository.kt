@@ -11,13 +11,11 @@ interface DailyDayRepository {
 
     suspend fun delete(dailyDay: DailyDay)
 
+    suspend fun getDailyDay(id: Int): DailyDay
 
     suspend fun getAllDaylyDay(): List<DailyDay>
 
     fun getDailyDayStream(id: Int): Flow<DailyDay>
-
-    suspend fun getDailyDay(id: Int): DailyDay
-
 
     fun getAllDailyDayStream(): Flow<List<DailyDay>>
 }

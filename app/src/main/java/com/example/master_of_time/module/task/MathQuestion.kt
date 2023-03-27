@@ -1,4 +1,4 @@
-package com.example.master_of_time.module.question
+package com.example.master_of_time.module.task
 
 import timber.log.Timber
 import kotlin.random.Random

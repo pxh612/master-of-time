@@ -54,7 +54,16 @@
         tools:layout="@layout/fragment_alarms" />
     <fragment
         android:id="@+id/dailyDayFragment"
-        android:name="com.example.master_of_time.screens.dailyday.DailyDayFragment"
+        android:name="com.example.master_of_time.screens.dailyday.ui.DailyDayFragment"
         android:label="fragment_daily_day"
-        tools:layout="@layout/fragment_daily_day" />
+        tools:layout="@layout/fragment_daily_day" >
+        <action
+            android:id="@+id/action_dailyDayFragment_to_dailyDayEditFragment"
+            app:destination="@id/dailyDayEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dailyDayEditFragment"
+        android:name="com.example.master_of_time.screens.dailyday.ui.DailyDayEditFragment"
+        android:label="fragment_daily_day_edit"
+        tools:layout="@layout/fragment_daily_day_edit" />
 </navigation>

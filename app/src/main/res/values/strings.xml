@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">pxh612-trivia-practice</string>
+    <string name="app_name">Master of time</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="current_question_count_format">Question: %d/%d</string>
@@ -10,4 +10,5 @@
     <string name="answerButton_fragmentGame">answer</string>
     <string name="message_fragmentGameOver">Game over</string>
     <string name="retryButton_fragmentGameOver">RETRY ?</string>
+    <string name="text_add_fragmentDailyDay">Add</string>
 </resources>

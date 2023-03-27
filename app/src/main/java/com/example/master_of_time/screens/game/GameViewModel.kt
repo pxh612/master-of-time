@@ -4,7 +4,7 @@ import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.master_of_time.module.question.MathQuestion
+import com.example.master_of_time.module.task.MathQuestion
 import timber.log.Timber
 
 class GameViewModel : ViewModel(){

@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.pxh612_trivia_practice'
+    namespace 'com.example.master_of_time'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.pxh612_trivia_practice"
+        applicationId "com.example.master_of_time"
         minSdk 21
         targetSdk 32
         versionCode 1

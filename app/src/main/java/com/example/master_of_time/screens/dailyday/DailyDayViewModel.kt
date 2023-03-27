@@ -4,15 +4,27 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.master_of_time.database.dailyday.DailyDay
+import com.example.master_of_time.database.dailyday.DailyDayDao
 import com.example.master_of_time.database.dailyday.DailyDayRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+// Class-declaration attempt: pass Dao
+//class DailyDayViewModel(
+//    private val dailyDayDao: DailyDayDao
+//): ViewModel() {
+//
+//
+//}
 
+
+// Class-declaration attempt: pass Repository
 class DailyDayViewModel(
-    dailyDayRepository: DailyDayRepository
+    private val dailyDayRepository: DailyDayRepository
 ) : ViewModel(){
+
 
     /** LiveData */
     private val _simpleDisplayMessage = MutableLiveData<String>()
@@ -23,88 +35,45 @@ class DailyDayViewModel(
     init{
         _simpleDisplayMessage.value = "from DailyDayViewModel with love"
 
-        Timber.v("...init...")
+        Timber.v("> init")
 
 
         /** Coroutine */
-        //      reference: app Inventory / class ItemEditViewModel
-        //          pass to a data class: ItemUIState
         viewModelScope.launch (Dispatchers.IO) {
-            Timber.v("...enter coroutine ...")
+            Timber.v("> enter coroutine")
 
-            /** Attempt: read from Flow */
-//            var repos = dailyDayRepository.getAllDailyDayStream()
-//            var reposLogOutput: String = "["
-//            Timber.d("dailyDayList = $reposLogOutput")
-//
-//            repos.collect{ list ->
-//                Timber.d("...inside flow collect...")
-//                Timber.i("list size = ${list.size}")
-//                list.forEach {
-//                    reposLogOutput += "$it, "
-//                }
-//            }
-//            reposLogOutput += "]"
-//            Timber.i("dailyDayList = $reposLogOutput")
-
-            /** Attempt: read list from suspend function */
-            Timber.e("FATAL: java.lang.IllegalStateException: Cannot access database on the main thread since it may potentially lock the UI for a long period of time.")
-//            var list = dailyDayRepository.getAllDaylyDay()  // <- Fatal
-            var item = dailyDayRepository.getDailyDay(69)
-
-
-
-            /** Attempt: insert Item to Repos - success! */
-            Timber.v("...testing repos...")
-//
-//            val sampleDailyDay = DailyDay(686, "SampleTitle__", 16796247918)
-//            dailyDayRepository.insert(sampleDailyDay)
-//
-//            var repos = dailyDayRepository.getAllDailyDayStream()
-//            repos.collect{list ->
-//                Timber.i("list size = ${list.size}")
-//                list.forEach {
-//                    Timber.d("${it.id} & ${it.date} & ${it.title} \n")
-//                }
-//            }
-//
-
-            /** Attempt: read from Repos */
-
-
+            /** Attempt: insert sample data */
+            dailyDayRepository.insert(DailyDay(1, "Title one", 12345))
+            dailyDayRepository.insert(DailyDay(2, "Title two", 12346))
+            dailyDayRepository.insert(DailyDay(3, "Title three", 12347))
+            dailyDayRepository.insert(DailyDay(4, "Title four", 12348))
         }
     }
-
+    fun getAllDailyDay() = dailyDayRepository.getAllDailyDayStream()
 }
 
+// ========================================== NOTE
 
-// Class-declaration attempt: Dagger
-//
-//@HiltViewModel
-//class DailyDayViewModel @Inject constructor(
-//    savedStateHandle: SavedStateHandle,
-//    repository: DailyDayRepository
-//) : ViewModel() {
-//
-//    init{
-//        Timber.v("...init...")
-//    }
-//}
-
-
-// === Knowledge: ===
+// === remember { mutableStateOf("") }
 // https://stefma.medium.com/jetpack-compose-remember-mutablestateof-derivedstateof-and-remembersaveable-explained-270dbaa61b8
-// val stringState = remember { mutableStateOf("") }
 //
 // belong to Jetpack Compose
 // foundation behind compose: UI widget updated -> compose call composable function again -> "recomposition"
 
 
-// === Knowledge === Couroutines
+// === Couroutines
 // https://developer.android.com/kotlin/coroutines
 // https://developer.android.com/topic/libraries/architecture/coroutines
 //
-//  Sử dụng ViewModelScope để giảm Boilerplate code với Coroutines
+// === Sử dụng ViewModelScope để giảm Boilerplate code với Coroutines
 // https://viblo.asia/p/su-dung-viewmodelscope-de-giam-boilerplate-code-voi-coroutines-aWj53e9eZ6m
 // https://amitshekhar.me/blog/kotlin-coroutines
 // Scopes in Kotlin Coroutines are very useful because we need to cancel the background task as soon as the activity is destroyed.
+
+// === Fixed bug ===
+// https://stackoverflow.com/questions/70567066/cannot-access-database-on-the-main-thread-since-it-may-potentially-lock-the-ui
+
+
+// === Knowledge === Pass Dao, not repository?
+// https://developer.android.com/codelabs/basic-android-kotlin-training-intro-room-flow#5
+// Later!!!

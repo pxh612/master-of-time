@@ -60,12 +60,12 @@ class GameFragment : Fragment(), View.OnClickListener {
     private fun observeLivedata() { viewModel.run {
         isGameWin.observe(viewLifecycleOwner) { isGameWin ->
             if (isGameWin) {
-                showGameWin()
+                navigateToGameWin()
             }
         }
         isGameLose.observe(viewLifecycleOwner) { isGameLose ->
             if (isGameLose) {
-                showGameOver()
+                navigateToGameOver()
             }
         }
     }}
@@ -99,11 +99,11 @@ class GameFragment : Fragment(), View.OnClickListener {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun showGameOver() {
+    private fun navigateToGameOver() {
         requireView().findNavController().navigate(R.id.action_gameFragment_to_gameOverFragment)
     }
 
-    private fun showGameWin() {
+    private fun navigateToGameWin() {
         requireView().findNavController().navigate(R.id.action_gameFragment_to_gameWinFragment)
     }
 

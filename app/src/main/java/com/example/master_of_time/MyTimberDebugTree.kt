@@ -17,12 +17,19 @@ open class MyTimberDebugTree : Timber.Tree() {
     /** Log searching:
     package:mine ( message:logged_by_pxh612 | FATAL )
      */
+
+    companion object {
+        private const val PACKAGE_NAME = BuildConfig.APPLICATION_ID
+        private val ANONYMOUS_CLASS = Pattern.compile("(\\$\\d+)+$")
+    }
+
     private val fqcnIgnore = listOf(
         Timber::class.java.name,
         Timber.Forest::class.java.name,
         Timber.Tree::class.java.name,
         MyTimberDebugTree::class.java.name
     )
+
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         val element: StackTraceElement? = Throwable().stackTrace
             .first { it.className !in fqcnIgnore }
@@ -49,12 +56,8 @@ open class MyTimberDebugTree : Timber.Tree() {
         val logSearching = "\t".repeat(50) + "logged_by_pxh612"
 
         val mTag = classNameTest
-        val mMessage = String.format("%s %s:    %s\n    %s ", functionName, lineRedirection, logSearching, message)
+        val mMessage = String.format("%s %s %s\n    %s ", functionName, lineRedirection, logSearching, message)
         Log.println(priority, mTag, mMessage)
     }
 
-    companion object {
-        private const val PACKAGE_NAME = BuildConfig.APPLICATION_ID
-        private val ANONYMOUS_CLASS = Pattern.compile("(\\$\\d+)+$")
-    }
 }
