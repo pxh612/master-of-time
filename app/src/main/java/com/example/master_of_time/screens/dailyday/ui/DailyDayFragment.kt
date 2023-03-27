@@ -11,21 +11,17 @@ import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.master_of_time.R
+import com.example.master_of_time.database.dailyday.DailyDay
 import com.example.master_of_time.database.dailyday.DailyDayDatabase
 import com.example.master_of_time.database.dailyday.DailyDayRepository
 import com.example.master_of_time.database.dailyday.OfflineDailyDayRepository
 import com.example.master_of_time.databinding.FragmentDailyDayBinding
 import com.example.master_of_time.screens.dailyday.DailyDayViewModel
 import com.example.master_of_time.screens.dailyday.DailyDayViewModelFactory
-import com.example.master_of_time.screens.dailyday.ui.recyclerview.DailyDayAdapter
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class DailyDayFragment : Fragment(), View.OnClickListener {
-
-    companion object {
-        fun newInstance() = DailyDayFragment()
-    }
 
     private lateinit var binding : FragmentDailyDayBinding
     private lateinit var viewModel: DailyDayViewModel
@@ -55,7 +51,8 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
         viewModel = ViewModelProvider(this, DailyDayViewModelFactory(dailyDayRepository))[DailyDayViewModel::class.java]
 
         /** init RecyclerView's Adapter: update with Flow<List> */
-        val dailyDayAdapter = DailyDayAdapter()
+        val dailyDayAdapter = DailyDayAdapter(onAdapterClicked())
+
         lifecycle.coroutineScope.launch {
             viewModel.getAllDailyDay().collect(){
                 Timber.v("> collect viewModel's Flow<list> and pass to Adapter...")
@@ -74,9 +71,13 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
 
             /** init Button */
             add.setOnClickListener(this@DailyDayFragment)
+        }
+    }
 
-            /** start View */
-            message.text = "from DailyDayFragment"
+    private fun onAdapterClicked(): (DailyDay) -> Unit {
+        return {
+            Timber.i("Item clicked: id = ${it.id} && title = ${it.title}")
+            navigateToEditScreen(it.id)
         }
     }
 
@@ -84,25 +85,24 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
         Timber.v("> reponsive! ")
         when(view.id){
             R.id.add -> {
-                navigateToEditScreen()
+                Timber.w("TODO")
+//                navigateToEditScreen()
             }
         }
     }
 
-    private fun navigateToEditScreen() {
-        Timber.w("TODO")
-//        requireView().findNavController().navigate(R.id.)
+    private fun navigateToEditScreen(dailyDayId: Int) {
+        val action = DailyDayFragmentDirections.actionDailyDayFragmentToDailyDayEditFragment(dailyDayId)
+        requireView().findNavController().navigate(action)
     }
 
 
 }
 
-
-// ========================================== NOTE
+// ========================================== IGNORE
 
 // === RecyclerView
 // https://developer.android.com/codelabs/basic-android-kotlin-training-recyclerview-scrollable-list?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-unit-2-pathway-3%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-recyclerview-scrollable-list#3
-// item (data) + adapter (take data) + viewholders (pool of views) + recyclerview (view on screen)
 
 // === ViewModelFactory
 // https://developer.android.com/codelabs/basic-android-kotlin-training-intro-room-flow?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-unit-5-pathway-1%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-intro-room-flow#7

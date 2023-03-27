@@ -27,32 +27,27 @@ class DailyDayViewModel(
 
 
     /** LiveData */
-    private val _simpleDisplayMessage = MutableLiveData<String>()
-    val simpleDisplayMessage: LiveData<String>
-        get() = _simpleDisplayMessage
+//    val allItems: LiveData<List<DailyDay>> = da
 
 
     init{
-        _simpleDisplayMessage.value = "from DailyDayViewModel with love"
-
         Timber.v("> init")
 
 
-        /** Coroutine */
-        viewModelScope.launch (Dispatchers.IO) {
-            Timber.v("> enter coroutine")
-
-            /** Attempt: insert sample data */
-            dailyDayRepository.insert(DailyDay(1, "Title one", 12345))
-            dailyDayRepository.insert(DailyDay(2, "Title two", 12346))
-            dailyDayRepository.insert(DailyDay(3, "Title three", 12347))
-            dailyDayRepository.insert(DailyDay(4, "Title four", 12348))
-        }
+//        /** Coroutine */
+//        viewModelScope.launch (Dispatchers.IO) {
+//            Timber.v("> enter coroutine")
+//        }
     }
+
     fun getAllDailyDay() = dailyDayRepository.getAllDailyDayStream()
 }
 
-// ========================================== NOTE
+
+// ========================================== IGNORE
+
+
+
 
 // === remember { mutableStateOf("") }
 // https://stefma.medium.com/jetpack-compose-remember-mutablestateof-derivedstateof-and-remembersaveable-explained-270dbaa61b8
@@ -73,7 +68,5 @@ class DailyDayViewModel(
 // === Fixed bug ===
 // https://stackoverflow.com/questions/70567066/cannot-access-database-on-the-main-thread-since-it-may-potentially-lock-the-ui
 
-
-// === Knowledge === Pass Dao, not repository?
+// === Pass Dao, not repository?
 // https://developer.android.com/codelabs/basic-android-kotlin-training-intro-room-flow#5
-// Later!!!

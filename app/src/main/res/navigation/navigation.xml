@@ -65,5 +65,9 @@
         android:id="@+id/dailyDayEditFragment"
         android:name="com.example.master_of_time.screens.dailyday.ui.DailyDayEditFragment"
         android:label="fragment_daily_day_edit"
-        tools:layout="@layout/fragment_daily_day_edit" />
+        tools:layout="@layout/fragment_daily_day_edit" >
+        <argument
+            android:name="dailyDayId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

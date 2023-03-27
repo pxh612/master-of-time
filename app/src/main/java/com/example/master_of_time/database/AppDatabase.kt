@@ -36,7 +36,7 @@ abstract class AppDatabase: RoomDatabase() {
                     context,
                     AppDatabase::class.java,
                     "app_database")
-                    .createFromAsset("database/bus_schedule.db") // Warning: bus_schedule not exist
+                    .createFromAsset("database/bus_schedule.db") // Warning: bus_schedule do not exist
                     .build()
                 INSTANCE = instance
 

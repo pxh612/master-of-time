@@ -5,14 +5,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <fragment
-            android:id="@+id/myNavHostFragment"
+
+        <androidx.fragment.app.FragmentContainerView
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:navGraph="@navigation/navigation"
             app:defaultNavHost="true"
-            />
+
+            android:id="@+id/myNavHostFragment" />
+
     </LinearLayout>
 
 </layout>

@@ -44,31 +44,28 @@ class GameFragment : Fragment(), View.OnClickListener {
         viewModel = ViewModelProvider(requireActivity()).get(GameViewModel::class.java)
 
 
-        /** Button */
-        binding.submit.setOnClickListener(this)
-
-        /** init DataBiding */
+        /** init Views && Buttons */
         binding.apply {
-            gameFragment = this@GameFragment
             gameViewModel = viewModel
             lifecycleOwner = viewLifecycleOwner
+            gameFragment = this@GameFragment
+            submit.setOnClickListener(this@GameFragment)
         }
 
-        observeLivedata()
+        /** observeLiveData */
+        viewModel.run {
+            isGameWin.observe(viewLifecycleOwner) { isGameWin ->
+                if (isGameWin) {
+                    navigateToGameWin()
+                }
+            }
+            isGameLose.observe(viewLifecycleOwner) { isGameLose ->
+                if (isGameLose) {
+                    navigateToGameOver()
+                }
+            }
+        }
     }
-
-    private fun observeLivedata() { viewModel.run {
-        isGameWin.observe(viewLifecycleOwner) { isGameWin ->
-            if (isGameWin) {
-                navigateToGameWin()
-            }
-        }
-        isGameLose.observe(viewLifecycleOwner) { isGameLose ->
-            if (isGameLose) {
-                navigateToGameOver()
-            }
-        }
-    }}
 
 
     override fun onClick(view: View) {

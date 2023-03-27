@@ -1,9 +1,15 @@
 package com.example.master_of_time.database.dailyday
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import android.icu.text.SimpleDateFormat
+import android.os.Build
+import androidx.room.*
 import com.example.master_of_time.database.DatabaseNames.DAILY_DAY_TABLE
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.OffsetTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 @Entity(tableName = DAILY_DAY_TABLE)
 data class DailyDay (
@@ -14,3 +20,19 @@ data class DailyDay (
     @ColumnInfo(name = "date")
     var date: Long,
 )
+
+
+
+fun DailyDay.getDateString(): String{
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        Instant.ofEpochSecond(date)
+            .atOffset(ZoneOffset.UTC)
+            .format( DateTimeFormatter.ISO_LOCAL_DATE_TIME )
+            .replace( "T" , " " )
+
+    } else throw Exception("API Level is lower than 26")
+}
+
+
+
+
