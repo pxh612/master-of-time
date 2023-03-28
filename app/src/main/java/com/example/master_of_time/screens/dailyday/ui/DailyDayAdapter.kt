@@ -59,9 +59,9 @@ class DailyDayAdapter(
 
             binding.apply {
                 title.text = dailyDay.title
-
                 date.text = dailyDay.getDateString()
             }
         }
     }
+    
 }

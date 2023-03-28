@@ -18,5 +18,4 @@ class DailyDayViewModelFactory(
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
-
 }

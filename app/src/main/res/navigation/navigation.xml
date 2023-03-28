@@ -69,5 +69,8 @@
         <argument
             android:name="dailyDayId"
             app:argType="integer" />
+        <argument
+            android:name="isAdd"
+            app:argType="boolean" />
     </fragment>
 </navigation>

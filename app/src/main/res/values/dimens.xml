@@ -14,4 +14,9 @@
     <dimen name="marginRight_date_adapterDailyDay">30dp</dimen>
     <dimen name="textSize_adapterDailyDay">20sp</dimen>
     <dimen name="textSize_date_adapterDailyDay">15sp</dimen>
+
+    <dimen name="marginTop_date_fragmentDailyDayEdit">15dp</dimen>
+    <dimen name="marginTop_title_fragmentDailyDayEdit">30dp</dimen>
+    <dimen name="marginTop_submitButton_fragmentDailyDayEdit">35dp</dimen>
+    <dimen name="marginLeft_title_fragmentdailyDayEdit">15dp</dimen>
 </resources>

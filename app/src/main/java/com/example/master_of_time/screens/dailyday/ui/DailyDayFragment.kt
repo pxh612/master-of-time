@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,7 +49,7 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
         dailyDayRepository = OfflineDailyDayRepository(DailyDayDatabase.getInstance(requireContext()).dailyDayDao())
 
         /** init ViewModel */
-        viewModel = ViewModelProvider(this, DailyDayViewModelFactory(dailyDayRepository))[DailyDayViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity(), DailyDayViewModelFactory(dailyDayRepository))[DailyDayViewModel::class.java]
 
         /** init RecyclerView's Adapter: update with Flow<List> */
         val dailyDayAdapter = DailyDayAdapter(onAdapterClicked())
@@ -56,7 +57,7 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
         lifecycle.coroutineScope.launch {
             viewModel.getAllDailyDay().collect(){
                 Timber.v("> collect viewModel's Flow<list> and pass to Adapter...")
-                Timber.i("List.size = ${it.size}")
+                Timber.v("List.size = ${it.size}")
                 dailyDayAdapter.submitList(it)
             }
         }
@@ -85,19 +86,24 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
         Timber.v("> reponsive! ")
         when(view.id){
             R.id.add -> {
-                Timber.w("TODO")
-//                navigateToEditScreen()
+                navigateToAddScreen()
             }
         }
     }
 
+    private fun navigateToAddScreen() {
+        val action = DailyDayFragmentDirections.actionDailyDayFragmentToDailyDayEditFragment(0, true)
+        requireView().findNavController().navigate(action)
+    }
+
     private fun navigateToEditScreen(dailyDayId: Int) {
-        val action = DailyDayFragmentDirections.actionDailyDayFragmentToDailyDayEditFragment(dailyDayId)
+        val action = DailyDayFragmentDirections.actionDailyDayFragmentToDailyDayEditFragment(dailyDayId, false)
         requireView().findNavController().navigate(action)
     }
 
 
 }
+
 
 // ========================================== IGNORE
 

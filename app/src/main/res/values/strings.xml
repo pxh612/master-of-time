@@ -11,4 +11,6 @@
     <string name="message_fragmentGameOver">Game over</string>
     <string name="retryButton_fragmentGameOver">RETRY ?</string>
     <string name="text_add_fragmentDailyDay">Add</string>
+    <string name="confirm_fragmentDailyDayEdit">confirm</string>
+    <string name="delete_fragmentDailyDayEdit">delete</string>
 </resources>

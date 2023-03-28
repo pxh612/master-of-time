@@ -8,11 +8,49 @@
         android:layout_height="match_parent"
         tools:context=".screens.dailyday.ui.DailyDayEditFragment">
 
-        <TextView
+        <EditText
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="DaylyDayEditFragment"
-            android:id="@+id/welcomeMessage"/>
+            android:layout_height="wrap_content"
+            tools:text="title"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="@dimen/marginTop_title_fragmentDailyDayEdit"
+            android:layout_marginStart="@dimen/marginLeft_title_fragmentdailyDayEdit"
+            android:layout_marginEnd="@dimen/marginLeft_title_fragmentdailyDayEdit"
+            android:inputType="text"
+            android:id="@+id/title" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="date"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            android:layout_marginTop="@dimen/marginTop_date_fragmentDailyDayEdit"
+            android:layout_marginStart="@dimen/marginLeft_title_fragmentdailyDayEdit"
+            android:layout_marginEnd="@dimen/marginLeft_title_fragmentdailyDayEdit"
+            android:focusable="false"
+            android:id="@+id/date" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm_fragmentDailyDayEdit"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/date"
+            android:layout_marginTop="@dimen/marginTop_submitButton_fragmentDailyDayEdit"
+            android:id="@+id/submitButton" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_fragmentDailyDayEdit"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/submitButton"
+            android:layout_marginTop="@dimen/marginTop_date_fragmentDailyDayEdit"
+            android:backgroundTint="@color/design_default_color_error"
+            android:textColor="@color/white"
+            android:id="@+id/delete" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
