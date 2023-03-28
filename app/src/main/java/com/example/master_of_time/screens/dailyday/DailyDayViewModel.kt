@@ -12,6 +12,7 @@ class DailyDayViewModel(
 ) : ViewModel(){
 
 
+
     fun retrieveDailyDay(id: Int): LiveData<DailyDay> {
         return dailyDayRepository.getDailyDayStream(id).asLiveData()
     }

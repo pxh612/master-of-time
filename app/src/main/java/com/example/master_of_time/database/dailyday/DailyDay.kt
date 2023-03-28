@@ -13,10 +13,13 @@ import java.util.*
 
 @Entity(tableName = DAILY_DAY_TABLE)
 data class DailyDay (
+
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
+
     @ColumnInfo(name = "title")
     var title: String = "Untitled",
+
     @ColumnInfo(name = "date")
     var date: Long = 0,
 )

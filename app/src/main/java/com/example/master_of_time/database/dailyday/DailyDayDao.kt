@@ -19,12 +19,14 @@ interface DailyDayDao {
     @Query("SELECT * FROM $DAILY_DAY_TABLE WHERE id = :id")
     fun getDailyDay(id: Int): DailyDay
 
+    @Query("SELECT * from $DAILY_DAY_TABLE ORDER BY id ASC")
+    fun getAllDailyDay(): List<DailyDay>
+
     @Query("SELECT * FROM $DAILY_DAY_TABLE WHERE id = :id")
     fun getDailyDayFlow(id: Int): Flow<DailyDay>
 
     @Query("SELECT * from $DAILY_DAY_TABLE ORDER BY id ASC")
     fun getAllDailyDayFlow(): Flow<List<DailyDay>>
 
-    @Query("SELECT * from $DAILY_DAY_TABLE ORDER BY id ASC")
-    fun getAllDailyDay(): List<DailyDay>
+
 }

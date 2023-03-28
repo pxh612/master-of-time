@@ -27,27 +27,24 @@ class MyApplication : Application() {
 }
 
 fun Long.toOffsetDateTime(): OffsetDateTime{
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        Instant.ofEpochSecond(this)
-            .atOffset(ZoneOffset.UTC)
-        /**
-        Bug: calendar (no ZoneOffset) convert to Java.Time.Instant (with ZoneOffSet) make dayResult off by one day
-        Fixed (temporary): add 7 hours to calendar when convert
-         */
+    return Instant.ofEpochSecond(this)
+        .atOffset(ZoneOffset.UTC)
 
-    } else throw Exception("API Level is lower than 26")
 }
 
 
 fun OffsetDateTime.toDateFormat(): String{
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        format( DateTimeFormatter.ISO_LOCAL_DATE )
-            .replace( "T" , " " )
-
-    } else throw Exception("API Level is lower than 26")
+    return format( DateTimeFormatter.ISO_LOCAL_DATE )
+        .replace( "T" , " " )
 }
 
 fun DatePicker.toEpochTimeSeconds(): Long {
+    /**
+    Bug: calendar (no ZoneOffset) convert to Java.Time.Instant (with ZoneOffSet) make dayResult off by one day
+    Fixed (temporary): add 7 hours to calendar when convert
+     */
+
+
     val calendar = Calendar.getInstance()
     calendar.set(year, month, dayOfMonth, 7, 0, 0)
     calendar.set(Calendar.MILLISECOND, 0)

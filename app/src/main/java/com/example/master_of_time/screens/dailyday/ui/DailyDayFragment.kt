@@ -50,6 +50,7 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
 
         /** init ViewModel */
         viewModel = ViewModelProvider(requireActivity(), DailyDayViewModelFactory(dailyDayRepository))[DailyDayViewModel::class.java]
+        Timber.d("viewmodel dailydayFragment = $viewModel")
 
         /** init RecyclerView's Adapter: update with Flow<List> */
         val dailyDayAdapter = DailyDayAdapter(onAdapterClicked())

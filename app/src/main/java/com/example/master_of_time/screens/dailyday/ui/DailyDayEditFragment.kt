@@ -38,6 +38,10 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
     lateinit var datePickerDialog: DatePickerDialog
     var isAdd: Boolean = false
 
+//       onAttatch -> onCreate -> onCreateView (return View) -> onViewCreated -> onStart -> onResume -> onPaused/ -> onStop -> onDestroy
+//                                    ViewLifeCycle
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +59,7 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
 
         /** init ViewModel */
         viewModel = ViewModelProvider(requireActivity(), DailyDayViewModelFactory(dailyDayRepository))[DailyDayViewModel::class.java]
+        Timber.d("viewmodel = $viewModel")
 
         /** init Views & Buttons */
         binding.apply {
@@ -77,6 +82,7 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
             selectedDailyDay = DailyDay(title = "")
 
             binding.date.text = datePickerDialog.datePicker.toEpochTimeSeconds().toOffsetDateTime().toDateFormat().toEditable()
+
             binding.delete.visibility = View.GONE
         }
         else {
