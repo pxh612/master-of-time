@@ -57,7 +57,7 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
         lifecycle.coroutineScope.launch {
             viewModel.getAllDailyDay().collect(){
                 Timber.v("> collect viewModel's Flow<list> and pass to Adapter...")
-                Timber.v("List.size = ${it.size}")
+
                 dailyDayAdapter.submitList(it)
             }
         }

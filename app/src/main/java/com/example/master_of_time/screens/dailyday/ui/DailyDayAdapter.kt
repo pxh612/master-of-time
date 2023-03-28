@@ -6,9 +6,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.master_of_time.database.dailyday.DailyDay
-import com.example.master_of_time.database.dailyday.getDateString
 
 import com.example.master_of_time.databinding.AdapterDailyDayBinding
+import com.example.master_of_time.toDateFormat
+import com.example.master_of_time.toOffsetDateTime
 import timber.log.Timber
 import java.util.*
 
@@ -39,11 +40,13 @@ class DailyDayAdapter(
     }
 
     override fun onBindViewHolder(holder: DailyDayViewHolder, position: Int) {
-        /** init onItemClicked ? */
         val current = getItem(position)
+
+        /** init Interaction */
         holder.itemView.setOnClickListener {
             onItemClicked(current)
         }
+
         holder.onBindCalled(current)
     }
 
@@ -59,7 +62,7 @@ class DailyDayAdapter(
 
             binding.apply {
                 title.text = dailyDay.title
-                date.text = dailyDay.getDateString()
+                date.text = dailyDay.date.toOffsetDateTime().toDateFormat()
             }
         }
     }

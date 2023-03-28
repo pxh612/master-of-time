@@ -13,11 +13,10 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.master_of_time.R
+import com.example.master_of_time.*
 import com.example.master_of_time.database.dailyday.DailyDay
 import com.example.master_of_time.database.dailyday.DailyDayDatabase
 import com.example.master_of_time.database.dailyday.OfflineDailyDayRepository
-import com.example.master_of_time.database.dailyday.getDateString
 import com.example.master_of_time.databinding.FragmentDailyDayEditBinding
 import com.example.master_of_time.screens.dailyday.DailyDayViewModel
 import com.example.master_of_time.screens.dailyday.DailyDayViewModelFactory
@@ -26,7 +25,7 @@ import java.time.ZoneOffset
 import java.util.*
 
 
-class DailyDayEditFragment : Fragment(), View.OnClickListener {
+class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
     private lateinit var viewModel: DailyDayViewModel
     private lateinit var binding: FragmentDailyDayEditBinding
@@ -62,9 +61,15 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener {
             date.setOnClickListener(this@DailyDayEditFragment)
             delete.setOnClickListener(this@DailyDayEditFragment)
         }
+
+        /** init DatePickerDialog */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             datePickerDialog = DatePickerDialog(requireContext())
+            datePickerDialog.setOnDateSetListener(this)
+
+            // Attemp 1: setOnDateSetListener?
         } else throw Exception("API Level is lower than 24")
+
 
         /** retrieve Navigation */
         isAdd = navigationArgs.isAdd
@@ -81,19 +86,18 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    fun DatePicker.toEpochTimeSeconds(): Long {
-        val calendar = Calendar.getInstance()
-        calendar.set(year, month, dayOfMonth, 7, 0, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
-        return calendar.timeInMillis / 1000
-    }
-    fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
+
 
     private fun bind(dailyDay: DailyDay){
         binding.apply {
             title.text = dailyDay.title.toEditable()
-            date.text = dailyDay.getDateString().toEditable()
+            date.text = dailyDay.date.toOffsetDateTime().toDateFormat().toEditable()
         }
+    }
+
+
+    override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
+        binding.date.text = view.toEpochTimeSeconds().toOffsetDateTime().toDateFormat().toEditable()
     }
 
     override fun onClick(view: View) {
@@ -121,7 +125,6 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener {
     }
 
 
-
     private fun fetchInput(): Boolean {
         val title: String = binding.title.text.toString()
         val date:Long = datePickerDialog.datePicker.toEpochTimeSeconds()
@@ -132,6 +135,7 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener {
             return true
         }
     }
+
 
     private fun notifyEmptyInput() {
         val message = "Empty title!"
@@ -147,5 +151,7 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener {
     private fun deleteItem() {
         viewModel.deleteDailyDay(selectedDailyDay)
     }
+
 }
+
 

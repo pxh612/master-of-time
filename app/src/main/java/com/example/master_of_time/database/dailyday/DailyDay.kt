@@ -23,21 +23,3 @@ data class DailyDay (
 
 
 
-fun DailyDay.getDateString(): String{
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        Instant.ofEpochSecond(date)
-            .atOffset(ZoneOffset.UTC)
-            .format( DateTimeFormatter.ISO_LOCAL_DATE )
-            .replace( "T" , " " )
-
-        /**
-         Bug calendar (no ZoneOffset) convert to Java.Time.Instant (with ZoneOffSet) make dayResult off by one day
-         Fixed (temporary): add 7 hours to calendar when convert
-         */
-
-    } else throw Exception("API Level is lower than 26")
-}
-
-
-
-
