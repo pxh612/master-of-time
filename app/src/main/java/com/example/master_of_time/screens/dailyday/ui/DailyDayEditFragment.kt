@@ -21,6 +21,7 @@ import com.example.master_of_time.databinding.FragmentDailyDayEditBinding
 import com.example.master_of_time.screens.dailyday.DailyDayViewModel
 import com.example.master_of_time.screens.dailyday.DailyDayViewModelFactory
 import timber.log.Timber
+import java.time.LocalDate
 import java.time.ZoneOffset
 import java.util.*
 
@@ -65,16 +66,17 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
         /** init DatePickerDialog */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             datePickerDialog = DatePickerDialog(requireContext())
-            datePickerDialog.setOnDateSetListener(this)
 
-            // Attemp 1: setOnDateSetListener?
         } else throw Exception("API Level is lower than 24")
+        datePickerDialog.setOnDateSetListener(this)
 
 
         /** retrieve Navigation */
         isAdd = navigationArgs.isAdd
         if(isAdd) {
-            selectedDailyDay = DailyDay()
+            selectedDailyDay = DailyDay(title = "")
+
+            binding.date.text = datePickerDialog.datePicker.toEpochTimeSeconds().toOffsetDateTime().toDateFormat().toEditable()
             binding.delete.visibility = View.GONE
         }
         else {
