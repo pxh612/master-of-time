@@ -29,7 +29,6 @@ class MyApplication : Application() {
 fun Long.toOffsetDateTime(): OffsetDateTime{
     return Instant.ofEpochSecond(this)
         .atOffset(ZoneOffset.UTC)
-
 }
 
 
@@ -52,3 +51,4 @@ fun DatePicker.toEpochTimeSeconds(): Long {
 }
 
 fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
+internal fun DatePicker.toDateFormat(): String = toEpochTimeSeconds().toOffsetDateTime().toDateFormat()

@@ -11,7 +11,14 @@ class DailyDayViewModel(
     private val dailyDayRepository: DailyDayRepository
 ) : ViewModel(){
 
+    // Store layout preference in ViewModel? In the same class or not?
+    private val _selectedLayout = MutableLiveData<Int>()
+    val selectedLayout: LiveData<Int>
+        get() = _selectedLayout
 
+//    private val _isGameWin = MutableLiveData<Boolean>()
+//    val isGameWin: LiveData<Boolean>
+//        get() = _isGameWin
 
     fun retrieveDailyDay(id: Int): LiveData<DailyDay> {
         return dailyDayRepository.getDailyDayStream(id).asLiveData()

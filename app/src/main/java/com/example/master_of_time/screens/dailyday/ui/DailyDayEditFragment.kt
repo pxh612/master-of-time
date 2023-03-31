@@ -3,7 +3,6 @@ package com.example.master_of_time.screens.dailyday.ui
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
-import android.text.Editable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,15 +14,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.master_of_time.*
 import com.example.master_of_time.database.dailyday.DailyDay
-import com.example.master_of_time.database.dailyday.DailyDayDatabase
+import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.dailyday.OfflineDailyDayRepository
 import com.example.master_of_time.databinding.FragmentDailyDayEditBinding
 import com.example.master_of_time.screens.dailyday.DailyDayViewModel
 import com.example.master_of_time.screens.dailyday.DailyDayViewModelFactory
 import timber.log.Timber
-import java.time.LocalDate
-import java.time.ZoneOffset
-import java.util.*
+import java.time.OffsetDateTime
 
 
 class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener {
@@ -38,8 +35,6 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
     lateinit var datePickerDialog: DatePickerDialog
     var isAdd: Boolean = false
 
-//       onAttatch -> onCreate -> onCreateView (return View) -> onViewCreated -> onStart -> onResume -> onPaused/ -> onStop -> onDestroy
-//                                    ViewLifeCycle
 
 
 
@@ -47,6 +42,7 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = FragmentDailyDayEditBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -55,11 +51,10 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
         super.onViewCreated(view, savedInstanceState)
 
         /** init Repository */
-        val dailyDayRepository = OfflineDailyDayRepository(DailyDayDatabase.getInstance(requireContext()).dailyDayDao())
+        val dailyDayRepository = OfflineDailyDayRepository(AppDatabase.getInstance(requireContext()).dailyDayDao())
 
         /** init ViewModel */
         viewModel = ViewModelProvider(requireActivity(), DailyDayViewModelFactory(dailyDayRepository))[DailyDayViewModel::class.java]
-        Timber.d("viewmodel = $viewModel")
 
         /** init Views & Buttons */
         binding.apply {
@@ -69,21 +64,18 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
         }
 
         /** init DatePickerDialog */
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            datePickerDialog = DatePickerDialog(requireContext())
-
-        } else throw Exception("API Level is lower than 24")
+        datePickerDialog = DatePickerDialog(requireContext())
         datePickerDialog.setOnDateSetListener(this)
-
 
         /** retrieve Navigation */
         isAdd = navigationArgs.isAdd
         if(isAdd) {
             selectedDailyDay = DailyDay(title = "")
+            binding.run{
+                date.text = datePickerDialog.datePicker.toDateFormat().toEditable()
+                delete.visibility = View.GONE
+            }
 
-            binding.date.text = datePickerDialog.datePicker.toEpochTimeSeconds().toOffsetDateTime().toDateFormat().toEditable()
-
-            binding.delete.visibility = View.GONE
         }
         else {
             val id = navigationArgs.dailyDayId
@@ -163,3 +155,13 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
 }
 
 
+
+
+// ====================================== IGNORE
+
+// https://www.techyourchance.com/you-dont-need-android-viewmodel/
+// If you create your custom Views, you can achieve the same behavior by implementing
+// onSaveInstanceState and onRestoreInstanceState methods.
+// In fact, you’ll probably want to rely on this mechanism even if you do use ViewModel
+// (e.g. it would be extremely dirty to store input fields state in ViewModel).
+// So, no benefit for ViewModel in the context of UI state.

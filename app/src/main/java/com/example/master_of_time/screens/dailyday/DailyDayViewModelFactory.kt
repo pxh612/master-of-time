@@ -12,7 +12,7 @@ class DailyDayViewModelFactory(
 
     override fun <T: ViewModel> create(modelClass: Class<T>): T{
         if(modelClass.isAssignableFrom(DailyDayViewModel::class.java)){
-            Timber.v("> enter")
+            Timber.v("> create ViewModel")
             @Suppress("UNCHECKED_CAST")
             return DailyDayViewModel(dailyDayRepository) as T
         }

@@ -30,7 +30,7 @@ open class MyTimberDebugTree : Timber.DebugTree() {
 
     fun methodLocation(element: StackTraceElement): String{
         return element.run{
-            "$methodName ($fileName:$lineNumber)"
+            "${createStackElementTag(this)}.$methodName ($fileName:$lineNumber)"
         }
     }
 

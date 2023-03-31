@@ -1,4 +1,4 @@
-package com.example.master_of_time.screens.dailyday.ui
+package com.example.master_of_time.screens.dailyday.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,7 +11,6 @@ import com.example.master_of_time.databinding.AdapterDailyDayBinding
 import com.example.master_of_time.toDateFormat
 import com.example.master_of_time.toOffsetDateTime
 import timber.log.Timber
-import java.util.*
 
 class DailyDayAdapter(
     private val onItemClicked: (DailyDay) -> Unit
@@ -40,7 +39,7 @@ class DailyDayAdapter(
     }
 
     override fun onBindViewHolder(holder: DailyDayViewHolder, position: Int) {
-        val current = getItem(position)
+        val current: DailyDay = getItem(position)
 
         /** init Interaction */
         holder.itemView.setOnClickListener {
@@ -58,8 +57,6 @@ class DailyDayAdapter(
 
 
         fun onBindCalled(dailyDay: DailyDay) {
-            Timber.v("> update ViewHolder")
-
             binding.apply {
                 title.text = dailyDay.title
                 date.text = dailyDay.date.toOffsetDateTime().toDateFormat()

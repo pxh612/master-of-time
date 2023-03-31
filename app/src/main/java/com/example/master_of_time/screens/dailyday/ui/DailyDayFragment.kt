@@ -7,18 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.master_of_time.R
 import com.example.master_of_time.database.dailyday.DailyDay
-import com.example.master_of_time.database.dailyday.DailyDayDatabase
+import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.dailyday.DailyDayRepository
 import com.example.master_of_time.database.dailyday.OfflineDailyDayRepository
 import com.example.master_of_time.databinding.FragmentDailyDayBinding
-import com.example.master_of_time.screens.dailyday.DailyDayViewModel
-import com.example.master_of_time.screens.dailyday.DailyDayViewModelFactory
+import com.example.master_of_time.screens.dailyday.*
+import com.example.master_of_time.screens.dailyday.ui.adapter.DailyDayAdapter
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -27,6 +26,10 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
     private lateinit var binding : FragmentDailyDayBinding
     private lateinit var viewModel: DailyDayViewModel
     private lateinit var dailyDayRepository: DailyDayRepository
+
+    lateinit var dailyDayLayoutManager: DailyDayLayoutManager
+    var selectedTable: Int = 0
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,52 +48,86 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /** init Repository */
-        dailyDayRepository = OfflineDailyDayRepository(DailyDayDatabase.getInstance(requireContext()).dailyDayDao())
+
+        /** init Custom Classes */
+        dailyDayRepository = OfflineDailyDayRepository(AppDatabase.getInstance(requireContext()).dailyDayDao())
+        dailyDayLayoutManager = DailyDayLayoutManager(requireContext())
+
 
         /** init ViewModel */
-        viewModel = ViewModelProvider(requireActivity(), DailyDayViewModelFactory(dailyDayRepository))[DailyDayViewModel::class.java]
-        Timber.d("viewmodel dailydayFragment = $viewModel")
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            DailyDayViewModelFactory(dailyDayRepository)
+        )[DailyDayViewModel::class.java]
 
-        /** init RecyclerView's Adapter: update with Flow<List> */
-        val dailyDayAdapter = DailyDayAdapter(onAdapterClicked())
+
+        /** init Adapter for RecyclerView*/
+
+        val dailyDayAdapter = DailyDayAdapter { DailyDay -> onAdapterClicked(DailyDay) }
 
         lifecycle.coroutineScope.launch {
-            viewModel.getAllDailyDay().collect(){
-                Timber.v("> collect viewModel's Flow<list> and pass to Adapter...")
-
+            viewModel.getAllDailyDay().collect() {
+                Timber.v("> collect FlowList for adapter: size = ${it.size}")
                 dailyDayAdapter.submitList(it)
             }
         }
 
+
+
         /** init View */
-        binding.run{
+        binding.run {
             /** init RecyclerView */
             recylerView.run {
-                layoutManager = LinearLayoutManager(requireContext())
+                layoutManager = dailyDayLayoutManager.getLayout()
+
                 adapter = dailyDayAdapter
             }
 
             /** init Button */
-            add.setOnClickListener(this@DailyDayFragment)
-        }
-    }
-
-    private fun onAdapterClicked(): (DailyDay) -> Unit {
-        return {
-            Timber.i("Item clicked: id = ${it.id} && title = ${it.title}")
-            navigateToEditScreen(it.id)
-        }
-    }
-
-    override fun onClick(view: View) {
-        Timber.v("> reponsive! ")
-        when(view.id){
-            R.id.add -> {
-                navigateToAddScreen()
+            header.run {
+                add.setOnClickListener(this@DailyDayFragment)
+                layout.setOnClickListener(this@DailyDayFragment)
+                table.setOnClickListener(this@DailyDayFragment)
             }
         }
     }
+
+
+
+    private fun onAdapterClicked(dailyDay: DailyDay) {
+        Timber.i("Item clicked: id = ${dailyDay.id} && title = ${dailyDay.title}")
+        navigateToEditScreen(dailyDay.id)
+    }
+
+    override fun onClick(view: View) {
+        Timber.v("> reponsive click on DailyDayFragment ")
+        when(view.id){
+            R.id.add -> navigateToAddScreen()
+            R.id.layout -> {
+                dailyDayLayoutManager.changeLayout()
+                binding.recylerView.layoutManager = dailyDayLayoutManager.getLayout()
+            }
+            R.id.table -> changeTable()
+        }
+    }
+
+    private fun changeTable() {
+        selectedTable = TABLE.cycleThrough(selectedTable)
+        setTable(selectedTable)
+    }
+
+    private fun setTable(table: Int) {
+        Timber.d("> do nothing")
+        when(table){
+            TABLE.TABLE_DAILY_DAY -> {
+
+            }
+            TABLE.TABLE_DAILY_DAY_GROUP -> {
+
+            }
+        }
+    }
+
 
     private fun navigateToAddScreen() {
         val action = DailyDayFragmentDirections.actionDailyDayFragmentToDailyDayEditFragment(0, true)
@@ -101,7 +138,6 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
         val action = DailyDayFragmentDirections.actionDailyDayFragmentToDailyDayEditFragment(dailyDayId, false)
         requireView().findNavController().navigate(action)
     }
-
 
 }
 
