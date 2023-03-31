@@ -41,7 +41,7 @@ class GameFragment : Fragment(), View.OnClickListener {
         /** init ViewModel */
 //        viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
 //        viewModel = activity.run(ViewModelProviders.of(this).get(GameViewModel::class.java))
-        viewModel = ViewModelProvider(requireActivity()).get(GameViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity())[GameViewModel::class.java]
 
 
         /** init Views && Buttons */

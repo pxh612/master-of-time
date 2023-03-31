@@ -17,7 +17,7 @@ import com.example.master_of_time.database.dailyday.DailyDayRepository
 import com.example.master_of_time.database.dailyday.OfflineDailyDayRepository
 import com.example.master_of_time.databinding.FragmentDailyDayBinding
 import com.example.master_of_time.screens.dailyday.*
-import com.example.master_of_time.screens.dailyday.ui.adapter.DailyDayAdapter
+import com.example.master_of_time.screens.dailyday.adapter.DailyDayAdapter
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -28,7 +28,6 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
     private lateinit var dailyDayRepository: DailyDayRepository
 
     lateinit var dailyDayLayoutManager: DailyDayLayoutManager
-    var selectedTable: Int = 0
 
 
     override fun onCreateView(
@@ -73,19 +72,19 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
 
         /** init View */
         binding.run {
-            /** init RecyclerView */
+
             recylerView.run {
                 layoutManager = dailyDayLayoutManager.value
-
                 adapter = dailyDayAdapter
             }
 
-            /** init Button */
             header.run {
                 add.setOnClickListener(this@DailyDayFragment)
                 layout.setOnClickListener(this@DailyDayFragment)
                 table.setOnClickListener(this@DailyDayFragment)
             }
+
+
         }
     }
 
@@ -102,28 +101,14 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
             R.id.add -> navigateToAddScreen()
             R.id.layout -> {
                 dailyDayLayoutManager.changeLayout()
+                Timber.w("> databinding (layoutManager): still unsuccessful")
+/**                binding.invalidateAll() */
                 binding.recylerView.layoutManager = dailyDayLayoutManager.value
             }
-            R.id.table -> changeTable()
         }
     }
 
-    private fun changeTable() {
-        selectedTable = TABLE.cycleThrough(selectedTable)
-        setTable(selectedTable)
-    }
 
-    private fun setTable(table: Int) {
-        Timber.d("> do nothing")
-        when(table){
-            TABLE.TABLE_DAILY_DAY -> {
-
-            }
-            TABLE.TABLE_DAILY_DAY_GROUP -> {
-
-            }
-        }
-    }
 
 
     private fun navigateToAddScreen() {

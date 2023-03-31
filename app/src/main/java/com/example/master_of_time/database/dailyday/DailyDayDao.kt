@@ -28,5 +28,4 @@ interface DailyDayDao {
     @Query("SELECT * from $DAILY_DAY_TABLE ORDER BY id ASC")
     fun getAllDailyDayFlow(): Flow<List<DailyDay>>
 
-
 }

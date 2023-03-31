@@ -16,7 +16,7 @@
         android:layout_height="match_parent">
 
         <include
-            layout="@layout/answer_information"
+            layout="@layout/layout_answer_information"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:gameViewModel="@{gameViewModel}"

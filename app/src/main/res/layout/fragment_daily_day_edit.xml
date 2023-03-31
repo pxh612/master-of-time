@@ -11,15 +11,17 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="title"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="@dimen/marginTop_title_fragmentDailyDayEdit"
             android:layout_marginStart="@dimen/marginLeft_title_fragmentdailyDayEdit"
             android:layout_marginEnd="@dimen/marginLeft_title_fragmentdailyDayEdit"
+
+            tools:text="title"
             android:inputType="text"
             android:id="@+id/title" />
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,27 +29,56 @@
             android:layout_marginTop="@dimen/marginTop_date_fragmentDailyDayEdit"
             android:layout_marginStart="@dimen/marginLeft_title_fragmentdailyDayEdit"
             android:layout_marginEnd="@dimen/marginLeft_title_fragmentdailyDayEdit"
-            android:focusable="false"
+
             tools:text="2022-5-6"
+            android:focusable="false"
             android:id="@+id/date" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/date"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="@dimen/marginTop_date_fragmentDailyDayEdit"
+            android:layout_marginStart="@dimen/marginLeft_title_fragmentdailyDayEdit"
+
+            android:text="Group"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:id="@+id/groupTextView"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/date"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="@dimen/marginTop_date_fragmentDailyDayEdit"
+            android:layout_marginStart="@dimen/marginLeft_title_fragmentdailyDayEdit"
+
+            android:id="@+id/groupSpinner"/>
+
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/confirm_fragmentDailyDayEdit"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/date"
+            app:layout_constraintTop_toBottomOf="@id/groupTextView"
             android:layout_marginTop="@dimen/marginTop_submitButton_fragmentDailyDayEdit"
+
+            android:text="@string/confirm_fragmentDailyDayEdit"
             android:id="@+id/submitButton" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/delete_fragmentDailyDayEdit"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/submitButton"
             android:layout_marginTop="@dimen/marginTop_date_fragmentDailyDayEdit"
+
+            android:text="@string/delete_fragmentDailyDayEdit"
             android:backgroundTint="@color/design_default_color_error"
             android:textColor="@color/white"
             android:id="@+id/delete" />

@@ -1,4 +1,4 @@
-package com.example.master_of_time.screens.dailyday.ui.adapter
+package com.example.master_of_time.screens.dailyday.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,10 +10,9 @@ import com.example.master_of_time.database.dailyday.DailyDay
 import com.example.master_of_time.databinding.AdapterDailyDayBinding
 import com.example.master_of_time.toDateFormat
 import com.example.master_of_time.toOffsetDateTime
-import timber.log.Timber
 
 class DailyDayAdapter(
-    private val onItemClicked: (DailyDay) -> Unit
+    private val onAdapterClicked: (DailyDay) -> Unit
 ) : ListAdapter<DailyDay, DailyDayAdapter.DailyDayViewHolder>(DiffCallback) {
 
     /** init DiffCallback */
@@ -43,7 +42,7 @@ class DailyDayAdapter(
 
         /** init Interaction */
         holder.itemView.setOnClickListener {
-            onItemClicked(current)
+            onAdapterClicked(current)
         }
 
         holder.onBindCalled(current)
@@ -62,6 +61,7 @@ class DailyDayAdapter(
                 date.text = dailyDay.date.toOffsetDateTime().toDateFormat()
             }
         }
+
     }
     
 }

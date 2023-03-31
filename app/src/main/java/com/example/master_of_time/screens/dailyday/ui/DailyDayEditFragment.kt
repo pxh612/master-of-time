@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -37,7 +38,6 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
 
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,11 +56,18 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
         /** init ViewModel */
         viewModel = ViewModelProvider(requireActivity(), DailyDayViewModelFactory(dailyDayRepository))[DailyDayViewModel::class.java]
 
-        /** init Views & Buttons */
-        binding.apply {
+        /** init Views  */
+        binding.run {
             submitButton.setOnClickListener(this@DailyDayEditFragment)
             date.setOnClickListener(this@DailyDayEditFragment)
             delete.setOnClickListener(this@DailyDayEditFragment)
+
+//            groupSpinner.adapter = ?
+            // SAMPLE
+//            groupSpinner.adapter = ArrayAdapter.createFromResource(
+//                this,
+//
+//            )
         }
 
         /** init DatePickerDialog */
@@ -97,7 +104,7 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
 
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
-        binding.date.text = view.toEpochTimeSeconds().toOffsetDateTime().toDateFormat().toEditable()
+        binding.date.text = view.toDateFormat().toEditable()
     }
 
     override fun onClick(view: View) {
@@ -120,6 +127,9 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
             R.id.delete -> {
                 deleteItem()
                 findNavController().popBackStack()
+            }
+            R.id.groupSpinner -> {
+                Timber.d("> spinner reponsive")
             }
         }
     }
