@@ -48,7 +48,6 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         /** init Custom Classes */
         dailyDayRepository = OfflineDailyDayRepository(AppDatabase.getInstance(requireContext()).dailyDayDao())
         dailyDayLayoutManager = DailyDayLayoutManager(requireContext())
@@ -64,7 +63,6 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
         /** init Adapter for RecyclerView*/
 
         val dailyDayAdapter = DailyDayAdapter { DailyDay -> onAdapterClicked(DailyDay) }
-
         lifecycle.coroutineScope.launch {
             viewModel.getAllDailyDay().collect() {
                 Timber.v("> collect FlowList for adapter: size = ${it.size}")
@@ -73,12 +71,11 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
         }
 
 
-
         /** init View */
         binding.run {
             /** init RecyclerView */
             recylerView.run {
-                layoutManager = dailyDayLayoutManager.getLayout()
+                layoutManager = dailyDayLayoutManager.value
 
                 adapter = dailyDayAdapter
             }
@@ -105,7 +102,7 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
             R.id.add -> navigateToAddScreen()
             R.id.layout -> {
                 dailyDayLayoutManager.changeLayout()
-                binding.recylerView.layoutManager = dailyDayLayoutManager.getLayout()
+                binding.recylerView.layoutManager = dailyDayLayoutManager.value
             }
             R.id.table -> changeTable()
         }

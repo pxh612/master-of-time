@@ -18,12 +18,12 @@ class DailyDayLayoutManager(
         private val LAYOUTS = 2
     }
 
-//    var value: LayoutManager? = null
-//        get() = {
-//            TODO("LayoutManager getter")
-//            field
-//        }
-
+    var value: RecyclerView.LayoutManager? = null
+        get() = when(layout) {
+            LAYOUT_LINEAR -> LinearLayoutManager(context)
+            LAYOUT_GRID -> GridLayoutManager(context, 3)
+            else -> throw Exception("Illegal argument for layout")
+        }
 
     private var layout: Int = LAYOUT_LINEAR
 
@@ -33,14 +33,6 @@ class DailyDayLayoutManager(
 
     fun changeLayout() {
         layout = cycleThrough(layout, LAYOUTS)
-    }
-
-    fun getLayout(): RecyclerView.LayoutManager? {
-        return when(layout) {
-            LAYOUT_LINEAR -> LinearLayoutManager(context)
-            LAYOUT_GRID -> GridLayoutManager(context, 3)
-            else -> throw Exception("Illegal argument for layout")
-        }
     }
 
 
