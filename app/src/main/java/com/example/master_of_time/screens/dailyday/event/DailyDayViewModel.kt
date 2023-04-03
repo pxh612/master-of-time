@@ -1,4 +1,4 @@
-package com.example.master_of_time.screens.dailyday.viewmodel
+package com.example.master_of_time.screens.dailyday.event
 
 import androidx.lifecycle.*
 import com.example.master_of_time.database.dailyday.DdEvent
@@ -15,10 +15,6 @@ class DailyDayViewModel(
     private val _selectedLayout = MutableLiveData<Int>()
     val selectedLayout: LiveData<Int>
         get() = _selectedLayout
-
-//    private val _isGameWin = MutableLiveData<Boolean>()
-//    val isGameWin: LiveData<Boolean>
-//        get() = _isGameWin
 
     fun retrieveDailyDay(id: Int): LiveData<DdEvent> {
         return ddEventRepository.getDailyDayStream(id).asLiveData()

@@ -1,4 +1,4 @@
-package com.example.master_of_time.screens.dailyday.adapter
+package com.example.master_of_time.screens.dailyday.event
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -15,4 +15,7 @@
     <string name="delete_fragmentDailyDayEdit">delete</string>
 
     <string name="group_fragmentDailyDayGroup">Group</string>
+    <string name="add_dialogFragmentDdGroupEdit">ADD</string>
+    <string name="cancel_dialogFragmentDdGroupEdit">CANCEL</string>
+    <string name="hint_name_dialogFragmentDdGroupEdit">Group Name</string>
 </resources>

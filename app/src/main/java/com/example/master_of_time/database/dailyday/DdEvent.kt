@@ -3,6 +3,7 @@ package com.example.master_of_time.database.dailyday
 import androidx.room.*
 import com.example.master_of_time.database.DatabaseNames.DAILY_DAY_TABLE
 import com.example.master_of_time.database.dailydaygroup.DdGroup
+import java.time.Instant
 
 
 @Entity(
@@ -21,19 +22,13 @@ data class DdEvent (
     var id: Int = 0,
 
     @ColumnInfo
-    var title: String = "Untitled",
+    var title: String?,
 
     @ColumnInfo
-    var date: Long = 0,
+    var date: Long = Instant.now().epochSecond,
 
     @ColumnInfo
     var groupId: Int? = null,
-
-//    @ForeignKey.Action.
-
-//    @Target(allowedTargets = DAILY_DAY_TABLE) // ?
-//    @Retention(value = AnnotationRetention.BINARY)
-//    annotation ForeignKey.id: Int
 )
 
 

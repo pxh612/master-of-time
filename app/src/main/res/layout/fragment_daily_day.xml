@@ -2,14 +2,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".screens.dailyday.ui.DailyDayFragment">
+    tools:context=".screens.dailyday.event.DailyDayFragment">
     <data>
         <variable
             name="viewModel"
-            type="com.example.master_of_time.screens.dailyday.viewmodel.DailyDayViewModel" />
+            type="com.example.master_of_time.screens.dailyday.event.DailyDayViewModel" />
         <variable
             name="view"
-            type="com.example.master_of_time.screens.dailyday.ui.DailyDayFragment" />
+            type="com.example.master_of_time.screens.dailyday.event.DailyDayFragment" />
     </data>
 
     <androidx.core.widget.NestedScrollView

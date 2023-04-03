@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/dailyDayFragment">
+    app:startDestination="@id/ddGroupFragment">
 
     <fragment
         android:id="@+id/titleFragment"
@@ -54,7 +54,7 @@
         tools:layout="@layout/fragment_alarms" />
     <fragment
         android:id="@+id/dailyDayFragment"
-        android:name="com.example.master_of_time.screens.dailyday.ui.DailyDayFragment"
+        android:name="com.example.master_of_time.screens.dailyday.event.DailyDayFragment"
         android:label="fragment_daily_day"
         tools:layout="@layout/fragment_daily_day" >
         <action
@@ -62,11 +62,11 @@
             app:destination="@id/dailyDayEditFragment" />
         <action
             android:id="@+id/action_dailyDayFragment_to_dailyDayGroupFragment"
-            app:destination="@id/dailyDayGroupFragment" />
+            app:destination="@id/ddGroupFragment" />
     </fragment>
     <fragment
         android:id="@+id/dailyDayEditFragment"
-        android:name="com.example.master_of_time.screens.dailyday.ui.DailyDayEditFragment"
+        android:name="com.example.master_of_time.screens.dailyday.event.DailyDayEditFragment"
         android:label="fragment_daily_day_edit"
         tools:layout="@layout/fragment_daily_day_edit" >
         <argument
@@ -77,10 +77,10 @@
             app:argType="boolean" />
     </fragment>
     <fragment
-        android:id="@+id/dailyDayGroupFragment"
-        android:name="com.example.master_of_time.screens.dailyday.ui.DailyDayGroupFragment"
+        android:id="@+id/ddGroupFragment"
+        android:name="com.example.master_of_time.screens.dailyday.group.DdGroupFragment"
         android:label="DailyDayGroupFragment"
-        tools:layout="@layout/fragment_daily_day_group"
+        tools:layout="@layout/dd_group_fragment"
         >
         <action
             android:id="@+id/action_dailyDayGroupFragment_to_dailyDayGroupEditDialogFragment"
@@ -88,7 +88,8 @@
     </fragment>
     <dialog
         android:id="@+id/dailyDayGroupEditDialogFragment"
-        android:name="com.example.master_of_time.screens.dailyday.ui.DailyDayGroupEditDialogFragment"
+        android:name="com.example.master_of_time.screens.dailyday.group.DdGroupEditDialogFragment"
         android:label="DailyDayGroupEditDialogFragment"
+        tools:layout="@layout/dd_group_edit_dialog_fragment"
         />
 </navigation>

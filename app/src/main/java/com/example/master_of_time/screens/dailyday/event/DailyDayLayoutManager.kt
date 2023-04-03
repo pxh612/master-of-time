@@ -1,10 +1,9 @@
-package com.example.master_of_time.screens.dailyday
+package com.example.master_of_time.screens.dailyday.event
 
 import android.content.Context
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import timber.log.Timber
 
 
 class DailyDayLayoutManager(

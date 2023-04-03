@@ -1,4 +1,4 @@
-package com.example.master_of_time.screens.dailyday.ui
+package com.example.master_of_time.screens.dailyday.event
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -15,10 +15,6 @@ import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.dailyday.DdEventRepository
 import com.example.master_of_time.database.dailyday.OfflineDdEventRepository
 import com.example.master_of_time.databinding.FragmentDailyDayBinding
-import com.example.master_of_time.screens.dailyday.*
-import com.example.master_of_time.screens.dailyday.adapter.DailyDayAdapter
-import com.example.master_of_time.screens.dailyday.viewmodel.DailyDayViewModel
-import com.example.master_of_time.screens.dailyday.viewmodel.DailyDayViewModelFactory
 import kotlinx.coroutines.launch
 import timber.log.Timber
 

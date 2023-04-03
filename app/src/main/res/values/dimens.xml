@@ -27,4 +27,10 @@
     <dimen name="marginLeft_back_fragmentDailyDayGroup">10dp</dimen>
     <dimen name="layoutHeight_back_fragmentDailyDayGroup">30dp</dimen>
 
+    <dimen name="layoutWidth_layout_dialogFragmentDdGroupEdit">250dp</dimen>
+    <dimen name="outerMargin_dialogFragmentDdGroupEdit">20dp</dimen>
+    <dimen name="innerMargin_dialogFragmentDdGroupEdit">17dp</dimen>
+    <dimen name="fontSize_cancel_dialogFragmentDdGroupEdit">15sp</dimen>
+    <dimen name="fontSize_title_dialogFragmentDdGroupEdit">20sp</dimen>
+
 </resources>

@@ -5,7 +5,7 @@
     <data>
        <variable
             name="ui"
-            type="com.example.master_of_time.screens.dailyday.ui.DailyDayGroupFragment" />
+            type="com.example.master_of_time.screens.dailyday.group.DdGroupFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

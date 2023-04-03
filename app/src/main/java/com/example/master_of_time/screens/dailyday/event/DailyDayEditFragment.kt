@@ -1,4 +1,4 @@
-package com.example.master_of_time.screens.dailyday.ui
+package com.example.master_of_time.screens.dailyday.event
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -16,8 +16,6 @@ import com.example.master_of_time.database.dailyday.DdEvent
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.dailyday.OfflineDdEventRepository
 import com.example.master_of_time.databinding.FragmentDailyDayEditBinding
-import com.example.master_of_time.screens.dailyday.viewmodel.DailyDayViewModel
-import com.example.master_of_time.screens.dailyday.viewmodel.DailyDayViewModelFactory
 import timber.log.Timber
 
 

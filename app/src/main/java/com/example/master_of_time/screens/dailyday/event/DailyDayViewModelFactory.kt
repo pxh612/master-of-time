@@ -1,4 +1,4 @@
-package com.example.master_of_time.screens.dailyday.viewmodel
+package com.example.master_of_time.screens.dailyday.event
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
