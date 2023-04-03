@@ -23,8 +23,8 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginStart="@dimen/marginRight_add_adapterDailyDayHeader"
 
-            tools:text = "DailyDay"
-            android:id="@+id/table" />
+            android:text="GROUPS"
+            android:id="@+id/buttonOne" />
 
         <Button
             android:layout_width="wrap_content"

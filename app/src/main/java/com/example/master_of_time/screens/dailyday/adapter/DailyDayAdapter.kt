@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.master_of_time.database.dailyday.DailyDay
 
-import com.example.master_of_time.databinding.AdapterDailyDayBinding
+import com.example.master_of_time.databinding.ItemDailyDayBinding
 import com.example.master_of_time.toDateFormat
 import com.example.master_of_time.toOffsetDateTime
 
@@ -28,7 +28,7 @@ class DailyDayAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyDayViewHolder {
         /** init viewHolder */
         val holder = DailyDayViewHolder(
-            AdapterDailyDayBinding.inflate(
+            ItemDailyDayBinding.inflate(
                 LayoutInflater.from( parent.context),
                 parent,
                 false
@@ -51,7 +51,7 @@ class DailyDayAdapter(
 
     /** private class */
     class DailyDayViewHolder(
-        private val binding: AdapterDailyDayBinding
+        private val binding: ItemDailyDayBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
 
@@ -61,7 +61,6 @@ class DailyDayAdapter(
                 date.text = dailyDay.date.toOffsetDateTime().toDateFormat()
             }
         }
-
     }
     
 }

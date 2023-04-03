@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.master_of_time.database.dailyday.DailyDay
 import com.example.master_of_time.database.dailydaygroup.DailyDayGroup
-import com.example.master_of_time.databinding.AdapterDailyDayGroupBinding
+import com.example.master_of_time.databinding.ItemDailyDayGroupBinding
 
 class DailyDayGroupAdapter(
     private val onAdapterClicked: (DailyDay) -> Unit
@@ -27,7 +27,7 @@ class DailyDayGroupAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         /** init viewHolder */
         val holder = CustomViewHolder(
-            AdapterDailyDayGroupBinding.inflate(
+            ItemDailyDayGroupBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -47,7 +47,7 @@ class DailyDayGroupAdapter(
     /** private class */
 
     class CustomViewHolder(
-        internal val binding: AdapterDailyDayGroupBinding
+        internal val binding: ItemDailyDayGroupBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(current: DailyDayGroup) {
             binding.run{
@@ -57,8 +57,6 @@ class DailyDayGroupAdapter(
         }
 
     }
-
-
 
 }
 

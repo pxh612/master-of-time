@@ -1,13 +1,11 @@
 package com.example.master_of_time.screens.dailyday.ui
 
 import android.app.DatePickerDialog
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -18,10 +16,9 @@ import com.example.master_of_time.database.dailyday.DailyDay
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.dailyday.OfflineDailyDayRepository
 import com.example.master_of_time.databinding.FragmentDailyDayEditBinding
-import com.example.master_of_time.screens.dailyday.DailyDayViewModel
-import com.example.master_of_time.screens.dailyday.DailyDayViewModelFactory
+import com.example.master_of_time.screens.dailyday.viewmodel.DailyDayViewModel
+import com.example.master_of_time.screens.dailyday.viewmodel.DailyDayViewModelFactory
 import timber.log.Timber
-import java.time.OffsetDateTime
 
 
 class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener {

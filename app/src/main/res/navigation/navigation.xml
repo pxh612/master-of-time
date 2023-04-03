@@ -60,6 +60,9 @@
         <action
             android:id="@+id/action_dailyDayFragment_to_dailyDayEditFragment"
             app:destination="@id/dailyDayEditFragment" />
+        <action
+            android:id="@+id/action_dailyDayFragment_to_dailyDayGroupFragment"
+            app:destination="@id/dailyDayGroupFragment" />
     </fragment>
     <fragment
         android:id="@+id/dailyDayEditFragment"
@@ -73,4 +76,19 @@
             android:name="isAdd"
             app:argType="boolean" />
     </fragment>
+    <fragment
+        android:id="@+id/dailyDayGroupFragment"
+        android:name="com.example.master_of_time.screens.dailyday.ui.DailyDayGroupFragment"
+        android:label="DailyDayGroupFragment"
+        tools:layout="@layout/fragment_daily_day_group"
+        >
+        <action
+            android:id="@+id/action_dailyDayGroupFragment_to_dailyDayGroupEditDialogFragment"
+            app:destination="@id/dailyDayGroupEditDialogFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/dailyDayGroupEditDialogFragment"
+        android:name="com.example.master_of_time.screens.dailyday.ui.DailyDayGroupEditDialogFragment"
+        android:label="DailyDayGroupEditDialogFragment"
+        />
 </navigation>

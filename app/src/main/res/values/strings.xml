@@ -13,4 +13,6 @@
     <string name="text_add_fragmentDailyDay">Add</string>
     <string name="confirm_fragmentDailyDayEdit">confirm</string>
     <string name="delete_fragmentDailyDayEdit">delete</string>
+
+    <string name="group_fragmentDailyDayGroup">Group</string>
 </resources>

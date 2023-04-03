@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.master_of_time.R
 import com.example.master_of_time.database.dailyday.DailyDay
 import com.example.master_of_time.database.AppDatabase
@@ -18,6 +17,8 @@ import com.example.master_of_time.database.dailyday.OfflineDailyDayRepository
 import com.example.master_of_time.databinding.FragmentDailyDayBinding
 import com.example.master_of_time.screens.dailyday.*
 import com.example.master_of_time.screens.dailyday.adapter.DailyDayAdapter
+import com.example.master_of_time.screens.dailyday.viewmodel.DailyDayViewModel
+import com.example.master_of_time.screens.dailyday.viewmodel.DailyDayViewModelFactory
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -60,7 +61,6 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
 
 
         /** init Adapter for RecyclerView*/
-
         val dailyDayAdapter = DailyDayAdapter { DailyDay -> onAdapterClicked(DailyDay) }
         lifecycle.coroutineScope.launch {
             viewModel.getAllDailyDay().collect() {
@@ -81,9 +81,8 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
             header.run {
                 add.setOnClickListener(this@DailyDayFragment)
                 layout.setOnClickListener(this@DailyDayFragment)
-                table.setOnClickListener(this@DailyDayFragment)
+                buttonOne.setOnClickListener(this@DailyDayFragment)
             }
-
 
         }
     }
@@ -105,10 +104,16 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
 /**                binding.invalidateAll() */
                 binding.recylerView.layoutManager = dailyDayLayoutManager.value
             }
+            R.id.buttonOne -> {
+                navigateToGroupList()
+            }
         }
     }
 
-
+    private fun navigateToGroupList() {
+        val action = DailyDayFragmentDirections.actionDailyDayFragmentToDailyDayGroupFragment()
+        requireView().findNavController().navigate(action)
+    }
 
 
     private fun navigateToAddScreen() {
@@ -120,7 +125,6 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
         val action = DailyDayFragmentDirections.actionDailyDayFragmentToDailyDayEditFragment(dailyDayId, false)
         requireView().findNavController().navigate(action)
     }
-
 }
 
 

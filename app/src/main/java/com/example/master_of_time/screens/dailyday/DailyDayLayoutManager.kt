@@ -36,6 +36,4 @@ class DailyDayLayoutManager(
     fun changeLayout() {
         layout = cycleThrough(layout, LAYOUTS)
     }
-
-
 }

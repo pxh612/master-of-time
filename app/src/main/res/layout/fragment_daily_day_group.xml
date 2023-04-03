@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+       <variable
+            name="ui"
+            type="com.example.master_of_time.screens.dailyday.ui.DailyDayGroupFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+
+        <ImageView
+            android:layout_width="@dimen/layoutHeight_back_fragmentDailyDayGroup"
+            android:layout_height="@dimen/layoutHeight_back_fragmentDailyDayGroup"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="@dimen/marginLeft_back_fragmentDailyDayGroup"
+
+            android:src="@drawable/back"
+            android:text="Back"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:id="@+id/back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginEnd="@dimen/marginLeft_back_fragmentDailyDayGroup"
+
+            android:text="Add"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:id="@+id/add" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/back"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="@dimen/marginLeft_back_fragmentDailyDayGroup"
+            android:layout_marginTop="@dimen/marginTop_title_fragmentDailyDayGroup"
+
+            android:text="@string/group_fragmentDailyDayGroup"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:id="@+id/title" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintVertical_bias="0"
+            android:layout_marginTop="@dimen/marginTop_title_fragmentDailyDayGroup"
+            android:layout_marginStart="@dimen/marginLeft_back_fragmentDailyDayGroup"
+
+            android:scrollbars="vertical"
+            android:id="@+id/recylerView" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

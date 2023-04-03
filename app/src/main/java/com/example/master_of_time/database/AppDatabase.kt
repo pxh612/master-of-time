@@ -13,7 +13,7 @@ import com.example.master_of_time.database.dailydaygroup.DailyDayGroup
 // Fatal: need to update the version number
 // Fatal:  FOREIGN KEY constraint failed
 
-@Database(entities = [DailyDay::class, DailyDayGroup::class], version = 3, exportSchema = false)
+@Database(entities = [DailyDay::class, DailyDayGroup::class], version = 4, exportSchema = false)
 abstract class AppDatabase : RoomDatabase(){
     abstract fun dailyDayDao(): DailyDayDao
     companion object{

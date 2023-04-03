@@ -11,8 +11,8 @@ data class DailyDayGroup(
     var id: Int,
 
     @ColumnInfo
-    var title: String = "Untitled",
+    var title: String = "",
 
     @ColumnInfo
-    var description: String = "",
+    var order: Int = id,
 )
