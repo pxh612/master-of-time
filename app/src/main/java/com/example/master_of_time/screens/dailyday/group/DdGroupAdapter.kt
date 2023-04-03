@@ -9,9 +9,9 @@ import com.example.master_of_time.database.dailyday.DdEvent
 import com.example.master_of_time.database.dailydaygroup.DdGroup
 import com.example.master_of_time.databinding.ItemDailyDayGroupBinding
 
-class DailyDayGroupAdapter(
-    private val onAdapterClicked: (DdEvent) -> Unit
-) : ListAdapter<DdGroup, DailyDayGroupAdapter.CustomViewHolder>(DiffCallback) {
+class DdGroupAdapter(
+    private val onAdapterClicked: (DdGroup) -> Unit
+) : ListAdapter<DdGroup, DdGroupAdapter.CustomViewHolder>(DiffCallback) {
 
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<DdGroup>() {
@@ -48,9 +48,9 @@ class DailyDayGroupAdapter(
     class CustomViewHolder(
         internal val binding: ItemDailyDayGroupBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(current: DdGroup) {
+        fun bind(item: DdGroup) {
             binding.run{
-                title.text = current.title
+                title.text = item.name
                 /** TODO: count (textView) */
             }
         }

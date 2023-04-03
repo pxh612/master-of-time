@@ -7,12 +7,13 @@ import androidx.room.PrimaryKey
 // Room use className as tableName by default
 @Entity
 data class DdGroup(
+
     @PrimaryKey(autoGenerate = true)
-    var id: Int,
+    var id: Int = 0,
 
     @ColumnInfo
-    var title: String = "",
+    var name: String,
 
     @ColumnInfo
-    var order: Int = id,
+    var order: Int = id*10000,
 )

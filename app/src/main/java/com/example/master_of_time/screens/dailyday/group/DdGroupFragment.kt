@@ -6,16 +6,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.master_of_time.R
+import com.example.master_of_time.database.AppDatabase
+import com.example.master_of_time.database.dailyday.DdEvent
+import com.example.master_of_time.database.dailyday.OfflineDdEventRepository
+import com.example.master_of_time.database.dailydaygroup.DdGroup
 import com.example.master_of_time.databinding.DdGroupFragmentBinding
+import com.example.master_of_time.screens.dailyday.event.DailyDayAdapter
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class DdGroupFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: DdGroupFragmentBinding
+    private lateinit var viewModel: DdGroupViewModel
+
     private lateinit var dialogFragment: DdGroupEditDialogFragment
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,18 +44,34 @@ class DdGroupFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /** Init classes */
+        val dataSource = AppDatabase.getInstance(requireContext()).ddGroupDao()
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            DdGroupViewModelFactory(dataSource)
+        )[DdGroupViewModel::class.java]
 
 
+        /** init Adapter for RecyclerView*/
+        val ddGroupAdapter = DdGroupAdapter { onAdapterClicked(it) }
+        lifecycle.coroutineScope.launch {
+            viewModel.getAllDdGroup()!!.collect() {
+                Timber.v("> collect FlowList for adapter: size = ${it.size}")
+                ddGroupAdapter.submitList(it)
+            }
+        }
 
         /** init View */
         binding.run {
-
-
 
             add.setOnClickListener(this@DdGroupFragment)
             back.setOnClickListener(this@DdGroupFragment)
 
         }
+    }
+
+    private fun onAdapterClicked(ddGroup: DdGroup) {
+
     }
 
     override fun onClick(view: View) {

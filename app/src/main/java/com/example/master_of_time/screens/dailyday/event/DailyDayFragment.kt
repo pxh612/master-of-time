@@ -45,7 +45,7 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         /** init Custom Classes */
-        ddEventRepository = OfflineDdEventRepository(AppDatabase.getInstance(requireContext()).dailyDayDao())
+        ddEventRepository = OfflineDdEventRepository(AppDatabase.getInstance(requireContext()).ddEventDao())
         dailyDayLayoutManager = DailyDayLayoutManager(requireContext())
 
 
@@ -96,8 +96,6 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
             R.id.add -> navigateToAddScreen()
             R.id.layout -> {
                 dailyDayLayoutManager.changeLayout()
-                Timber.w("> databinding (layoutManager): still unsuccessful")
-/**                binding.invalidateAll() */
                 binding.recylerView.layoutManager = dailyDayLayoutManager.value
             }
             R.id.buttonOne -> {

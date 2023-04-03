@@ -5,9 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.master_of_time.R
+import com.example.master_of_time.database.AppDatabase
+import com.example.master_of_time.database.dailyday.OfflineDdEventRepository
 import com.example.master_of_time.databinding.DdGroupEditDialogFragmentBinding
+import com.example.master_of_time.screens.dailyday.event.DailyDayViewModel
+import com.example.master_of_time.screens.dailyday.event.DailyDayViewModelFactory
+import timber.log.Timber
 
 class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
 
@@ -27,6 +33,16 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /** Init classes */
+
+        val dataSource = AppDatabase.getInstance(requireContext()).ddGroupDao()
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            DdGroupViewModelFactory(dataSource)
+        )[DdGroupViewModel::class.java]
+
+
+        /** Init XML */
         binding.run{
             cancel.setOnClickListener(this@DdGroupEditDialogFragment)
             submit.setOnClickListener(this@DdGroupEditDialogFragment)
@@ -40,7 +56,11 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
             R.id.submit -> {
                 fetchInput()
                 if(name.isEmpty()) findNavController()
-                else viewModel.insertGroup(name)
+                else{
+                    viewModel.insertGroup(name)
+                    findNavController().popBackStack()
+                }
+
             }
         }
 

@@ -46,7 +46,7 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
         super.onViewCreated(view, savedInstanceState)
 
         /** init Repository */
-        val dailyDayRepository = OfflineDdEventRepository(AppDatabase.getInstance(requireContext()).dailyDayDao())
+        val dailyDayRepository = OfflineDdEventRepository(AppDatabase.getInstance(requireContext()).ddEventDao())
 
         /** init ViewModel */
         viewModel = ViewModelProvider(requireActivity(), DailyDayViewModelFactory(dailyDayRepository))[DailyDayViewModel::class.java]
@@ -56,13 +56,6 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
             submitButton.setOnClickListener(this@DailyDayEditFragment)
             date.setOnClickListener(this@DailyDayEditFragment)
             delete.setOnClickListener(this@DailyDayEditFragment)
-
-//            groupSpinner.adapter = ?
-            // SAMPLE
-//            groupSpinner.adapter = ArrayAdapter.createFromResource(
-//                this,
-//
-//            )
         }
 
         /** init DatePickerDialog */
@@ -92,7 +85,7 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
 
     private fun bind(ddEvent: DdEvent){
         binding.apply {
-            title.text = ddEvent.title.toEditable()
+            title.text = ddEvent.title!!.toEditable()
             date.text = ddEvent.date.toOffsetDateTime().toDateFormat().toEditable()
         }
     }
