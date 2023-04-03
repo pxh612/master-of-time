@@ -1,14 +1,14 @@
 package com.example.master_of_time.screens.dailyday.viewmodel
 
 import androidx.lifecycle.*
-import com.example.master_of_time.database.dailyday.DailyDay
-import com.example.master_of_time.database.dailyday.DailyDayRepository
+import com.example.master_of_time.database.dailyday.DdEvent
+import com.example.master_of_time.database.dailyday.DdEventRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 class DailyDayViewModel(
-    private val dailyDayRepository: DailyDayRepository
+    private val ddEventRepository: DdEventRepository
 ) : ViewModel(){
 
     // Store layout preference in ViewModel? In the same class or not?
@@ -20,25 +20,25 @@ class DailyDayViewModel(
 //    val isGameWin: LiveData<Boolean>
 //        get() = _isGameWin
 
-    fun retrieveDailyDay(id: Int): LiveData<DailyDay> {
-        return dailyDayRepository.getDailyDayStream(id).asLiveData()
+    fun retrieveDailyDay(id: Int): LiveData<DdEvent> {
+        return ddEventRepository.getDailyDayStream(id).asLiveData()
     }
-    fun updateDailyDay(dailyDay: DailyDay){
+    fun updateDailyDay(ddEvent: DdEvent){
         viewModelScope.launch(Dispatchers.IO){
-            dailyDayRepository.update(dailyDay)
+            ddEventRepository.update(ddEvent)
         }
     }
-    fun deleteDailyDay(dailyDay: DailyDay){
+    fun deleteDailyDay(ddEvent: DdEvent){
         viewModelScope.launch(Dispatchers.IO){
-            dailyDayRepository.delete(dailyDay)
+            ddEventRepository.delete(ddEvent)
         }
     }
-    fun insertDailyDay(dailyDay: DailyDay) {
+    fun insertDailyDay(ddEvent: DdEvent) {
         viewModelScope.launch(Dispatchers.IO){
-            dailyDayRepository.insert(dailyDay)
+            ddEventRepository.insert(ddEvent)
         }
     }
-    fun getAllDailyDay() = dailyDayRepository.getAllDailyDayStream()
+    fun getAllDailyDay() = ddEventRepository.getAllDailyDayStream()
 
 }
 

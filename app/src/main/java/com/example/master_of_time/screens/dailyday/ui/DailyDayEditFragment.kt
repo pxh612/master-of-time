@@ -12,9 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.master_of_time.*
-import com.example.master_of_time.database.dailyday.DailyDay
+import com.example.master_of_time.database.dailyday.DdEvent
 import com.example.master_of_time.database.AppDatabase
-import com.example.master_of_time.database.dailyday.OfflineDailyDayRepository
+import com.example.master_of_time.database.dailyday.OfflineDdEventRepository
 import com.example.master_of_time.databinding.FragmentDailyDayEditBinding
 import com.example.master_of_time.screens.dailyday.viewmodel.DailyDayViewModel
 import com.example.master_of_time.screens.dailyday.viewmodel.DailyDayViewModelFactory
@@ -28,8 +28,8 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
     private val navigationArgs: DailyDayEditFragmentArgs by navArgs()
 
     /** Data */
-    lateinit var selectedDailyDay: DailyDay
-    lateinit var fetchedDailyDay: DailyDay
+    lateinit var selectedDdEvent: DdEvent
+    lateinit var fetchedDdEvent: DdEvent
     lateinit var datePickerDialog: DatePickerDialog
     var isAdd: Boolean = false
 
@@ -48,7 +48,7 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
         super.onViewCreated(view, savedInstanceState)
 
         /** init Repository */
-        val dailyDayRepository = OfflineDailyDayRepository(AppDatabase.getInstance(requireContext()).dailyDayDao())
+        val dailyDayRepository = OfflineDdEventRepository(AppDatabase.getInstance(requireContext()).dailyDayDao())
 
         /** init ViewModel */
         viewModel = ViewModelProvider(requireActivity(), DailyDayViewModelFactory(dailyDayRepository))[DailyDayViewModel::class.java]
@@ -74,7 +74,7 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
         /** retrieve Navigation */
         isAdd = navigationArgs.isAdd
         if(isAdd) {
-            selectedDailyDay = DailyDay(title = "")
+            selectedDdEvent = DdEvent(title = "")
             binding.run{
                 date.text = datePickerDialog.datePicker.toDateFormat().toEditable()
                 delete.visibility = View.GONE
@@ -84,18 +84,18 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
         else {
             val id = navigationArgs.dailyDayId
             viewModel.retrieveDailyDay(id).observe(this.viewLifecycleOwner){
-                selectedDailyDay = it
-                bind(selectedDailyDay)
+                selectedDdEvent = it
+                bind(selectedDdEvent)
             }
         }
     }
 
 
 
-    private fun bind(dailyDay: DailyDay){
+    private fun bind(ddEvent: DdEvent){
         binding.apply {
-            title.text = dailyDay.title.toEditable()
-            date.text = dailyDay.date.toOffsetDateTime().toDateFormat().toEditable()
+            title.text = ddEvent.title.toEditable()
+            date.text = ddEvent.date.toOffsetDateTime().toDateFormat().toEditable()
         }
     }
 
@@ -138,7 +138,7 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
 
         if(title.isEmpty()) return false
         else {
-            fetchedDailyDay = selectedDailyDay.copy(title = title, date = date)
+            fetchedDdEvent = selectedDdEvent.copy(title = title, date = date)
             return true
         }
     }
@@ -150,13 +150,13 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
     }
 
     private fun addItem() {
-        viewModel.insertDailyDay(fetchedDailyDay)
+        viewModel.insertDailyDay(fetchedDdEvent)
     }
     private fun updateItem() {
-        viewModel.updateDailyDay(fetchedDailyDay)
+        viewModel.updateDailyDay(fetchedDdEvent)
     }
     private fun deleteItem() {
-        viewModel.deleteDailyDay(selectedDailyDay)
+        viewModel.deleteDailyDay(selectedDdEvent)
     }
 
 }

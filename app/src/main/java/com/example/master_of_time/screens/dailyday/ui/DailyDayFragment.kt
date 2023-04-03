@@ -10,10 +10,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
 import com.example.master_of_time.R
-import com.example.master_of_time.database.dailyday.DailyDay
+import com.example.master_of_time.database.dailyday.DdEvent
 import com.example.master_of_time.database.AppDatabase
-import com.example.master_of_time.database.dailyday.DailyDayRepository
-import com.example.master_of_time.database.dailyday.OfflineDailyDayRepository
+import com.example.master_of_time.database.dailyday.DdEventRepository
+import com.example.master_of_time.database.dailyday.OfflineDdEventRepository
 import com.example.master_of_time.databinding.FragmentDailyDayBinding
 import com.example.master_of_time.screens.dailyday.*
 import com.example.master_of_time.screens.dailyday.adapter.DailyDayAdapter
@@ -26,7 +26,7 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding : FragmentDailyDayBinding
     private lateinit var viewModel: DailyDayViewModel
-    private lateinit var dailyDayRepository: DailyDayRepository
+    private lateinit var ddEventRepository: DdEventRepository
 
     lateinit var dailyDayLayoutManager: DailyDayLayoutManager
 
@@ -49,14 +49,14 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         /** init Custom Classes */
-        dailyDayRepository = OfflineDailyDayRepository(AppDatabase.getInstance(requireContext()).dailyDayDao())
+        ddEventRepository = OfflineDdEventRepository(AppDatabase.getInstance(requireContext()).dailyDayDao())
         dailyDayLayoutManager = DailyDayLayoutManager(requireContext())
 
 
         /** init ViewModel */
         viewModel = ViewModelProvider(
             requireActivity(),
-            DailyDayViewModelFactory(dailyDayRepository)
+            DailyDayViewModelFactory(ddEventRepository)
         )[DailyDayViewModel::class.java]
 
 
@@ -89,9 +89,9 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
 
 
 
-    private fun onAdapterClicked(dailyDay: DailyDay) {
-        Timber.i("Item clicked: id = ${dailyDay.id} && title = ${dailyDay.title}")
-        navigateToEditScreen(dailyDay.id)
+    private fun onAdapterClicked(ddEvent: DdEvent) {
+        Timber.i("Item clicked: id = ${ddEvent.id} && title = ${ddEvent.title}")
+        navigateToEditScreen(ddEvent.id)
     }
 
     override fun onClick(view: View) {

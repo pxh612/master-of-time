@@ -6,19 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.master_of_time.R
-import com.example.master_of_time.database.AppDatabase
-import com.example.master_of_time.database.dailyday.OfflineDailyDayRepository
 import com.example.master_of_time.databinding.FragmentDailyDayGroupBinding
-import com.example.master_of_time.screens.dailyday.DailyDayLayoutManager
-import com.example.master_of_time.screens.dailyday.adapter.DailyDayAdapter
-import com.example.master_of_time.screens.dailyday.viewmodel.DailyDayViewModel
-import com.example.master_of_time.screens.dailyday.viewmodel.DailyDayViewModelFactory
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class DailyDayGroupFragment : Fragment(), View.OnClickListener {

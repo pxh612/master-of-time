@@ -5,23 +5,23 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.master_of_time.database.dailyday.DailyDay
+import com.example.master_of_time.database.dailyday.DdEvent
 
 import com.example.master_of_time.databinding.ItemDailyDayBinding
 import com.example.master_of_time.toDateFormat
 import com.example.master_of_time.toOffsetDateTime
 
 class DailyDayAdapter(
-    private val onAdapterClicked: (DailyDay) -> Unit
-) : ListAdapter<DailyDay, DailyDayAdapter.DailyDayViewHolder>(DiffCallback) {
+    private val onAdapterClicked: (DdEvent) -> Unit
+) : ListAdapter<DdEvent, DailyDayAdapter.DailyDayViewHolder>(DiffCallback) {
 
     /** init DiffCallback */
     companion object {
-        private val DiffCallback = object : DiffUtil.ItemCallback<DailyDay>() {
+        private val DiffCallback = object : DiffUtil.ItemCallback<DdEvent>() {
 
-            override fun areItemsTheSame(oldItem: DailyDay, newItem: DailyDay) = (oldItem.id == newItem.id)
+            override fun areItemsTheSame(oldItem: DdEvent, newItem: DdEvent) = (oldItem.id == newItem.id)
 
-            override fun areContentsTheSame(oldItem: DailyDay, newItem: DailyDay) = (oldItem == newItem)
+            override fun areContentsTheSame(oldItem: DdEvent, newItem: DdEvent) = (oldItem == newItem)
         }
     }
 
@@ -38,7 +38,7 @@ class DailyDayAdapter(
     }
 
     override fun onBindViewHolder(holder: DailyDayViewHolder, position: Int) {
-        val current: DailyDay = getItem(position)
+        val current: DdEvent = getItem(position)
 
         /** init Interaction */
         holder.itemView.setOnClickListener {
@@ -55,10 +55,10 @@ class DailyDayAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
 
-        fun onBindCalled(dailyDay: DailyDay) {
+        fun onBindCalled(ddEvent: DdEvent) {
             binding.apply {
-                title.text = dailyDay.title
-                date.text = dailyDay.date.toOffsetDateTime().toDateFormat()
+                title.text = ddEvent.title
+                date.text = ddEvent.date.toOffsetDateTime().toDateFormat()
             }
         }
     }

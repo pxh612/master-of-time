@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 // Room use className as tableName by default
 @Entity
-data class DailyDayGroup(
+data class DdGroup(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
 

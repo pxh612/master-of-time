@@ -1,13 +1,9 @@
 package com.example.master_of_time
 
 import android.app.Application
-import android.os.Build
 import android.text.Editable
-import android.util.Log
 import android.widget.DatePicker
-import com.example.master_of_time.database.dailyday.DailyDay
 import com.jakewharton.threetenabp.AndroidThreeTen
-import timber.log.Timber
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset

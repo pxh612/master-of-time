@@ -5,27 +5,27 @@ import com.example.master_of_time.database.DatabaseNames.DAILY_DAY_TABLE
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface DailyDayDao {
+interface DdEventDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(dailyDay: DailyDay)
+    suspend fun insert(ddEvent: DdEvent)
 
     @Update
-    suspend fun update(dailyDay: DailyDay)
+    suspend fun update(ddEvent: DdEvent)
 
     @Delete
-    suspend fun delete(dailyDay: DailyDay)
+    suspend fun delete(ddEvent: DdEvent)
 
     @Query("SELECT * FROM $DAILY_DAY_TABLE WHERE id = :id")
-    fun getDailyDay(id: Int): DailyDay
+    fun getDailyDay(id: Int): DdEvent
 
     @Query("SELECT * from $DAILY_DAY_TABLE ORDER BY id ASC")
-    fun getAllDailyDay(): List<DailyDay>
+    fun getAllDailyDay(): List<DdEvent>
 
     @Query("SELECT * FROM $DAILY_DAY_TABLE WHERE id = :id")
-    fun getDailyDayFlow(id: Int): Flow<DailyDay>
+    fun getDailyDayFlow(id: Int): Flow<DdEvent>
 
     @Query("SELECT * from $DAILY_DAY_TABLE ORDER BY id ASC")
-    fun getAllDailyDayFlow(): Flow<List<DailyDay>>
+    fun getAllDailyDayFlow(): Flow<List<DdEvent>>
 
 }

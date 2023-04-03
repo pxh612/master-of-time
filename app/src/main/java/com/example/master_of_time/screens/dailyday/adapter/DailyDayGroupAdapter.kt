@@ -1,25 +1,24 @@
 package com.example.master_of_time.screens.dailyday.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.master_of_time.database.dailyday.DailyDay
-import com.example.master_of_time.database.dailydaygroup.DailyDayGroup
+import com.example.master_of_time.database.dailyday.DdEvent
+import com.example.master_of_time.database.dailydaygroup.DdGroup
 import com.example.master_of_time.databinding.ItemDailyDayGroupBinding
 
 class DailyDayGroupAdapter(
-    private val onAdapterClicked: (DailyDay) -> Unit
-) : ListAdapter<DailyDayGroup, DailyDayGroupAdapter.CustomViewHolder>(DiffCallback) {
+    private val onAdapterClicked: (DdEvent) -> Unit
+) : ListAdapter<DdGroup, DailyDayGroupAdapter.CustomViewHolder>(DiffCallback) {
 
     companion object {
-        private val DiffCallback = object : DiffUtil.ItemCallback<DailyDayGroup>() {
+        private val DiffCallback = object : DiffUtil.ItemCallback<DdGroup>() {
 
-            override fun areItemsTheSame(oldItem: DailyDayGroup, newItem: DailyDayGroup) = (oldItem.id == newItem.id)
+            override fun areItemsTheSame(oldItem: DdGroup, newItem: DdGroup) = (oldItem.id == newItem.id)
 
-            override fun areContentsTheSame(oldItem: DailyDayGroup, newItem: DailyDayGroup) = (oldItem == newItem)
+            override fun areContentsTheSame(oldItem: DdGroup, newItem: DdGroup) = (oldItem == newItem)
         }
     }
 
@@ -49,7 +48,7 @@ class DailyDayGroupAdapter(
     class CustomViewHolder(
         internal val binding: ItemDailyDayGroupBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(current: DailyDayGroup) {
+        fun bind(current: DdGroup) {
             binding.run{
                 title.text = current.title
                 /** TODO: count (textView) */
