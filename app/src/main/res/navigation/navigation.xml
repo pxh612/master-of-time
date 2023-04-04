@@ -70,6 +70,9 @@
             android:name="eventId"
             app:argType="integer"
             android:defaultValue="0" />
+        <action
+            android:id="@+id/action_ddEventEditFragment_to_ddGroupBottomSheet"
+            app:destination="@id/ddGroupBottomSheet" />
     </fragment>
     <fragment
         android:id="@+id/ddGroupFragment"
@@ -83,4 +86,8 @@
         android:id="@+id/ddGroupEditDialogFragment"
         android:name="com.example.master_of_time.screens.dailyday.group.DdGroupEditDialogFragment"
         android:label="DdGroupEditDialogFragment" />
+    <dialog
+        android:id="@+id/ddGroupBottomSheet"
+        android:name="com.example.master_of_time.screens.dailyday.group.DdGroupBottomSheet"
+        android:label="DdGroupBottomSheet" />
 </navigation>

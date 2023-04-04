@@ -12,55 +12,50 @@ import com.example.master_of_time.toDateFormat
 import com.example.master_of_time.toOffsetDateTime
 
 class DdEventAdapter(
-    private val onAdapterClicked: (DdEvent) -> Unit
-) : ListAdapter<DdEvent, DdEventAdapter.DailyDayViewHolder>(DiffCallback) {
+    private val onItemClicked: (DdEvent) -> Unit
+) : ListAdapter<DdEvent, DdEventAdapter.DailyDayViewHolder>(MyDiffUtil()) {
 
-    /** init DiffCallback */
-    companion object {
-        private val DiffCallback = object : DiffUtil.ItemCallback<DdEvent>() {
-
-            override fun areItemsTheSame(oldItem: DdEvent, newItem: DdEvent) = (oldItem.id == newItem.id)
-
-            override fun areContentsTheSame(oldItem: DdEvent, newItem: DdEvent) = (oldItem == newItem)
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyDayViewHolder {
-        /** init viewHolder */
         val holder = DailyDayViewHolder(
             ItemDailyDayBinding.inflate(
-                LayoutInflater.from( parent.context),
-                parent,
-                false
-            )
+                LayoutInflater.from( parent.context), parent, false
+            ),
+            onItemClicked
         )
         return holder
     }
 
     override fun onBindViewHolder(holder: DailyDayViewHolder, position: Int) {
-        val current: DdEvent = getItem(position)
-
-        /** init Interaction */
-        holder.itemView.setOnClickListener {
-            onAdapterClicked(current)
-        }
-
-        holder.onBindCalled(current)
+        val item: DdEvent = getItem(position)
+        holder.bind(item)
     }
 
 
-    /** private class */
     class DailyDayViewHolder(
-        private val binding: ItemDailyDayBinding
+        private val binding: ItemDailyDayBinding,
+        private val onItemClicked: (DdEvent) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
 
-        fun onBindCalled(ddEvent: DdEvent) {
+        fun bind(item: DdEvent) {
             binding.apply {
-                title.text = ddEvent.title
-                date.text = ddEvent.date.toOffsetDateTime().toDateFormat()
+                title.text = item.title
+                date.text = item.date.toOffsetDateTime().toDateFormat()
+            }
+
+            itemView.setOnClickListener {
+                onItemClicked(item)
             }
         }
     }
     
 }
+
+class MyDiffUtil: DiffUtil.ItemCallback<DdEvent>() {
+
+    override fun areItemsTheSame(oldItem: DdEvent, newItem: DdEvent) = (oldItem.id == newItem.id)
+
+    override fun areContentsTheSame(oldItem: DdEvent, newItem: DdEvent) = (oldItem == newItem)
+}
+

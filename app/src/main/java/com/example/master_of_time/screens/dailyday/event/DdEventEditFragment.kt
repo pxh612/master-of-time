@@ -16,7 +16,8 @@ import com.example.master_of_time.database.dailyday.DdEvent
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.dailyday.OfflineDdEventRepository
 import com.example.master_of_time.databinding.DdEventEditFragmentBinding
-import com.example.master_of_time.databinding.FragmentDailyDayEditBinding
+import com.example.master_of_time.screens.dailyday.group.DdGroupBottomSheet
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import timber.log.Timber
 
 
@@ -52,18 +53,23 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         /** init ViewModel */
         viewModel = ViewModelProvider(requireActivity(), DdEventViewModelFactory(dailyDayRepository))[DdEventViewModel::class.java]
 
+        retrieveNavigationArgs()
+
         /** init Views  */
+        val bottomSheet: DdGroupBottomSheet
         binding.run {
             submitButton.setOnClickListener(this@DdEventEditFragment)
             date.setOnClickListener(this@DdEventEditFragment)
             delete.setOnClickListener(this@DdEventEditFragment)
-        }
 
+
+        }
         /** init DatePickerDialog */
         datePickerDialog = DatePickerDialog(requireContext())
         datePickerDialog.setOnDateSetListener(this)
+    }
 
-        /** retrieve Navigation */
+    private fun retrieveNavigationArgs() {
         isAdd = navigationArgs.isAdd
         if(isAdd) {
             selectedDdEvent = DdEvent(title = "")
@@ -77,14 +83,13 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
             val id = navigationArgs.eventId
             viewModel.retrieveDailyDay(id).observe(this.viewLifecycleOwner){
                 selectedDdEvent = it
-                bind(selectedDdEvent)
+                bindEdittingItem(selectedDdEvent)
             }
         }
     }
 
 
-
-    private fun bind(ddEvent: DdEvent){
+    private fun bindEdittingItem(ddEvent: DdEvent){
         binding.apply {
             title.text = ddEvent.title!!.toEditable()
             date.text = ddEvent.date.toOffsetDateTime().toDateFormat().toEditable()
@@ -117,8 +122,8 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
                 deleteItem()
                 findNavController().popBackStack()
             }
-            R.id.groupSpinner -> {
-                Timber.d("> spinner reponsive")
+            R.id.ddGroupPicker -> {
+                Timber.d("> picker reponsive")
             }
         }
     }
@@ -149,6 +154,10 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
     }
     private fun deleteItem() {
         viewModel.deleteDailyDay(selectedDdEvent)
+    }
+
+    fun test(){
+        Timber.d("> test click successful")
     }
 
 }

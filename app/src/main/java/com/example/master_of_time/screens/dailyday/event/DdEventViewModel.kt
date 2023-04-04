@@ -36,6 +36,13 @@ class DdEventViewModel(
     }
     fun getAllDailyDay() = ddEventRepository.getAllDailyDayStream()
 
+    fun testClick(){
+        Timber.i("> test click XML successful")
+    }
+    fun testXMLString(): String {
+        return "databinding string"
+
+    }
 }
 
 class DdEventViewModelFactory(

@@ -29,19 +29,20 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /** Init classes */
 
         val dataSource = AppDatabase.getInstance(requireContext()).ddGroupDao()
+
+
         viewModel = ViewModelProvider(
             requireActivity(),
             DdGroupViewModelFactory(dataSource)
         )[DdGroupViewModel::class.java]
 
 
-        /** Init XML */
         binding.run{
             cancel.setOnClickListener(this@DdGroupEditDialogFragment)
             submit.setOnClickListener(this@DdGroupEditDialogFragment)
+
         }
 
     }

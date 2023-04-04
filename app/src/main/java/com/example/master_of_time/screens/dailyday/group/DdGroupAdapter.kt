@@ -15,9 +15,7 @@ class DdGroupAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
             DdGroupItemBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
+                LayoutInflater.from(parent.context), parent, false
             ),
             listener
         )
@@ -38,10 +36,7 @@ class DdGroupAdapter(
             binding.run{
                 title.text = item.name
                 title.setOnClickListener {listener.onTitleClick(item)}
-
             }
-
-
         }
     }
 
