@@ -23,7 +23,6 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListen
 
     private lateinit var binding: DdGroupFragmentBinding
     private lateinit var viewModel: DdGroupViewModel
-
     private lateinit var dialogFragment: DdGroupEditDialogFragment
 
 
@@ -55,7 +54,7 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListen
 
 
         /** init Adapter for RecyclerView*/
-        val ddGroupAdapter = DdGroupAdapter(this)
+        val ddGroupAdapter = DdGroupPickerAdapter(this)
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup()!!.collect() {
                 Timber.v("> collect FlowList for adapter: size = ${it.size}")

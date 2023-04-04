@@ -67,8 +67,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
 
-                android:text="@{viewModel.testXMLString()}"
-                android:onClick="@{() -> viewModel.testClick()}"
+                android:text="pick"
                 android:textSize="20dp"
                 android:id="@+id/ddGroupPicker"/>
 

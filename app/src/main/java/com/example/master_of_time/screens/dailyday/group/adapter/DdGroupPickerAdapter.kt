@@ -2,19 +2,18 @@ package com.example.master_of_time.screens.dailyday.group
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.master_of_time.database.dailydaygroup.DdGroup
-import com.example.master_of_time.databinding.DdGroupItemBinding
+import com.example.master_of_time.databinding.DdGroupPickerItemBinding
 
-class DdGroupAdapter(
+class DdGroupPickerAdapter(
     private val listener: DdGroupItemClickListener
-) : ListAdapter<DdGroup, DdGroupAdapter.MyViewHolder>(MyDiffUtil()) {
+) : ListAdapter<DdGroup, DdGroupPickerAdapter.MyViewHolder>(MyDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
-            DdGroupItemBinding.inflate(
+            DdGroupPickerItemBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             ),
             listener
@@ -27,9 +26,9 @@ class DdGroupAdapter(
     }
 
     class MyViewHolder(
-        internal val binding: DdGroupItemBinding,
+        internal val binding: DdGroupPickerItemBinding,
         private val listener: DdGroupItemClickListener
-        ) : RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: DdGroup) {
 
@@ -41,12 +40,3 @@ class DdGroupAdapter(
     }
 
 }
-
-class MyDiffUtil: DiffUtil.ItemCallback<DdGroup>() {
-
-    override fun areItemsTheSame(oldItem: DdGroup, newItem: DdGroup) = (oldItem.id == newItem.id)
-
-    override fun areContentsTheSame(oldItem: DdGroup, newItem: DdGroup) = (oldItem == newItem)
-}
-
-
