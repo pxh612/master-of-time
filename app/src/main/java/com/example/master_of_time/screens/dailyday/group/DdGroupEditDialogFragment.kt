@@ -50,6 +50,7 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
         when(view.id) {
             R.id.cancel -> findNavController().popBackStack()
             R.id.submit -> {
+
                 fetchInput()
                 if(name.isEmpty()) findNavController()
                 else{

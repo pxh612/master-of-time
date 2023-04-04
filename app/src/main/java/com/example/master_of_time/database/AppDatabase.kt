@@ -26,7 +26,6 @@ abstract class AppDatabase : RoomDatabase(){
         fun getInstance(context : Context) : AppDatabase {
             return INSTANCE ?: synchronized(this){
 
-                /** return DAILY_DAY_TABLE: need to also return Group */
                 val instance = Room
                     .databaseBuilder(
                         context.applicationContext,

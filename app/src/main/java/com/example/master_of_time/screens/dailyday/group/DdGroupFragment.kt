@@ -53,6 +53,7 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListen
         )[DdGroupViewModel::class.java]
         viewModel.testRun()
 
+
         /** init Adapter for RecyclerView*/
         val ddGroupAdapter = DdGroupAdapter(this)
         lifecycle.coroutineScope.launch {
@@ -91,15 +92,9 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListen
         requireView().findNavController().navigate(action)
     }
 
-    fun testClick(view: View){
-        Timber.d("> databinding onclick")
-    }
-    fun testClickNoArgument(){
-        Timber.d("> databinding onclick testClickNoArgument")
-    }
-
-    override fun onItemClicK(item: DdGroup) {
+    override fun onTitleClick(item: DdGroup) {
         Timber.i("item = $item")
+
     }
 
 

@@ -18,26 +18,29 @@ class DdGroupAdapter(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ),
+            listener
         )
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = getItem(position)
-        holder.itemView.setOnClickListener {
-            listener.onItemClicK(item)
-        }
         holder.bind(item)
     }
 
-    class MyViewHolder(internal val binding: DdGroupItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MyViewHolder(
+        internal val binding: DdGroupItemBinding,
+        private val listener: DdGroupItemClickListener
+        ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: DdGroup) {
 
             binding.run{
                 title.text = item.name
+                title.setOnClickListener {listener.onTitleClick(item)}
 
             }
+
 
         }
     }

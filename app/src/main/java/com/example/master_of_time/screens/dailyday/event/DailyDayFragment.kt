@@ -52,7 +52,7 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
         /** init ViewModel */
         viewModel = ViewModelProvider(
             requireActivity(),
-            DailyDayViewModelFactory(ddEventRepository)
+            DdEventViewModelFactory(ddEventRepository)
         )[DdEventViewModel::class.java]
 
 

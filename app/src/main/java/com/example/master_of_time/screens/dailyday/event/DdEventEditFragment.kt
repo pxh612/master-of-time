@@ -49,7 +49,7 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         val dailyDayRepository = OfflineDdEventRepository(AppDatabase.getInstance(requireContext()).ddEventDao())
 
         /** init ViewModel */
-        viewModel = ViewModelProvider(requireActivity(), DailyDayViewModelFactory(dailyDayRepository))[DdEventViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity(), DdEventViewModelFactory(dailyDayRepository))[DdEventViewModel::class.java]
 
         /** init Views  */
         binding.run {

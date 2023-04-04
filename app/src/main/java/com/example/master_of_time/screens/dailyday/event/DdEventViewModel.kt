@@ -5,13 +5,13 @@ import com.example.master_of_time.database.dailyday.DdEvent
 import com.example.master_of_time.database.dailyday.DdEventRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 class DdEventViewModel(
     private val ddEventRepository: DdEventRepository
 ) : ViewModel(){
 
-    // Store layout preference in ViewModel? In the same class or not?
     private val _selectedLayout = MutableLiveData<Int>()
     val selectedLayout: LiveData<Int>
         get() = _selectedLayout
@@ -36,6 +36,20 @@ class DdEventViewModel(
     }
     fun getAllDailyDay() = ddEventRepository.getAllDailyDayStream()
 
+}
+
+class DdEventViewModelFactory(
+    private val ddEventRepository: DdEventRepository
+) : ViewModelProvider.Factory {
+
+    override fun <T: ViewModel> create(modelClass: Class<T>): T{
+        if(modelClass.isAssignableFrom(DdEventViewModel::class.java)){
+            Timber.v("> create ViewModel")
+            @Suppress("UNCHECKED_CAST")
+            return DdEventViewModel(ddEventRepository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }
 
 
