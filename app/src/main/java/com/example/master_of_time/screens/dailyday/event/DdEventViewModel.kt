@@ -7,7 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class DailyDayViewModel(
+class DdEventViewModel(
     private val ddEventRepository: DdEventRepository
 ) : ViewModel(){
 

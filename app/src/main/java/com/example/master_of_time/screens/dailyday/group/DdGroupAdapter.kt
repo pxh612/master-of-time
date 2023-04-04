@@ -5,58 +5,47 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.master_of_time.database.dailyday.DdEvent
 import com.example.master_of_time.database.dailydaygroup.DdGroup
-import com.example.master_of_time.databinding.ItemDailyDayGroupBinding
+import com.example.master_of_time.databinding.DdGroupItemBinding
+import timber.log.Timber
 
 class DdGroupAdapter(
-    private val onAdapterClicked: (DdGroup) -> Unit
-) : ListAdapter<DdGroup, DdGroupAdapter.CustomViewHolder>(DiffCallback) {
 
-    companion object {
-        private val DiffCallback = object : DiffUtil.ItemCallback<DdGroup>() {
+) : ListAdapter<DdGroup, DdGroupAdapter.MyViewHolder>(MyDiffUtil()) {
 
-            override fun areItemsTheSame(oldItem: DdGroup, newItem: DdGroup) = (oldItem.id == newItem.id)
-
-            override fun areContentsTheSame(oldItem: DdGroup, newItem: DdGroup) = (oldItem == newItem)
-        }
-    }
-
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
-        /** init viewHolder */
-        val holder = CustomViewHolder(
-            ItemDailyDayGroupBinding.inflate(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        return MyViewHolder(
+            DdGroupItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
         )
-
-        return holder
-    }
-    override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        val current = getItem(position)
-        holder.bind(current)
     }
 
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val item = getItem(position)
+        holder.bind(item)
+    }
 
-    override fun getItemCount(): Int = 1
+    class MyViewHolder(internal val binding: DdGroupItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    /** private class */
-
-    class CustomViewHolder(
-        internal val binding: ItemDailyDayGroupBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: DdGroup) {
+
             binding.run{
                 title.text = item.name
-                /** TODO: count (textView) */
+
             }
         }
-
     }
 
+}
+
+class MyDiffUtil: DiffUtil.ItemCallback<DdGroup>() {
+
+    override fun areItemsTheSame(oldItem: DdGroup, newItem: DdGroup) = (oldItem.id == newItem.id)
+
+    override fun areContentsTheSame(oldItem: DdGroup, newItem: DdGroup) = (oldItem == newItem)
 }
 
 

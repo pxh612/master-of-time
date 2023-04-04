@@ -21,10 +21,10 @@ import timber.log.Timber
 class DailyDayFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding : FragmentDailyDayBinding
-    private lateinit var viewModel: DailyDayViewModel
+    private lateinit var viewModel: DdEventViewModel
     private lateinit var ddEventRepository: DdEventRepository
 
-    lateinit var dailyDayLayoutManager: DailyDayLayoutManager
+    lateinit var ddEventLayoutManager: DdEventLayoutManager
 
 
     override fun onCreateView(
@@ -46,22 +46,22 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
 
         /** init Custom Classes */
         ddEventRepository = OfflineDdEventRepository(AppDatabase.getInstance(requireContext()).ddEventDao())
-        dailyDayLayoutManager = DailyDayLayoutManager(requireContext())
+        ddEventLayoutManager = DdEventLayoutManager(requireContext())
 
 
         /** init ViewModel */
         viewModel = ViewModelProvider(
             requireActivity(),
             DailyDayViewModelFactory(ddEventRepository)
-        )[DailyDayViewModel::class.java]
+        )[DdEventViewModel::class.java]
 
 
         /** init Adapter for RecyclerView*/
-        val dailyDayAdapter = DailyDayAdapter { DailyDay -> onAdapterClicked(DailyDay) }
+        val ddEventAdapter = DdEventAdapter { DailyDay -> onAdapterClicked(DailyDay) }
         lifecycle.coroutineScope.launch {
             viewModel.getAllDailyDay().collect() {
                 Timber.v("> collect FlowList for adapter: size = ${it.size}")
-                dailyDayAdapter.submitList(it)
+                ddEventAdapter.submitList(it)
             }
         }
 
@@ -70,8 +70,8 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
         binding.run {
 
             recylerView.run {
-                layoutManager = dailyDayLayoutManager.value
-                adapter = dailyDayAdapter
+                layoutManager = ddEventLayoutManager.value
+                adapter = ddEventAdapter
             }
 
             header.run {
@@ -95,8 +95,8 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
         when(view.id){
             R.id.add -> navigateToAddScreen()
             R.id.layout -> {
-                dailyDayLayoutManager.changeLayout()
-                binding.recylerView.layoutManager = dailyDayLayoutManager.value
+                ddEventLayoutManager.changeLayout()
+                binding.recylerView.layoutManager = ddEventLayoutManager.value
             }
             R.id.buttonOne -> {
                 navigateToGroupList()

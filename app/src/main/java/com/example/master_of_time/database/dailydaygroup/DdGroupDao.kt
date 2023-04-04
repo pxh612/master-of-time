@@ -16,6 +16,6 @@ interface DdGroupDao {
     @Delete
     suspend fun delete(ddGroup: DdGroup)
 
-//    @Query("SELECT * from ${} ")
-//    fun getAllDdGroupFlow()
+    @Query("SELECT * from DdGroup")
+    fun getAllDdGroupFlow(): Flow<List<DdGroup>>
 }

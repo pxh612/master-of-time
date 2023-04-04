@@ -66,7 +66,7 @@
     </fragment>
     <fragment
         android:id="@+id/dailyDayEditFragment"
-        android:name="com.example.master_of_time.screens.dailyday.event.DailyDayEditFragment"
+        android:name="com.example.master_of_time.screens.dailyday.event.DdEventEditFragment"
         android:label="fragment_daily_day_edit"
         tools:layout="@layout/fragment_daily_day_edit" >
         <argument

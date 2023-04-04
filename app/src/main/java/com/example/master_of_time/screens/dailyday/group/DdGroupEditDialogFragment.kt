@@ -9,11 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.master_of_time.R
 import com.example.master_of_time.database.AppDatabase
-import com.example.master_of_time.database.dailyday.OfflineDdEventRepository
 import com.example.master_of_time.databinding.DdGroupEditDialogFragmentBinding
-import com.example.master_of_time.screens.dailyday.event.DailyDayViewModel
-import com.example.master_of_time.screens.dailyday.event.DailyDayViewModelFactory
-import timber.log.Timber
 
 class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
 

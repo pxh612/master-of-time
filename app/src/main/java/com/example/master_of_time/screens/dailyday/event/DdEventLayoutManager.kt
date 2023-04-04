@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 
 
-class DailyDayLayoutManager(
+class DdEventLayoutManager(
     private val context: Context
 ) {
 

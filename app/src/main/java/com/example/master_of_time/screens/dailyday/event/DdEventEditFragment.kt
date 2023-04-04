@@ -19,11 +19,11 @@ import com.example.master_of_time.databinding.FragmentDailyDayEditBinding
 import timber.log.Timber
 
 
-class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener {
+class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
-    private lateinit var viewModel: DailyDayViewModel
+    private lateinit var viewModel: DdEventViewModel
     private lateinit var binding: FragmentDailyDayEditBinding
-    private val navigationArgs: DailyDayEditFragmentArgs by navArgs()
+    private val navigationArgs: DdEventEditFragmentArgs by navArgs()
 
     /** Data */
     lateinit var selectedDdEvent: DdEvent
@@ -49,13 +49,13 @@ class DailyDayEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.
         val dailyDayRepository = OfflineDdEventRepository(AppDatabase.getInstance(requireContext()).ddEventDao())
 
         /** init ViewModel */
-        viewModel = ViewModelProvider(requireActivity(), DailyDayViewModelFactory(dailyDayRepository))[DailyDayViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity(), DailyDayViewModelFactory(dailyDayRepository))[DdEventViewModel::class.java]
 
         /** init Views  */
         binding.run {
-            submitButton.setOnClickListener(this@DailyDayEditFragment)
-            date.setOnClickListener(this@DailyDayEditFragment)
-            delete.setOnClickListener(this@DailyDayEditFragment)
+            submitButton.setOnClickListener(this@DdEventEditFragment)
+            date.setOnClickListener(this@DdEventEditFragment)
+            delete.setOnClickListener(this@DdEventEditFragment)
         }
 
         /** init DatePickerDialog */

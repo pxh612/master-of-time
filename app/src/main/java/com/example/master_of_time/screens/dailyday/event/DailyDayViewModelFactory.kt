@@ -11,10 +11,10 @@ class DailyDayViewModelFactory(
 
 
     override fun <T: ViewModel> create(modelClass: Class<T>): T{
-        if(modelClass.isAssignableFrom(DailyDayViewModel::class.java)){
+        if(modelClass.isAssignableFrom(DdEventViewModel::class.java)){
             Timber.v("> create ViewModel")
             @Suppress("UNCHECKED_CAST")
-            return DailyDayViewModel(ddEventRepository) as T
+            return DdEventViewModel(ddEventRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

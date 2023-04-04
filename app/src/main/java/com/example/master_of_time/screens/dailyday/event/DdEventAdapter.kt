@@ -11,9 +11,9 @@ import com.example.master_of_time.databinding.ItemDailyDayBinding
 import com.example.master_of_time.toDateFormat
 import com.example.master_of_time.toOffsetDateTime
 
-class DailyDayAdapter(
+class DdEventAdapter(
     private val onAdapterClicked: (DdEvent) -> Unit
-) : ListAdapter<DdEvent, DailyDayAdapter.DailyDayViewHolder>(DiffCallback) {
+) : ListAdapter<DdEvent, DdEventAdapter.DailyDayViewHolder>(DiffCallback) {
 
     /** init DiffCallback */
     companion object {

@@ -30,7 +30,7 @@ open class MyTimberDebugTree : Timber.DebugTree() {
 
     fun methodLocation(element: StackTraceElement): String{
         return element.run{
-            "${createStackElementTag(this)}.$methodName ($fileName:$lineNumber)"
+            "${createStackElementTag(this)} -> $methodName ($fileName:$lineNumber)"
         }
     }
 
@@ -38,6 +38,8 @@ open class MyTimberDebugTree : Timber.DebugTree() {
         val element: StackTraceElement = Throwable().stackTrace
             .first { it.className !in fqcnIgnore }
 
+
+        // TODO: extract Tag without junk ("DdGroupFragment$onViewCreated.emit")
         val finalTag: String? = createStackElementTag(element)
         val finalMessage = String.format("%s %s\n    %s ", methodLocation(element), logSearching, message)
         Log.println(priority, finalTag, finalMessage)

@@ -10,13 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.master_of_time.R
 import com.example.master_of_time.database.AppDatabase
-import com.example.master_of_time.database.dailyday.DdEvent
-import com.example.master_of_time.database.dailyday.OfflineDdEventRepository
 import com.example.master_of_time.database.dailydaygroup.DdGroup
 import com.example.master_of_time.databinding.DdGroupFragmentBinding
-import com.example.master_of_time.screens.dailyday.event.DailyDayAdapter
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -26,6 +24,10 @@ class DdGroupFragment : Fragment(), View.OnClickListener {
     private lateinit var viewModel: DdGroupViewModel
 
     private lateinit var dialogFragment: DdGroupEditDialogFragment
+
+    interface ItemClickListener {
+        fun onItemClicK()
+    }
 
 
     override fun onCreateView(
@@ -43,6 +45,7 @@ class DdGroupFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Timber.v("> doing stuff with fragment")
 
         /** Init classes */
         val dataSource = AppDatabase.getInstance(requireContext()).ddGroupDao()
@@ -50,10 +53,10 @@ class DdGroupFragment : Fragment(), View.OnClickListener {
             requireActivity(),
             DdGroupViewModelFactory(dataSource)
         )[DdGroupViewModel::class.java]
-
+        viewModel.testRun()
 
         /** init Adapter for RecyclerView*/
-        val ddGroupAdapter = DdGroupAdapter { onAdapterClicked(it) }
+        val ddGroupAdapter = DdGroupAdapter { onItemClicked(it) }
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup()!!.collect() {
                 Timber.v("> collect FlowList for adapter: size = ${it.size}")
@@ -67,10 +70,14 @@ class DdGroupFragment : Fragment(), View.OnClickListener {
             add.setOnClickListener(this@DdGroupFragment)
             back.setOnClickListener(this@DdGroupFragment)
 
+            recylerView.run{
+                adapter = ddGroupAdapter
+                layoutManager = LinearLayoutManager(context)
+            }
         }
     }
 
-    private fun onAdapterClicked(ddGroup: DdGroup) {
+    private fun onItemClicked(ddGroup: DdGroup) {
 
     }
 
