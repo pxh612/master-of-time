@@ -7,10 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.master_of_time.database.dailydaygroup.DdGroup
 import com.example.master_of_time.databinding.DdGroupItemBinding
-import timber.log.Timber
 
 class DdGroupAdapter(
-
+    private val listener: DdGroupItemClickListener
 ) : ListAdapter<DdGroup, DdGroupAdapter.MyViewHolder>(MyDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -25,6 +24,9 @@ class DdGroupAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = getItem(position)
+        holder.itemView.setOnClickListener {
+            listener.onItemClicK(item)
+        }
         holder.bind(item)
     }
 
@@ -36,6 +38,7 @@ class DdGroupAdapter(
                 title.text = item.name
 
             }
+
         }
     }
 

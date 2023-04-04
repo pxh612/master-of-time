@@ -18,16 +18,14 @@ import com.example.master_of_time.databinding.DdGroupFragmentBinding
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class DdGroupFragment : Fragment(), View.OnClickListener {
+
+class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListener{
 
     private lateinit var binding: DdGroupFragmentBinding
     private lateinit var viewModel: DdGroupViewModel
 
     private lateinit var dialogFragment: DdGroupEditDialogFragment
 
-    interface ItemClickListener {
-        fun onItemClicK()
-    }
 
 
     override fun onCreateView(
@@ -56,7 +54,7 @@ class DdGroupFragment : Fragment(), View.OnClickListener {
         viewModel.testRun()
 
         /** init Adapter for RecyclerView*/
-        val ddGroupAdapter = DdGroupAdapter { onItemClicked(it) }
+        val ddGroupAdapter = DdGroupAdapter(this)
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup()!!.collect() {
                 Timber.v("> collect FlowList for adapter: size = ${it.size}")
@@ -77,9 +75,7 @@ class DdGroupFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun onItemClicked(ddGroup: DdGroup) {
 
-    }
 
     override fun onClick(view: View) {
         Timber.v("> reponsive click")
@@ -101,5 +97,10 @@ class DdGroupFragment : Fragment(), View.OnClickListener {
     fun testClickNoArgument(){
         Timber.d("> databinding onclick testClickNoArgument")
     }
+
+    override fun onItemClicK(item: DdGroup) {
+        Timber.i("item = $item")
+    }
+
 
 }
