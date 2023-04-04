@@ -14,13 +14,13 @@ import com.example.master_of_time.database.dailyday.DdEvent
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.dailyday.DdEventRepository
 import com.example.master_of_time.database.dailyday.OfflineDdEventRepository
-import com.example.master_of_time.databinding.FragmentDailyDayBinding
+import com.example.master_of_time.databinding.DdEventFragmentBinding
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class DailyDayFragment : Fragment(), View.OnClickListener {
+class DdEventFragment : Fragment(), View.OnClickListener {
 
-    private lateinit var binding : FragmentDailyDayBinding
+    private lateinit var binding : DdEventFragmentBinding
     private lateinit var viewModel: DdEventViewModel
     private lateinit var ddEventRepository: DdEventRepository
 
@@ -33,7 +33,7 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
     ): View? {
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_daily_day,
+            R.layout.dd_event_fragment,
             container,
             false
         )
@@ -75,9 +75,9 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
             }
 
             header.run {
-                add.setOnClickListener(this@DailyDayFragment)
-                layout.setOnClickListener(this@DailyDayFragment)
-                buttonOne.setOnClickListener(this@DailyDayFragment)
+                add.setOnClickListener(this@DdEventFragment)
+                layout.setOnClickListener(this@DdEventFragment)
+                buttonOne.setOnClickListener(this@DdEventFragment)
             }
 
         }
@@ -105,18 +105,17 @@ class DailyDayFragment : Fragment(), View.OnClickListener {
     }
 
     private fun navigateToGroupList() {
-        val action = DailyDayFragmentDirections.actionDailyDayFragmentToDailyDayGroupFragment()
+        val action = DdEventFragmentDirections.actionDdEventFragmentToDdGroupFragment()
         requireView().findNavController().navigate(action)
     }
-
 
     private fun navigateToAddScreen() {
-        val action = DailyDayFragmentDirections.actionDailyDayFragmentToDailyDayEditFragment(0, true)
+        val action = DdEventFragmentDirections.actionDdEventFragmentToDdEventEditFragment(true)
         requireView().findNavController().navigate(action)
     }
 
-    private fun navigateToEditScreen(dailyDayId: Int) {
-        val action = DailyDayFragmentDirections.actionDailyDayFragmentToDailyDayEditFragment(dailyDayId, false)
+    private fun navigateToEditScreen(eventId: Int) {
+        val action = DdEventFragmentDirections.actionDdEventFragmentToDdEventEditFragment(false, eventId)
         requireView().findNavController().navigate(action)
     }
 }

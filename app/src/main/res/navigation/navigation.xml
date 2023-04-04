@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/ddGroupFragment">
+    app:startDestination="@id/ddEventFragment">
 
     <fragment
         android:id="@+id/titleFragment"
@@ -48,48 +48,39 @@
             app:destination="@id/titleFragment" />
     </fragment>
     <fragment
-        android:id="@+id/alarmsFragment"
-        android:name="com.example.master_of_time.screens.alarm.AlarmsFragment"
-        android:label="fragment_alarms"
-        tools:layout="@layout/fragment_alarms" />
-    <fragment
-        android:id="@+id/dailyDayFragment"
-        android:name="com.example.master_of_time.screens.dailyday.event.DailyDayFragment"
-        android:label="fragment_daily_day"
-        tools:layout="@layout/fragment_daily_day" >
+        android:id="@+id/ddEventFragment"
+        android:name="com.example.master_of_time.screens.dailyday.event.DdEventFragment"
+        android:label="dd_event_fragment"
+        tools:layout="@layout/dd_event_fragment" >
         <action
-            android:id="@+id/action_dailyDayFragment_to_dailyDayEditFragment"
-            app:destination="@id/dailyDayEditFragment" />
+            android:id="@+id/action_ddEventFragment_to_ddEventEditFragment"
+            app:destination="@id/ddEventEditFragment" />
         <action
-            android:id="@+id/action_dailyDayFragment_to_dailyDayGroupFragment"
+            android:id="@+id/action_ddEventFragment_to_ddGroupFragment"
             app:destination="@id/ddGroupFragment" />
     </fragment>
     <fragment
-        android:id="@+id/dailyDayEditFragment"
+        android:id="@+id/ddEventEditFragment"
         android:name="com.example.master_of_time.screens.dailyday.event.DdEventEditFragment"
-        android:label="fragment_daily_day_edit"
-        tools:layout="@layout/fragment_daily_day_edit" >
-        <argument
-            android:name="dailyDayId"
-            app:argType="integer" />
+        android:label="DdEventEditFragment" >
         <argument
             android:name="isAdd"
             app:argType="boolean" />
+        <argument
+            android:name="eventId"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/ddGroupFragment"
         android:name="com.example.master_of_time.screens.dailyday.group.DdGroupFragment"
-        android:label="DailyDayGroupFragment"
-        tools:layout="@layout/dd_group_fragment"
-        >
+        android:label="DdGroupFragment" >
         <action
-            android:id="@+id/action_dailyDayGroupFragment_to_dailyDayGroupEditDialogFragment"
-            app:destination="@id/dailyDayGroupEditDialogFragment" />
+            android:id="@+id/action_ddGroupFragment_to_ddGroupEditDialogFragment"
+            app:destination="@id/ddGroupEditDialogFragment" />
     </fragment>
     <dialog
-        android:id="@+id/dailyDayGroupEditDialogFragment"
+        android:id="@+id/ddGroupEditDialogFragment"
         android:name="com.example.master_of_time.screens.dailyday.group.DdGroupEditDialogFragment"
-        android:label="DailyDayGroupEditDialogFragment"
-        tools:layout="@layout/dd_group_edit_dialog_fragment"
-        />
+        android:label="DdGroupEditDialogFragment" />
 </navigation>

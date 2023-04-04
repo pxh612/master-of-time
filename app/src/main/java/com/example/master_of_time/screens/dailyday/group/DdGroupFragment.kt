@@ -88,7 +88,7 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListen
 
     private fun showDialog() {
         Timber.v("> clicked to show dialogFragment")
-        val action = DdGroupFragmentDirections.actionDailyDayGroupFragmentToDailyDayGroupEditDialogFragment()
+        val action = DdGroupFragmentDirections.actionDdGroupFragmentToDdGroupEditDialogFragment()
         requireView().findNavController().navigate(action)
     }
 

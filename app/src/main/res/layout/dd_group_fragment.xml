@@ -13,6 +13,7 @@
         android:layout_height="match_parent" >
 
 
+
         <ImageView
             android:layout_width="@dimen/layoutHeight_back_fragmentDailyDayGroup"
             android:layout_height="@dimen/layoutHeight_back_fragmentDailyDayGroup"

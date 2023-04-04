@@ -15,6 +15,7 @@ import com.example.master_of_time.*
 import com.example.master_of_time.database.dailyday.DdEvent
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.dailyday.OfflineDdEventRepository
+import com.example.master_of_time.databinding.DdEventEditFragmentBinding
 import com.example.master_of_time.databinding.FragmentDailyDayEditBinding
 import timber.log.Timber
 
@@ -22,7 +23,7 @@ import timber.log.Timber
 class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
     private lateinit var viewModel: DdEventViewModel
-    private lateinit var binding: FragmentDailyDayEditBinding
+    private lateinit var binding: DdEventEditFragmentBinding
     private val navigationArgs: DdEventEditFragmentArgs by navArgs()
 
     /** Data */
@@ -38,7 +39,7 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentDailyDayEditBinding.inflate(inflater, container, false)
+        binding = DdEventEditFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -73,7 +74,7 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
 
         }
         else {
-            val id = navigationArgs.dailyDayId
+            val id = navigationArgs.eventId
             viewModel.retrieveDailyDay(id).observe(this.viewLifecycleOwner){
                 selectedDdEvent = it
                 bind(selectedDdEvent)
@@ -155,11 +156,4 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
 
 
 
-// ====================================== IGNORE
 
-// https://www.techyourchance.com/you-dont-need-android-viewmodel/
-// If you create your custom Views, you can achieve the same behavior by implementing
-// onSaveInstanceState and onRestoreInstanceState methods.
-// In fact, you’ll probably want to rely on this mechanism even if you do use ViewModel
-// (e.g. it would be extremely dirty to store input fields state in ViewModel).
-// So, no benefit for ViewModel in the context of UI state.
