@@ -1,4 +1,4 @@
-package com.example.master_of_time.screens.dailyday.event
+package com.example.master_of_time.screens.dailyday.event.screen
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -10,11 +10,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
 import com.example.master_of_time.R
-import com.example.master_of_time.database.dailyday.DdEvent
+import com.example.master_of_time.database.ddevent.DdEvent
 import com.example.master_of_time.database.AppDatabase
-import com.example.master_of_time.database.dailyday.DdEventRepository
-import com.example.master_of_time.database.dailyday.OfflineDdEventRepository
+import com.example.master_of_time.database.ddevent.DdEventRepository
+import com.example.master_of_time.database.ddevent.OfflineDdEventRepository
 import com.example.master_of_time.databinding.DdEventFragmentBinding
+import com.example.master_of_time.screens.dailyday.event.DdEventAdapter
+import com.example.master_of_time.screens.dailyday.event.DdEventLayoutManager
+import com.example.master_of_time.screens.dailyday.event.DdEventViewModel
+import com.example.master_of_time.screens.dailyday.event.DdEventViewModelFactory
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -57,7 +61,7 @@ class DdEventFragment : Fragment(), View.OnClickListener {
 
 
         /** init Adapter for RecyclerView*/
-        val ddEventAdapter = DdEventAdapter { DailyDay -> onAdapterClicked(DailyDay) }
+        val ddEventAdapter = DdEventAdapter { DailyDay -> onItemClicked(DailyDay) }
         lifecycle.coroutineScope.launch {
             viewModel.getAllDailyDay().collect() {
                 Timber.v("> collect FlowList for adapter: size = ${it.size}")
@@ -81,12 +85,14 @@ class DdEventFragment : Fragment(), View.OnClickListener {
             }
 
         }
+
+
     }
 
 
 
-    private fun onAdapterClicked(ddEvent: DdEvent) {
-        Timber.i("Item clicked: id = ${ddEvent.id} && title = ${ddEvent.title}")
+    private fun onItemClicked(ddEvent: DdEvent) {
+        Timber.i("> Item clicked: $ddEvent")
         navigateToEditScreen(ddEvent.id)
     }
 
@@ -101,6 +107,8 @@ class DdEventFragment : Fragment(), View.OnClickListener {
             R.id.buttonOne -> {
                 navigateToGroupList()
             }
+
+
         }
     }
 

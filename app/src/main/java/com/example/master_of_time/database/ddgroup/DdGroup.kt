@@ -1,4 +1,4 @@
-package com.example.master_of_time.database.dailydaygroup
+package com.example.master_of_time.database.ddgroup
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

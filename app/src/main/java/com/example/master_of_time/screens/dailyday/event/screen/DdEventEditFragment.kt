@@ -1,4 +1,4 @@
-package com.example.master_of_time.screens.dailyday.event
+package com.example.master_of_time.screens.dailyday.event.screen
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -13,26 +13,22 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.master_of_time.*
-import com.example.master_of_time.database.dailyday.DdEvent
+import com.example.master_of_time.database.ddevent.DdEvent
 import com.example.master_of_time.database.AppDatabase
-import com.example.master_of_time.database.dailyday.OfflineDdEventRepository
-import com.example.master_of_time.database.dailydaygroup.DdGroup
+import com.example.master_of_time.database.ddevent.OfflineDdEventRepository
 import com.example.master_of_time.databinding.DdEventEditFragmentBinding
-import com.example.master_of_time.screens.dailyday.group.DdGroupBottomSheet
-import com.example.master_of_time.screens.dailyday.group.DdGroupItemClickListener
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import timber.log.Timber
+import com.example.master_of_time.screens.dailyday.event.DdEventEditViewModel
+import com.example.master_of_time.screens.dailyday.event.DdEventEditViewModelFactory
 
 
-class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener, DdGroupItemClickListener {
+class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
-    private lateinit var viewModel: DdEventViewModel
+    private lateinit var viewModel: DdEventEditViewModel
     private lateinit var binding: DdEventEditFragmentBinding
     private val navigationArgs: DdEventEditFragmentArgs by navArgs()
 
     /** Data */
-    lateinit var selectedDdEvent: DdEvent
-    lateinit var fetchedDdEvent: DdEvent
+    lateinit var ddEvent: DdEvent
     lateinit var datePickerDialog: DatePickerDialog
     var isAdd: Boolean = false
 
@@ -52,13 +48,10 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
 
         val dailyDayRepository = OfflineDdEventRepository(AppDatabase.getInstance(requireContext()).ddEventDao())
 
-        viewModel = ViewModelProvider(requireActivity(), DdEventViewModelFactory(dailyDayRepository))[DdEventViewModel::class.java]
-
-        retrieveNavigationArgs()
+        viewModel = ViewModelProvider(requireActivity(), DdEventEditViewModelFactory(dailyDayRepository))[DdEventEditViewModel::class.java]
 
 
         /** init Views  */
-//        val bottomSheet: DdGroupBottomSheet(this)
         binding.run {
             submitButton.setOnClickListener(this@DdEventEditFragment)
             date.setOnClickListener(this@DdEventEditFragment)
@@ -66,40 +59,25 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
             ddGroupPicker.setOnClickListener(this@DdEventEditFragment)
         }
 
-
         /** init DatePickerDialog */
         datePickerDialog = DatePickerDialog(requireContext())
         datePickerDialog.setOnDateSetListener(this)
-    }
 
-    private fun retrieveNavigationArgs() {
+        retrieveNavigationArgs()
 
-        isAdd = navigationArgs.isAdd
-        if(isAdd) {
-            selectedDdEvent = DdEvent(title = "")
-            binding.run{
-                date.text = datePickerDialog.datePicker.toDateFormat().toEditable()
-                delete.visibility = View.GONE
+
+        /** init Observer for Navigation */
+        findNavController().currentBackStackEntry?.savedStateHandle?.run {
+
+            getLiveData<Int>("groupId").observe(viewLifecycleOwner) { groupId ->
+                ddEvent.groupId = groupId
             }
 
-        }
-        else {
-            val id = navigationArgs.eventId
-            viewModel.retrieveDailyDay(id).observe(this.viewLifecycleOwner){
-                selectedDdEvent = it
-                bindEdittingItem(selectedDdEvent)
+            getLiveData<String>("groupName").observe(viewLifecycleOwner) { groupName ->
+                binding.ddGroupPicker.text = groupName
             }
         }
     }
-
-
-    private fun bindEdittingItem(ddEvent: DdEvent){
-        binding.apply {
-            title.text = ddEvent.title!!.toEditable()
-            date.text = ddEvent.date.toOffsetDateTime().toDateFormat().toEditable()
-        }
-    }
-
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
         binding.date.text = view.toDateFormat().toEditable()
@@ -108,22 +86,22 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
     override fun onClick(view: View) {
         when(view.id){
             R.id.submitButton -> {
-                Timber.v("> reponsive")
-
-                if(fetchInput()) {
-                    if (isAdd) addItem()
-                    else updateItem()
-                    findNavController().popBackStack()
-
-                } else {
-                    notifyEmptyInput()
+                when(fetchInput()) {
+                    true ->{
+                        when(isAdd) {
+                            true -> viewModel.insertItem(ddEvent)
+                            false -> viewModel.updateItem(ddEvent)
+                        }
+                        findNavController().popBackStack()
+                    }
+                    false -> notifyEmptyInput()
                 }
             }
             R.id.date -> {
                 datePickerDialog.show()
             }
             R.id.delete -> {
-                deleteItem()
+                viewModel.deleteItem(ddEvent)
                 findNavController().popBackStack()
             }
             R.id.ddGroupPicker -> {
@@ -132,6 +110,34 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         }
     }
 
+    private fun retrieveNavigationArgs() {
+
+        isAdd = navigationArgs.isAdd
+        when(isAdd){
+            true -> {
+                ddEvent = DdEvent()
+                bind(ddEvent, View.GONE)
+            }
+            false -> {
+                val id = navigationArgs.eventId
+                viewModel.retrieveDailyDay(id).observe(this.viewLifecycleOwner) {
+                    ddEvent = it
+                    bind(it)
+                }
+            }
+        }
+    }
+
+
+    private fun bind(ddEvent: DdEvent, deleteVisibility: Int = View.VISIBLE){
+        binding.apply {
+            title.text = ddEvent.title!!.toEditable()
+            date.text = ddEvent.date.toOffsetDateTime().toDateFormat().toEditable()
+            ddGroupPicker.text = viewModel.getGroupName(ddEvent.id)
+
+            delete.visibility = deleteVisibility
+        }
+    }
 
 
 
@@ -141,14 +147,12 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
 
         if(title.isEmpty()) return false
         else {
-            fetchedDdEvent = selectedDdEvent.copy(title = title, date = date)
+            ddEvent = ddEvent.copy(title = title, date = date)
             return true
         }
     }
 
     private fun showGroupPicker() {
-        // https://stackoverflow.com/questions/68021858/how-to-attach-a-listener-with-navigation-components-within-2-fragments
-
         val action = DdEventEditFragmentDirections.actionDdEventEditFragmentToDdGroupBottomSheet()
         requireView().findNavController().navigate(action)
     }
@@ -158,25 +162,6 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun addItem() {
-        viewModel.insertDailyDay(fetchedDdEvent)
-    }
-    private fun updateItem() {
-        viewModel.updateDailyDay(fetchedDdEvent)
-    }
-    private fun deleteItem() {
-        viewModel.deleteDailyDay(selectedDdEvent)
-    }
-
-    fun test(){
-        Timber.d("> test click successful")
-    }
-
-    override fun onTitleClick(item: DdGroup) {
-        Timber.i("> $selectedDdEvent chose group = $item ")
-
-
-    }
 
 }
 

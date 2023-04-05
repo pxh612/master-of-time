@@ -6,7 +6,7 @@
     <data>
         <variable
             name="view"
-            type="com.example.master_of_time.screens.dailyday.event.DdEventFragment" />
+            type="com.example.master_of_time.screens.dailyday.event.screen.DdEventFragment" />
     </data>
 
 

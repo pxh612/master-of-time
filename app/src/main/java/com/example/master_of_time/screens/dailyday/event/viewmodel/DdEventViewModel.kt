@@ -1,8 +1,8 @@
 package com.example.master_of_time.screens.dailyday.event
 
 import androidx.lifecycle.*
-import com.example.master_of_time.database.dailyday.DdEvent
-import com.example.master_of_time.database.dailyday.DdEventRepository
+import com.example.master_of_time.database.ddevent.DdEvent
+import com.example.master_of_time.database.ddevent.DdEventRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -43,6 +43,10 @@ class DdEventViewModel(
         return "databinding string"
 
     }
+
+
+
+
 }
 
 class DdEventViewModelFactory(

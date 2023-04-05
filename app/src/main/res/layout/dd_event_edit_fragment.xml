@@ -6,16 +6,13 @@
     <data>
         <variable
             name="view"
-            type="com.example.master_of_time.screens.dailyday.event.DdEventEditFragment" />
-        <variable
-            name="viewModel"
-            type="com.example.master_of_time.screens.dailyday.event.DdEventViewModel" />
+            type="com.example.master_of_time.screens.dailyday.event.screen.DdEventEditFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".screens.dailyday.event.DdEventEditFragment"
+        tools:context=".screens.dailyday.event.screen.DdEventEditFragment"
         android:padding="@dimen/outerMargin_dialogFragmentDdGroupEdit" >
 
         <EditText
@@ -67,7 +64,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
 
-                android:text="pick"
+                android:text="@string/ddGroupPicker_ddEventEditFragment"
                 android:textSize="20dp"
                 android:id="@+id/ddGroupPicker"/>
 

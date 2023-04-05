@@ -3,8 +3,8 @@ package com.example.master_of_time.screens.dailyday.group
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.master_of_time.database.dailydaygroup.DdGroup
-import com.example.master_of_time.database.dailydaygroup.DdGroupDao
+import com.example.master_of_time.database.ddgroup.DdGroup
+import com.example.master_of_time.database.ddgroup.DdGroupDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -22,10 +22,6 @@ class DdGroupViewModel(
     }
 
     fun getAllDdGroup(): Flow<List<DdGroup>> = ddGroupDao.getAllDdGroupFlow()
-
-    fun testRun(){
-        Timber.d("test viewmodel")
-    }
 
 }
 class DdGroupViewModelFactory(

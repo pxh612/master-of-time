@@ -1,4 +1,4 @@
-package com.example.master_of_time.screens.dailyday.group
+package com.example.master_of_time.screens.dailyday.group.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +10,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.master_of_time.R
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.databinding.DdGroupEditDialogFragmentBinding
+import com.example.master_of_time.screens.dailyday.group.DdGroupViewModel
+import com.example.master_of_time.screens.dailyday.group.DdGroupViewModelFactory
 
 class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
 

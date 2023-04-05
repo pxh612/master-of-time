@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.master_of_time.database.dailydaygroup.DdGroup
+import com.example.master_of_time.database.ddgroup.DdGroup
 import com.example.master_of_time.databinding.DdGroupItemBinding
 import com.example.master_of_time.screens.dailyday.group.DdGroupAdapter.DdGroupAdapterViewHolder as DdGroupAdapterViewHolder
 
@@ -36,7 +36,7 @@ class DdGroupAdapter(
 
             binding.run{
                 title.text = item.name
-                title.setOnClickListener {listener.onTitleClick(item)}
+                title.setOnClickListener { listener.onTitleClick(item) }
             }
         }
     }
@@ -52,3 +52,6 @@ class MyDiffUtil: DiffUtil.ItemCallback<DdGroup>() {
 }
 
 
+interface DdGroupItemClickListener {
+    fun onTitleClick(item: DdGroup)
+}

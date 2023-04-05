@@ -4,12 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.master_of_time.database.dailydaygroup.DdGroup
+import com.example.master_of_time.database.ddgroup.DdGroup
 import com.example.master_of_time.databinding.DdGroupPickerItemBinding
 
+
 class DdGroupPickerAdapter(
-    private val listener: DdGroupItemClickListener
-) : ListAdapter<DdGroup, DdGroupPickerAdapter.MyViewHolder>(MyDiffUtil()) {
+    private val listener: DdGroupPickerListener
+): ListAdapter<DdGroup, DdGroupPickerAdapter.MyViewHolder>(MyDiffUtil()) {
+
+    var pickedPosition: Int? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
@@ -23,20 +26,43 @@ class DdGroupPickerAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item)
+
+        if(position == pickedPosition){
+            holder.binding.isPicked.text = "picked"
+        }
+        else {
+            holder.binding.isPicked.text = ""
+        }
+
+
+        holder.itemView.setOnClickListener {
+            pickedPosition?.let { notifyItemChanged(it) }
+            pickedPosition = position
+            pickedPosition?.let { notifyItemChanged(it) }
+            listener.onItemClick(item)
+        }
     }
+
 
     class MyViewHolder(
         internal val binding: DdGroupPickerItemBinding,
-        private val listener: DdGroupItemClickListener
-    ) : RecyclerView.ViewHolder(binding.root) {
+        private val listener: DdGroupPickerListener,
+    ) : RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: DdGroup) {
 
             binding.run{
                 title.text = item.name
-                title.setOnClickListener {listener.onTitleClick(item)}
+//                itemView.setOnClickListener { listener.onItemClick(item) }
             }
+
         }
     }
 
+
 }
+
+interface DdGroupPickerListener {
+    fun onItemClick(item: DdGroup)
+}
+

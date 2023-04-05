@@ -49,7 +49,7 @@
     </fragment>
     <fragment
         android:id="@+id/ddEventFragment"
-        android:name="com.example.master_of_time.screens.dailyday.event.DdEventFragment"
+        android:name="com.example.master_of_time.screens.dailyday.event.screen.DdEventFragment"
         android:label="dd_event_fragment"
         tools:layout="@layout/dd_event_fragment" >
         <action
@@ -61,7 +61,7 @@
     </fragment>
     <fragment
         android:id="@+id/ddEventEditFragment"
-        android:name="com.example.master_of_time.screens.dailyday.event.DdEventEditFragment"
+        android:name="com.example.master_of_time.screens.dailyday.event.screen.DdEventEditFragment"
         android:label="DdEventEditFragment" >
         <argument
             android:name="isAdd"
@@ -84,10 +84,10 @@
     </fragment>
     <dialog
         android:id="@+id/ddGroupEditDialogFragment"
-        android:name="com.example.master_of_time.screens.dailyday.group.DdGroupEditDialogFragment"
+        android:name="com.example.master_of_time.screens.dailyday.group.dialog.DdGroupEditDialogFragment"
         android:label="DdGroupEditDialogFragment" />
     <dialog
         android:id="@+id/ddGroupBottomSheet"
-        android:name="com.example.master_of_time.screens.dailyday.group.DdGroupBottomSheet"
+        android:name="com.example.master_of_time.screens.dailyday.group.dialog.DdGroupBottomSheet"
         android:label="DdGroupBottomSheet" />
 </navigation>

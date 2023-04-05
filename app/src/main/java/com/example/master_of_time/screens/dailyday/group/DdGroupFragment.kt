@@ -13,8 +13,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.master_of_time.R
 import com.example.master_of_time.database.AppDatabase
-import com.example.master_of_time.database.dailydaygroup.DdGroup
+import com.example.master_of_time.database.ddgroup.DdGroup
 import com.example.master_of_time.databinding.DdGroupFragmentBinding
+import com.example.master_of_time.screens.dailyday.group.dialog.DdGroupEditDialogFragment
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -50,11 +51,10 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListen
             requireActivity(),
             DdGroupViewModelFactory(dataSource)
         )[DdGroupViewModel::class.java]
-        viewModel.testRun()
 
 
         /** init Adapter for RecyclerView*/
-        val ddGroupAdapter = DdGroupPickerAdapter(this)
+        val ddGroupAdapter = DdGroupAdapter(this)
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup()!!.collect() {
                 Timber.v("> collect FlowList for adapter: size = ${it.size}")
@@ -93,7 +93,6 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListen
 
     override fun onTitleClick(item: DdGroup) {
         Timber.i("item = $item")
-
     }
 
 

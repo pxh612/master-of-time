@@ -41,7 +41,7 @@ open class MyTimberDebugTree : Timber.DebugTree() {
 
         // TODO: extract Tag without junk ("DdGroupFragment$onViewCreated.emit")
         val finalTag: String? = createStackElementTag(element)
-        val finalMessage = String.format("%s %s\n    %s ", methodLocation(element), logSearching, message)
+        val finalMessage = String.format("%s %s\n    %s \n", methodLocation(element), logSearching, message)
         Log.println(priority, finalTag, finalMessage)
     }
 

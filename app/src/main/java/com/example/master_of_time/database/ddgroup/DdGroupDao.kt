@@ -1,8 +1,6 @@
-package com.example.master_of_time.database.dailydaygroup
+package com.example.master_of_time.database.ddgroup
 
 import androidx.room.*
-import com.example.master_of_time.database.DatabaseNames
-import com.example.master_of_time.database.dailyday.DdEvent
 import kotlinx.coroutines.flow.Flow
 
 @Dao

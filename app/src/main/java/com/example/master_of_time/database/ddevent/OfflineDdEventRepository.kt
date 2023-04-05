@@ -1,8 +1,11 @@
-package com.example.master_of_time.database.dailyday
+package com.example.master_of_time.database.ddevent
 
 import kotlinx.coroutines.flow.Flow
 
-class OfflineDdEventRepository(private var ddEventDao: DdEventDao) : DdEventRepository {
+class OfflineDdEventRepository(
+    private var ddEventDao: DdEventDao
+    ) : DdEventRepository {
+
     override suspend fun insert(ddEvent: DdEvent) = ddEventDao.insert(ddEvent)
 
     override suspend fun update(ddEvent: DdEvent) = ddEventDao.update(ddEvent)
@@ -16,4 +19,8 @@ class OfflineDdEventRepository(private var ddEventDao: DdEventDao) : DdEventRepo
     override fun getAllDailyDayStream(): Flow<List<DdEvent>> = ddEventDao.getAllDailyDayFlow()
 
     override suspend fun getAllDaylyDay(): List<DdEvent> = ddEventDao.getAllDailyDay()
+
+    override suspend fun getGroupName(id: Int): Flow<String> = ddEventDao.getGroupName(id)
+
+
 }
