@@ -139,10 +139,10 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
             date.text = ddEvent.date.toDateFormat().toEditable()
 
             if(ddEvent.groupId != null) viewModel.getGroupName(ddEvent.groupId)?.observe(viewLifecycleOwner) {
-                Timber.d("Group name fetched: $it")
                 ddGroupPicker.text = it
             }
             else ddGroupPicker.text = getString(R.string.ddGroupPicker_ddEventEditFragment)
+
 
             delete.visibility = deleteVisibility
         }

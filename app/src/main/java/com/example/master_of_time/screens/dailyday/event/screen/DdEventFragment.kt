@@ -56,19 +56,19 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         )[DdEventViewModel::class.java]
 
 
-        val ddEventAdapter = DdEventAdapter { DailyDay -> onItemClicked(DailyDay) }
+
         val displayEventsDdGroupAdapter = DisplayEventsDdGroupAdapter(this)
         lifecycle.coroutineScope.launch {
-            viewModel.getAllDdEvent().collect() {
-                ddEventAdapter.submitList(it)
-            }
-
-            /**
-             * viewModel need ddGroupDao/ddGroupRepository to collect Flow<List<DdGroup>>
-             * Is there a better way of doing this?
-             */
             viewModel.getAllDdGroup().collect() {
+                Timber.d("List<DdGroup>.size() = ${it.size}")
                 displayEventsDdGroupAdapter.submitList(it)
+            }
+        }
+        val ddEventAdapter = DdEventAdapter { DailyDay -> onItemClicked(DailyDay) }
+        lifecycle.coroutineScope.launch {
+            viewModel.getAllDdEvent().collect() {
+                Timber.d("List<DdEvent>.size() = ${it.size}")
+                ddEventAdapter.submitList(it)
             }
         }
 

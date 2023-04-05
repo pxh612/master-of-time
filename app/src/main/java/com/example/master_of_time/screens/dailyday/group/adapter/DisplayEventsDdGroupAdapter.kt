@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DisplayEventsDdGroupItemBinding
+import timber.log.Timber
 
 
 class DisplayEventsDdGroupAdapter(
@@ -24,6 +25,7 @@ class DisplayEventsDdGroupAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        Timber.d("bind viewholder with $position")
         val item = getItem(position)
         holder.bind(item)
     }

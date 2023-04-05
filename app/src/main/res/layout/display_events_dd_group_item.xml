@@ -16,7 +16,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
 
             tools:text="Group's title"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:id="@+id/title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
