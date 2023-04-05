@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.master_of_time.R
 import com.example.master_of_time.database.AppDatabase
-import com.example.master_of_time.database.ddgroup.DdGroup
+import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdGroupFragmentBinding
 import com.example.master_of_time.screens.dailyday.group.dialog.DdGroupEditDialogFragment
 import kotlinx.coroutines.launch
@@ -39,7 +39,7 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListen
         super.onViewCreated(view, savedInstanceState)
         Timber.v("> doing stuff with fragment")
 
-        val dataSource = AppDatabase.getInstance(requireContext()).ddGroupDao()
+        val dataSource = AppDatabase.getInstance(requireContext()).dailyDayDao()
         viewModel = ViewModelProvider(
             requireActivity(),
             DdGroupViewModelFactory(dataSource)

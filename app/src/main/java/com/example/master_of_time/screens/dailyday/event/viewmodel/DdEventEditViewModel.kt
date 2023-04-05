@@ -1,43 +1,43 @@
 package com.example.master_of_time.screens.dailyday.event
 
 import androidx.lifecycle.*
-import com.example.master_of_time.database.ddevent.DdEvent
-import com.example.master_of_time.database.ddevent.DdEventRepository
+import com.example.master_of_time.database.dao.DailyDayDao
+import com.example.master_of_time.database.table.DdEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
 class DdEventEditViewModel(
-    private val ddEventRepository: DdEventRepository
+    private val dailyDayDao: DailyDayDao
 ) : ViewModel(){
 
-    fun retrieveDailyDay(id: Int): LiveData<DdEvent> {
-        return ddEventRepository.getDailyDayStream(id).asLiveData()
+    fun getDdEvent(id: Int): LiveData<DdEvent> {
+        return dailyDayDao.getDdEvent(id).asLiveData()
     }
 
     fun updateItem(ddEvent: DdEvent) {
         viewModelScope.launch(Dispatchers.IO){
-            ddEventRepository.update(ddEvent)
+            dailyDayDao.update(ddEvent)
         }
     }
 
     fun insertItem(ddEvent: DdEvent) {
         Timber.d("> insert new event")
         viewModelScope.launch(Dispatchers.IO){
-            ddEventRepository.insert(ddEvent)
+            dailyDayDao.insert(ddEvent)
         }
     }
 
     fun deleteItem(ddEvent: DdEvent) {
         viewModelScope.launch(Dispatchers.IO){
-            ddEventRepository.delete(ddEvent)
+            dailyDayDao.delete(ddEvent)
         }
     }
 
     fun getGroupName(id: Int?): LiveData<String?>? {
         return id?.let {
-            ddEventRepository.getGroupName(id).asLiveData()
+            dailyDayDao.getGroupName(id).asLiveData()
         }
     }
 
@@ -46,7 +46,7 @@ class DdEventEditViewModel(
 }
 
 class DdEventEditViewModelFactory(
-    private val ddEventRepository: DdEventRepository
+    private val dailyDayDao: DailyDayDao
 ) : ViewModelProvider.Factory {
 
     override fun <T: ViewModel> create(modelClass: Class<T>): T{
@@ -54,7 +54,7 @@ class DdEventEditViewModelFactory(
                 .isAssignableFrom(DdEventEditViewModel::class.java)){
             Timber.v("> create ViewModel")
             @Suppress("UNCHECKED_CAST")
-            return DdEventEditViewModel(ddEventRepository) as T
+            return DdEventEditViewModel(dailyDayDao) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

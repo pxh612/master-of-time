@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
 import com.example.master_of_time.database.AppDatabase
-import com.example.master_of_time.database.ddgroup.DdGroup
+import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdGroupBottomSheetBinding
 import com.example.master_of_time.screens.dailyday.group.PickerDdGroupAdapter
 import com.example.master_of_time.screens.dailyday.group.DdGroupPickerListener
@@ -32,7 +32,7 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), DdGroupPickerListener {
         super.onViewCreated(view, savedInstanceState)
 
 
-        val dataSource = AppDatabase.getInstance(requireContext()).ddGroupDao()
+        val dataSource = AppDatabase.getInstance(requireContext()).dailyDayDao()
 
         viewModel = ViewModelProvider(
             requireActivity(),

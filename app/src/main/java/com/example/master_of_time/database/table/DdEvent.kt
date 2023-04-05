@@ -1,13 +1,10 @@
-package com.example.master_of_time.database.ddevent
+package com.example.master_of_time.database.table
 
 import androidx.room.*
-import com.example.master_of_time.database.DatabaseNames.DD_EVENT_TABLE
-import com.example.master_of_time.database.ddgroup.DdGroup
 import java.time.Instant
 
 
 @Entity(
-    tableName = DD_EVENT_TABLE,
     foreignKeys = arrayOf(
         ForeignKey(
             entity = DdGroup::class,

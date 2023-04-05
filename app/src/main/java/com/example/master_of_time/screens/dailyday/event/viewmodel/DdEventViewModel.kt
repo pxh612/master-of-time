@@ -1,58 +1,34 @@
 package com.example.master_of_time.screens.dailyday.event
 
 import androidx.lifecycle.*
-import com.example.master_of_time.database.ddevent.DdEvent
-import com.example.master_of_time.database.ddevent.DdEventRepository
+import com.example.master_of_time.database.dao.DailyDayDao
+import com.example.master_of_time.database.table.DdEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
 class DdEventViewModel(
-    private val ddEventRepository: DdEventRepository
+    private val dailyDayDao: DailyDayDao
 
 ) : ViewModel(){
 
-    private val _selectedLayout = MutableLiveData<Int>()
-    val selectedLayout: LiveData<Int>
-        get() = _selectedLayout
 
-    fun retrieveDailyDay(id: Int): LiveData<DdEvent> {
-        return ddEventRepository.getDailyDayStream(id).asLiveData()
-    }
-    fun updateDailyDay(ddEvent: DdEvent){
-        viewModelScope.launch(Dispatchers.IO){
-            ddEventRepository.update(ddEvent)
-        }
-    }
-    fun deleteDailyDay(ddEvent: DdEvent){
-        viewModelScope.launch(Dispatchers.IO){
-            ddEventRepository.delete(ddEvent)
-        }
-    }
-    fun insertDailyDay(ddEvent: DdEvent) {
-        viewModelScope.launch(Dispatchers.IO){
-            ddEventRepository.insert(ddEvent)
-        }
-    }
-    fun getAllDdEvent() = ddEventRepository.getAllDailyDayStream()
+    fun getAllDdEvent() = dailyDayDao.getAllDdEvent()
 
-//    fun getAllGroup(): Any {
-//
-//    }
-
+    fun getAllDdGroup() = dailyDayDao.getAllDdGroup()
 
 }
 
 class DdEventViewModelFactory(
-    private val ddEventRepository: DdEventRepository
+    private val dailyDayDao: DailyDayDao
 ) : ViewModelProvider.Factory {
 
     override fun <T: ViewModel> create(modelClass: Class<T>): T{
         if(modelClass.isAssignableFrom(DdEventViewModel::class.java)){
             Timber.v("> create ViewModel")
             @Suppress("UNCHECKED_CAST")
-            return DdEventViewModel(ddEventRepository) as T
+            return DdEventViewModel(dailyDayDao) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

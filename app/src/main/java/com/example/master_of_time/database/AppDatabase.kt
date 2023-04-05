@@ -4,20 +4,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.master_of_time.database.ddevent.DdEvent
-import com.example.master_of_time.database.ddevent.DdEventDao
-import com.example.master_of_time.database.ddgroup.DdGroup
-import com.example.master_of_time.database.ddgroup.DdGroupDao
+import com.example.master_of_time.database.dao.DailyDayDao
+import com.example.master_of_time.database.table.DdEvent
+import com.example.master_of_time.database.table.DdGroup
 
 //@Database(entities = [GardenPlanting::class, Plant::class], version = 1, exportSchema = false)
 // Fatal: need to update the version number
 // Fatal:  FOREIGN KEY constraint failed
 
-@Database(entities = [DdEvent::class, DdGroup::class], version = 8, exportSchema = false)
+@Database(entities = [DdEvent::class, DdGroup::class], version = 9, exportSchema = false)
 abstract class AppDatabase : RoomDatabase(){
 
-    abstract fun ddEventDao(): DdEventDao
-    abstract fun ddGroupDao(): DdGroupDao
+    abstract fun dailyDayDao(): DailyDayDao
 
     companion object{
         @Volatile

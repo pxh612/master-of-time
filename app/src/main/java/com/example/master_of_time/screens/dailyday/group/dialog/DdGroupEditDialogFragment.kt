@@ -10,10 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.master_of_time.R
 import com.example.master_of_time.database.AppDatabase
-import com.example.master_of_time.database.ddevent.DdEvent
-import com.example.master_of_time.database.ddgroup.DdGroup
+import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdGroupEditDialogFragmentBinding
-import com.example.master_of_time.screens.dailyday.event.screen.DdEventEditFragmentArgs
 import com.example.master_of_time.screens.dailyday.group.DdGroupViewModel
 import com.example.master_of_time.screens.dailyday.group.DdGroupViewModelFactory
 import com.example.master_of_time.toEditable
@@ -38,7 +36,7 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dataSource = AppDatabase.getInstance(requireContext()).ddGroupDao()
+        val dataSource = AppDatabase.getInstance(requireContext()).dailyDayDao()
 
         viewModel = ViewModelProvider(
             requireActivity(),

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.master_of_time.database.ddevent.DdEvent
+import com.example.master_of_time.database.table.DdEvent
 
 import com.example.master_of_time.databinding.ItemDailyDayBinding
 import com.example.master_of_time.toDateFormat

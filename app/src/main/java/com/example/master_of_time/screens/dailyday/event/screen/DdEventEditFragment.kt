@@ -13,12 +13,12 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.master_of_time.*
-import com.example.master_of_time.database.ddevent.DdEvent
+import com.example.master_of_time.database.table.DdEvent
 import com.example.master_of_time.database.AppDatabase
-import com.example.master_of_time.database.ddevent.OfflineDdEventRepository
 import com.example.master_of_time.databinding.DdEventEditFragmentBinding
 import com.example.master_of_time.screens.dailyday.event.DdEventEditViewModel
 import com.example.master_of_time.screens.dailyday.event.DdEventEditViewModelFactory
+import timber.log.Timber
 
 
 class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener {
@@ -46,9 +46,9 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dailyDayRepository = OfflineDdEventRepository(AppDatabase.getInstance(requireContext()).ddEventDao())
+        val dailyDayDao = AppDatabase.getInstance(requireContext()).dailyDayDao()
 
-        viewModel = ViewModelProvider(requireActivity(), DdEventEditViewModelFactory(dailyDayRepository))[DdEventEditViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity(), DdEventEditViewModelFactory(dailyDayDao))[DdEventEditViewModel::class.java]
 
 
         /** init Views  */
@@ -110,7 +110,7 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
             }
             false -> {
                 val id = navigationArgs.eventId
-                viewModel.retrieveDailyDay(id).observe(this.viewLifecycleOwner) {
+                viewModel.getDdEvent(id).observe(this.viewLifecycleOwner) {
                     ddEvent = it
                     bind(it)
                 }
@@ -137,10 +137,12 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         binding.apply {
             title.text = ddEvent.title.toEditable()
             date.text = ddEvent.date.toDateFormat().toEditable()
-            viewModel.getGroupName(ddEvent.id)?.observe(viewLifecycleOwner) {
-                if(it.isNullOrEmpty()) ddGroupPicker.text = getString(R.string.ddGroupPicker_ddEventEditFragment)
-                else ddGroupPicker.text = it
+
+            if(ddEvent.groupId != null) viewModel.getGroupName(ddEvent.groupId)?.observe(viewLifecycleOwner) {
+                Timber.d("Group name fetched: $it")
+                ddGroupPicker.text = it
             }
+            else ddGroupPicker.text = getString(R.string.ddGroupPicker_ddEventEditFragment)
 
             delete.visibility = deleteVisibility
         }

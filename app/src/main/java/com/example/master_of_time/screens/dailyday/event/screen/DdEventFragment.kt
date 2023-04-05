@@ -11,11 +11,9 @@ import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.master_of_time.R
-import com.example.master_of_time.database.ddevent.DdEvent
+import com.example.master_of_time.database.table.DdEvent
 import com.example.master_of_time.database.AppDatabase
-import com.example.master_of_time.database.ddevent.DdEventRepository
-import com.example.master_of_time.database.ddevent.OfflineDdEventRepository
-import com.example.master_of_time.database.ddgroup.DdGroup
+import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdEventFragmentBinding
 import com.example.master_of_time.screens.dailyday.event.DdEventAdapter
 import com.example.master_of_time.screens.dailyday.event.DdEventLayoutManager
@@ -30,7 +28,6 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
 
     private lateinit var binding : DdEventFragmentBinding
     private lateinit var viewModel: DdEventViewModel
-    private lateinit var ddEventRepository: DdEventRepository
 
     lateinit var ddEventLayoutManager: DdEventLayoutManager
 
@@ -49,13 +46,13 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ddEventRepository = OfflineDdEventRepository(AppDatabase.getInstance(requireContext()).ddEventDao())
+        val dailyDayDao = AppDatabase.getInstance(requireContext()).dailyDayDao()
         ddEventLayoutManager = DdEventLayoutManager(requireContext())
 
 
         viewModel = ViewModelProvider(
             requireActivity(),
-            DdEventViewModelFactory(ddEventRepository)
+            DdEventViewModelFactory(dailyDayDao)
         )[DdEventViewModel::class.java]
 
 
@@ -63,7 +60,6 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         val displayEventsDdGroupAdapter = DisplayEventsDdGroupAdapter(this)
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdEvent().collect() {
-                Timber.i("List<DdEvent>.size = ${it.size}")
                 ddEventAdapter.submitList(it)
             }
 
@@ -71,9 +67,9 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
              * viewModel need ddGroupDao/ddGroupRepository to collect Flow<List<DdGroup>>
              * Is there a better way of doing this?
              */
-            /*viewModel.getAllDdEvent().collect() {
+            viewModel.getAllDdGroup().collect() {
                 displayEventsDdGroupAdapter.submitList(it)
-            }*/
+            }
         }
 
 
