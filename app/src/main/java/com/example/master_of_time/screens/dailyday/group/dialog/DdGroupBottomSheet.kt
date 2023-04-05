@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.ddgroup.DdGroup
 import com.example.master_of_time.databinding.DdGroupBottomSheetBinding
-import com.example.master_of_time.screens.dailyday.group.DdGroupPickerAdapter
+import com.example.master_of_time.screens.dailyday.group.PickerDdGroupAdapter
 import com.example.master_of_time.screens.dailyday.group.DdGroupPickerListener
 import com.example.master_of_time.screens.dailyday.group.DdGroupViewModel
 import com.example.master_of_time.screens.dailyday.group.DdGroupViewModelFactory
@@ -40,7 +40,7 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), DdGroupPickerListener {
         )[DdGroupViewModel::class.java]
 
         /** init Adapter for RecyclerView*/
-        val adapter = DdGroupPickerAdapter(this)
+        val adapter = PickerDdGroupAdapter(this)
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup().collect() {
                 Timber.d("> collect FlowList for adapter: size = ${it.size}")

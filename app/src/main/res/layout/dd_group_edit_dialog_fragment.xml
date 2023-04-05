@@ -20,7 +20,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
 
-                android:text="Add group"
+                android:text="Group name"
                 android:textSize="@dimen/fontSize_title_dialogFragmentDdGroupEdit"
                 android:textStyle="bold"
                 android:id="@+id/title" />

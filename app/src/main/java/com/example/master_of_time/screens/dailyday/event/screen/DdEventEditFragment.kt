@@ -64,20 +64,10 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         datePickerDialog.setOnDateSetListener(this)
 
         retrieveNavigationArgs()
-
-
-        /** init Observer for Navigation */
-        findNavController().currentBackStackEntry?.savedStateHandle?.run {
-
-            getLiveData<Int>("groupId").observe(viewLifecycleOwner) { groupId ->
-                ddEvent.groupId = groupId
-            }
-
-            getLiveData<String>("groupName").observe(viewLifecycleOwner) { groupName ->
-                binding.ddGroupPicker.text = groupName
-            }
-        }
+        observeNavigationArgs()
     }
+
+
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
         binding.date.text = view.toDateFormat().toEditable()
@@ -128,11 +118,25 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         }
     }
 
+    private fun observeNavigationArgs() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.run {
+
+            getLiveData<Int>("groupId").observe(viewLifecycleOwner) { groupId ->
+                ddEvent.groupId = groupId
+            }
+
+            getLiveData<String>("groupName").observe(viewLifecycleOwner) { groupName ->
+                binding.ddGroupPicker.text = groupName
+            }
+        }
+    }
+
+
 
     private fun bind(ddEvent: DdEvent, deleteVisibility: Int = View.VISIBLE){
         binding.apply {
-            title.text = ddEvent.title!!.toEditable()
-            date.text = ddEvent.date.toOffsetDateTime().toDateFormat().toEditable()
+            title.text = ddEvent.title.toEditable()
+            date.text = ddEvent.date.toDateFormat().toEditable()
             viewModel.getGroupName(ddEvent.id)?.observe(viewLifecycleOwner) {
                 if(it.isNullOrEmpty()) ddGroupPicker.text = getString(R.string.ddGroupPicker_ddEventEditFragment)
                 else ddGroupPicker.text = it
@@ -167,6 +171,7 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
 
 
 }
+
 
 
 

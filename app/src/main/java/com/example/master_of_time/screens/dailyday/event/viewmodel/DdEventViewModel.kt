@@ -10,6 +10,7 @@ import timber.log.Timber
 
 class DdEventViewModel(
     private val ddEventRepository: DdEventRepository
+
 ) : ViewModel(){
 
     private val _selectedLayout = MutableLiveData<Int>()
@@ -34,8 +35,11 @@ class DdEventViewModel(
             ddEventRepository.insert(ddEvent)
         }
     }
-    fun getAllDailyDay() = ddEventRepository.getAllDailyDayStream()
+    fun getAllDdEvent() = ddEventRepository.getAllDailyDayStream()
 
+//    fun getAllGroup(): Any {
+//
+//    }
 
 
 }

@@ -1,8 +1,7 @@
 package com.example.master_of_time.screens.dailyday.group
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.example.master_of_time.database.ddevent.DdEvent
 import com.example.master_of_time.database.ddgroup.DdGroup
 import com.example.master_of_time.database.ddgroup.DdGroupDao
 import kotlinx.coroutines.Dispatchers
@@ -16,14 +15,28 @@ class DdGroupViewModel(
 
     fun insertGroup(name: String) {
         val ddGroup = DdGroup(name = name)
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             ddGroupDao.insert(ddGroup)
         }
     }
 
     fun getAllDdGroup(): Flow<List<DdGroup>> = ddGroupDao.getAllDdGroupFlow()
 
+    fun updateGroup(ddGroup: DdGroup) {
+        viewModelScope.launch(Dispatchers.IO) {
+            ddGroupDao.update(ddGroup)
+        }
+    }
+
+    fun getDdGroupName(groupId: Int): LiveData<String> = ddGroupDao.getGroupName(groupId).asLiveData()
+
+
+
 }
+
+
+
+
 class DdGroupViewModelFactory(
     private val dataSource: DdGroupDao
 ) : ViewModelProvider.Factory {

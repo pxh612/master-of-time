@@ -26,7 +26,9 @@ fun Long.toOffsetDateTime(): OffsetDateTime{
     return Instant.ofEpochSecond(this)
         .atOffset(ZoneOffset.UTC)
 }
-
+fun Long.toDateFormat(): String {
+    return toOffsetDateTime().toDateFormat()
+}
 
 fun OffsetDateTime.toDateFormat(): String{
     return format( DateTimeFormatter.ISO_LOCAL_DATE )

@@ -85,7 +85,16 @@
     <dialog
         android:id="@+id/ddGroupEditDialogFragment"
         android:name="com.example.master_of_time.screens.dailyday.group.dialog.DdGroupEditDialogFragment"
-        android:label="DdGroupEditDialogFragment" />
+        android:label="DdGroupEditDialogFragment" >
+        <argument
+            android:name="isAdd"
+            app:argType="boolean"
+            android:defaultValue="true" />
+        <argument
+            android:name="groupId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </dialog>
     <dialog
         android:id="@+id/ddGroupBottomSheet"
         android:name="com.example.master_of_time.screens.dailyday.group.dialog.DdGroupBottomSheet"

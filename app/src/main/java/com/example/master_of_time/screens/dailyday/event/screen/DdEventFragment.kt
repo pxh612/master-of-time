@@ -6,26 +6,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.master_of_time.R
 import com.example.master_of_time.database.ddevent.DdEvent
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.ddevent.DdEventRepository
 import com.example.master_of_time.database.ddevent.OfflineDdEventRepository
+import com.example.master_of_time.database.ddgroup.DdGroup
 import com.example.master_of_time.databinding.DdEventFragmentBinding
 import com.example.master_of_time.screens.dailyday.event.DdEventAdapter
 import com.example.master_of_time.screens.dailyday.event.DdEventLayoutManager
 import com.example.master_of_time.screens.dailyday.event.DdEventViewModel
 import com.example.master_of_time.screens.dailyday.event.DdEventViewModelFactory
+import com.example.master_of_time.screens.dailyday.group.DisplayEventsDdGroupAdapter
+import com.example.master_of_time.screens.dailyday.group.DisplayEventsDdGroupAdapterListener
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class DdEventFragment : Fragment(), View.OnClickListener {
+class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAdapterListener {
 
     private lateinit var binding : DdEventFragmentBinding
     private lateinit var viewModel: DdEventViewModel
@@ -59,11 +60,20 @@ class DdEventFragment : Fragment(), View.OnClickListener {
 
 
         val ddEventAdapter = DdEventAdapter { DailyDay -> onItemClicked(DailyDay) }
+        val displayEventsDdGroupAdapter = DisplayEventsDdGroupAdapter(this)
         lifecycle.coroutineScope.launch {
-            viewModel.getAllDailyDay().collect() {
-                Timber.i("${it.size}")
+            viewModel.getAllDdEvent().collect() {
+                Timber.i("List<DdEvent>.size = ${it.size}")
                 ddEventAdapter.submitList(it)
             }
+
+            /**
+             * viewModel need ddGroupDao/ddGroupRepository to collect Flow<List<DdGroup>>
+             * Is there a better way of doing this?
+             */
+            /*viewModel.getAllDdEvent().collect() {
+                displayEventsDdGroupAdapter.submitList(it)
+            }*/
         }
 
 
@@ -77,6 +87,7 @@ class DdEventFragment : Fragment(), View.OnClickListener {
 
             groupRecyclerView.run {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = displayEventsDdGroupAdapter
             }
 
             eventRecyclerView.run {
@@ -84,18 +95,19 @@ class DdEventFragment : Fragment(), View.OnClickListener {
                 adapter = ddEventAdapter
             }
 
-
-
         }
 
     }
 
-
+    override fun onItemClick(ddGroup: DdGroup) {
+        Timber.d("Clicked: $ddGroup")
+    }
 
     private fun onItemClicked(ddEvent: DdEvent) {
         Timber.i("> Item clicked: $ddEvent")
         navigateToEditScreen(ddEvent.id)
     }
+
 
     override fun onClick(view: View) {
         Timber.v("> reponsive click on DailyDayFragment ")
@@ -126,6 +138,7 @@ class DdEventFragment : Fragment(), View.OnClickListener {
         val action = DdEventFragmentDirections.actionDdEventFragmentToDdEventEditFragment(false, eventId)
         requireView().findNavController().navigate(action)
     }
+
 }
 
 

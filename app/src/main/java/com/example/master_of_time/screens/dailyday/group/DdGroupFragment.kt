@@ -28,15 +28,9 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListen
 
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.dd_group_fragment,
-            container,
-            false
+            inflater, R.layout.dd_group_fragment, container, false
         )
         return binding.root
     }
@@ -45,7 +39,6 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListen
         super.onViewCreated(view, savedInstanceState)
         Timber.v("> doing stuff with fragment")
 
-        /** Init classes */
         val dataSource = AppDatabase.getInstance(requireContext()).ddGroupDao()
         viewModel = ViewModelProvider(
             requireActivity(),
@@ -53,16 +46,14 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListen
         )[DdGroupViewModel::class.java]
 
 
-        /** init Adapter for RecyclerView*/
         val ddGroupAdapter = DdGroupAdapter(this)
         lifecycle.coroutineScope.launch {
-            viewModel.getAllDdGroup()!!.collect() {
+            viewModel.getAllDdGroup().collect() {
                 Timber.v("> collect FlowList for adapter: size = ${it.size}")
                 ddGroupAdapter.submitList(it)
             }
         }
 
-        /** init View */
         binding.run {
 
             add.setOnClickListener(this@DdGroupFragment)
@@ -75,24 +66,25 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListen
         }
     }
 
-
-
     override fun onClick(view: View) {
-        Timber.v("> reponsive click")
         when (view.id) {
             R.id.back -> findNavController().popBackStack()
-            R.id.add -> showDialog()
+            R.id.add -> navigateAddGroup()
         }
     }
+    override fun onTitleClick(item: DdGroup) {
+        Timber.i("item = $item")
+        navigateEditGroup(item.id)
+    }
 
-    private fun showDialog() {
-        Timber.v("> clicked to show dialogFragment")
-        val action = DdGroupFragmentDirections.actionDdGroupFragmentToDdGroupEditDialogFragment()
+    private fun navigateEditGroup(groupId: Int) {
+        val action = DdGroupFragmentDirections.actionDdGroupFragmentToDdGroupEditDialogFragment(isAdd = false, groupId = groupId)
+        requireView().findNavController().navigate(action)
+    }
+    private fun navigateAddGroup() {
+        val action = DdGroupFragmentDirections.actionDdGroupFragmentToDdGroupEditDialogFragment(isAdd = true)
         requireView().findNavController().navigate(action)
     }
 
-    override fun onTitleClick(item: DdGroup) {
-        Timber.i("item = $item")
-    }
 
 }

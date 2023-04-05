@@ -13,6 +13,8 @@ class DdGroupAdapter(
     private val listener: DdGroupItemClickListener
 ) : ListAdapter<DdGroup, DdGroupAdapterViewHolder>(MyDiffUtil()) {
 
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DdGroupAdapterViewHolder {
         return DdGroupAdapterViewHolder(
             DdGroupItemBinding.inflate(

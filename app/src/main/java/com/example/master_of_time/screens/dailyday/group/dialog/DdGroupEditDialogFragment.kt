@@ -7,20 +7,27 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.master_of_time.R
 import com.example.master_of_time.database.AppDatabase
+import com.example.master_of_time.database.ddevent.DdEvent
+import com.example.master_of_time.database.ddgroup.DdGroup
 import com.example.master_of_time.databinding.DdGroupEditDialogFragmentBinding
+import com.example.master_of_time.screens.dailyday.event.screen.DdEventEditFragmentArgs
 import com.example.master_of_time.screens.dailyday.group.DdGroupViewModel
 import com.example.master_of_time.screens.dailyday.group.DdGroupViewModelFactory
+import com.example.master_of_time.toEditable
 
 class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
+
 
     private lateinit var binding: DdGroupEditDialogFragmentBinding
     private lateinit var viewModel: DdGroupViewModel
 
     /** Data */
     lateinit var name: String
-
+    var isAdd: Boolean = true
+    var groupId: Int? = 0
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -42,6 +49,8 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
             cancel.setOnClickListener(this@DdGroupEditDialogFragment)
             submit.setOnClickListener(this@DdGroupEditDialogFragment)
         }
+        retrieveNavigationArgs()
+
 
     }
 
@@ -51,15 +60,40 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
             R.id.submit -> {
 
                 fetchInput()
+
                 if(name.isEmpty()) findNavController()
                 else{
-                    viewModel.insertGroup(name)
+                    when(isAdd){
+                        true -> viewModel.insertGroup(name)
+                        false -> groupId
+                            ?.let { DdGroup(id = it, name = name) }
+                            ?.let { viewModel.updateGroup(it) }
+                    }
                     findNavController().popBackStack()
                 }
 
             }
         }
+    }
 
+    private fun retrieveNavigationArgs() {
+
+        val navigationArgs: DdGroupEditDialogFragmentArgs by navArgs()
+        isAdd = navigationArgs.isAdd
+        when(isAdd){
+            false -> {
+                groupId = navigationArgs.groupId
+
+                viewModel.getDdGroupName(groupId!!).observe(viewLifecycleOwner) {
+                    binding.name.text = it.toEditable()
+                }
+                binding.submit.text = "OK"
+            }
+            true -> {
+                groupId = null
+                binding.submit.text = "Add"
+            }
+        }
     }
 
     private fun fetchInput() {

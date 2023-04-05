@@ -8,9 +8,9 @@ import com.example.master_of_time.database.ddgroup.DdGroup
 import com.example.master_of_time.databinding.DdGroupPickerItemBinding
 
 
-class DdGroupPickerAdapter(
+class PickerDdGroupAdapter(
     private val listener: DdGroupPickerListener
-): ListAdapter<DdGroup, DdGroupPickerAdapter.MyViewHolder>(MyDiffUtil()) {
+): ListAdapter<DdGroup, PickerDdGroupAdapter.MyViewHolder>(MyDiffUtil()) {
 
     var pickedPosition: Int? = null
 
