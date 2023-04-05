@@ -6,19 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.example.master_of_time.R
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdGroupBottomSheetBinding
-import com.example.master_of_time.screens.dailyday.group.PickerDdGroupAdapter
-import com.example.master_of_time.screens.dailyday.group.DdGroupPickerListener
-import com.example.master_of_time.screens.dailyday.group.DdGroupViewModel
-import com.example.master_of_time.screens.dailyday.group.DdGroupViewModelFactory
+import com.example.master_of_time.screens.dailyday.group.*
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class DdGroupBottomSheet: BottomSheetDialogFragment(), DdGroupPickerListener {
+class DdGroupBottomSheet: BottomSheetDialogFragment(), DdGroupPickerListener, View.OnClickListener {
 
     private lateinit var binding: DdGroupBottomSheetBinding
     private lateinit var viewModel: DdGroupViewModel
@@ -52,14 +51,32 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), DdGroupPickerListener {
             recyclerView.run{
                 this.adapter = adapter
             }
+            addGroup.setOnClickListener(this@DdGroupBottomSheet)
         }
-
     }
-
+    override fun onClick(view: View) {
+        when(view.id){
+            R.id.addGroup -> {
+                navigateAddGroup()
+            }
+        }
+    }
     override fun onItemClick(item: DdGroup) {
         Timber.i("> picked $item")
         findNavController().previousBackStackEntry?.savedStateHandle?.set("groupId", item.id)
         findNavController().previousBackStackEntry?.savedStateHandle?.set("groupName", item.name)
     }
+
+    private fun navigateAddGroup() {
+        Timber.e("java.lang.IllegalStateException: " +
+                "View androidx.constraintlayout.widget.ConstraintLayout" +
+                "{bcc487 V.E...... ........ 0,0-1080,808} " +
+                "does not have a NavController set")
+        val action = DdGroupBottomSheetDirections.actionDdGroupBottomSheetToDdGroupEditDialogFragment(isAdd = true)
+        requireView().findNavController().navigate(action)
+    }
+
+
+
 
 }

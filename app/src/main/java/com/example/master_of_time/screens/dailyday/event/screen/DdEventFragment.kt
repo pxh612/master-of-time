@@ -90,9 +90,7 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
                 layoutManager = ddEventLayoutManager.value
                 adapter = ddEventAdapter
             }
-
         }
-
     }
 
     override fun onDdGroupItemClick(ddGroup: DdGroup) {

@@ -98,5 +98,9 @@
     <dialog
         android:id="@+id/ddGroupBottomSheet"
         android:name="com.example.master_of_time.screens.dailyday.group.dialog.DdGroupBottomSheet"
-        android:label="DdGroupBottomSheet" />
+        android:label="DdGroupBottomSheet" >
+        <action
+            android:id="@+id/action_ddGroupBottomSheet_to_ddGroupEditDialogFragment"
+            app:destination="@id/ddGroupEditDialogFragment" />
+    </dialog>
 </navigation>
