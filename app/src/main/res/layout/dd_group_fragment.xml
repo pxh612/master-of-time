@@ -64,7 +64,7 @@
             android:layout_marginStart="@dimen/marginLeft_back_fragmentDailyDayGroup"
 
             android:scrollbars="vertical"
-            android:id="@+id/recylerView" />
+            android:id="@+id/groupRecyclerView" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

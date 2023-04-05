@@ -18,7 +18,7 @@ class OfflineDdEventRepository(
 
     override fun getAllDailyDayStream(): Flow<List<DdEvent>> = ddEventDao.getAllDailyDayFlow()
 
-    override suspend fun getAllDaylyDay(): List<DdEvent> = ddEventDao.getAllDailyDay()
+    override suspend fun getAllDdEvent(): List<DdEvent> = ddEventDao.getAllDailyDay()
 
     override fun getGroupName(id: Int): Flow<String> = ddEventDao.getGroupName(id)
 

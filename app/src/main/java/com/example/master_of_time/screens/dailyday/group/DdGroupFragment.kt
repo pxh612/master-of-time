@@ -68,7 +68,7 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListen
             add.setOnClickListener(this@DdGroupFragment)
             back.setOnClickListener(this@DdGroupFragment)
 
-            recylerView.run{
+            groupRecyclerView.run{
                 adapter = ddGroupAdapter
                 layoutManager = LinearLayoutManager(context)
             }
@@ -94,6 +94,5 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListen
     override fun onTitleClick(item: DdGroup) {
         Timber.i("item = $item")
     }
-
 
 }

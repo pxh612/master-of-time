@@ -6,9 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.master_of_time.R
 import com.example.master_of_time.database.ddevent.DdEvent
 import com.example.master_of_time.database.AppDatabase
@@ -36,10 +39,7 @@ class DdEventFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.dd_event_fragment,
-            container,
-            false
+            inflater, R.layout.dd_event_fragment, container, false
         )
         return binding.root
     }
@@ -48,35 +48,26 @@ class DdEventFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /** init Custom Classes */
         ddEventRepository = OfflineDdEventRepository(AppDatabase.getInstance(requireContext()).ddEventDao())
         ddEventLayoutManager = DdEventLayoutManager(requireContext())
 
 
-        /** init ViewModel */
         viewModel = ViewModelProvider(
             requireActivity(),
             DdEventViewModelFactory(ddEventRepository)
         )[DdEventViewModel::class.java]
 
 
-        /** init Adapter for RecyclerView*/
         val ddEventAdapter = DdEventAdapter { DailyDay -> onItemClicked(DailyDay) }
         lifecycle.coroutineScope.launch {
             viewModel.getAllDailyDay().collect() {
-                Timber.v("> collect FlowList for adapter: size = ${it.size}")
+                Timber.i("${it.size}")
                 ddEventAdapter.submitList(it)
             }
         }
 
 
-        /** init View */
         binding.run {
-
-            recylerView.run {
-                layoutManager = ddEventLayoutManager.value
-                adapter = ddEventAdapter
-            }
 
             header.run {
                 add.setOnClickListener(this@DdEventFragment)
@@ -84,8 +75,18 @@ class DdEventFragment : Fragment(), View.OnClickListener {
                 buttonOne.setOnClickListener(this@DdEventFragment)
             }
 
-        }
+            groupRecyclerView.run {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            }
 
+            eventRecyclerView.run {
+                layoutManager = ddEventLayoutManager.value
+                adapter = ddEventAdapter
+            }
+
+
+
+        }
 
     }
 
@@ -102,7 +103,7 @@ class DdEventFragment : Fragment(), View.OnClickListener {
             R.id.add -> navigateToAddScreen()
             R.id.layout -> {
                 ddEventLayoutManager.changeLayout()
-                binding.recylerView.layoutManager = ddEventLayoutManager.value
+                binding.eventRecyclerView.layoutManager = ddEventLayoutManager.value
             }
             R.id.buttonOne -> {
                 navigateToGroupList()

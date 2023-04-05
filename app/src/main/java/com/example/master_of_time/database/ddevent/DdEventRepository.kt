@@ -13,7 +13,7 @@ interface DdEventRepository {
 
     suspend fun getDdEvent(id: Int): DdEvent
 
-    suspend fun getAllDaylyDay(): List<DdEvent>
+    suspend fun getAllDdEvent(): List<DdEvent>
 
     fun getGroupName(id: Int): Flow<String>
 

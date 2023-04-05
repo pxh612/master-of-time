@@ -24,15 +24,22 @@
                 layout="@layout/layout_daily_day_header"
                 android:id="@+id/header"/>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/header"
+
+                android:id="@+id/groupRecyclerView" />
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/header"
+                app:layout_constraintTop_toBottomOf="@id/groupRecyclerView"
                 app:layout_constraintVertical_bias="0"
 
                 android:scrollbars="vertical"
-                android:id="@+id/recylerView" />
+                android:id="@+id/eventRecyclerView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
