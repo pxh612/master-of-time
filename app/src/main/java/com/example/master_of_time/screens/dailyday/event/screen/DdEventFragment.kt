@@ -60,14 +60,14 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         val displayEventsDdGroupAdapter = DisplayEventsDdGroupAdapter(this)
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup().collect() {
-                Timber.d("List<DdGroup>.size() = ${it.size}")
+                Timber.i("List<DdGroup>.size() = ${it.size}")
                 displayEventsDdGroupAdapter.submitList(it)
             }
         }
         val ddEventAdapter = DdEventAdapter { DailyDay -> onItemClicked(DailyDay) }
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdEvent().collect() {
-                Timber.d("List<DdEvent>.size() = ${it.size}")
+                Timber.i("List<DdEvent>.size() = ${it.size}")
                 ddEventAdapter.submitList(it)
             }
         }
@@ -95,8 +95,9 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
 
     }
 
-    override fun onItemClick(ddGroup: DdGroup) {
+    override fun onDdGroupItemClick(ddGroup: DdGroup) {
         Timber.d("Clicked: $ddGroup")
+        Timber.w("TODO: Show only event belonging group")
     }
 
     private fun onItemClicked(ddEvent: DdEvent) {

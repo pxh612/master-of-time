@@ -1,12 +1,13 @@
 package com.example.master_of_time.screens.dailyday.group
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.master_of_time.R
 import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DisplayEventsDdGroupItemBinding
-import timber.log.Timber
 
 
 class DisplayEventsDdGroupAdapter(
@@ -25,9 +26,19 @@ class DisplayEventsDdGroupAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        Timber.d("bind viewholder with $position")
         val item = getItem(position)
         holder.bind(item)
+
+        when(position){
+            pickedPosition -> holder.binding.name.setTextColor(Color.YELLOW)
+            else -> holder.binding.name.setTextColor(Color.WHITE)
+        }
+
+        holder.itemView.setOnClickListener {
+            pickedPosition?.let { notifyItemChanged(it) }
+            pickedPosition = position
+            pickedPosition?.let { notifyItemChanged(it) }
+        }
     }
 
 
@@ -39,8 +50,8 @@ class DisplayEventsDdGroupAdapter(
         fun bind(item: DdGroup) {
 
             binding.run{
-                title.text = item.name
-                itemView.setOnClickListener { listener.onItemClick(item) }
+                name.text = item.name
+                itemView.setOnClickListener { listener.onDdGroupItemClick(item) }
             }
 
         }
@@ -50,6 +61,6 @@ class DisplayEventsDdGroupAdapter(
 }
 
 interface DisplayEventsDdGroupAdapterListener {
-    fun onItemClick(item: DdGroup)
+    fun onDdGroupItemClick(item: DdGroup)
 }
 

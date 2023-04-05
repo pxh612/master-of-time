@@ -27,19 +27,15 @@ class PickerDdGroupAdapter(
         val item = getItem(position)
         holder.bind(item)
 
-        if(position == pickedPosition){
-            holder.binding.isPicked.text = "picked"
+        when(position){
+            pickedPosition -> holder.binding.isPicked.text = "picked"
+            else -> holder.binding.isPicked.text = ""
         }
-        else {
-            holder.binding.isPicked.text = ""
-        }
-
 
         holder.itemView.setOnClickListener {
             pickedPosition?.let { notifyItemChanged(it) }
             pickedPosition = position
             pickedPosition?.let { notifyItemChanged(it) }
-            listener.onItemClick(item)
         }
     }
 
@@ -53,7 +49,7 @@ class PickerDdGroupAdapter(
 
             binding.run{
                 title.text = item.name
-//                itemView.setOnClickListener { listener.onItemClick(item) }
+                itemView.setOnClickListener { listener.onItemClick(item) }
             }
 
         }
