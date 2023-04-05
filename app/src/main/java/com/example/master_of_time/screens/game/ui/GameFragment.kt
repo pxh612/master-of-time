@@ -39,8 +39,6 @@ class GameFragment : Fragment(), View.OnClickListener {
         Timber.v("enter...")
 
         /** init ViewModel */
-//        viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
-//        viewModel = activity.run(ViewModelProviders.of(this).get(GameViewModel::class.java))
         viewModel = ViewModelProvider(requireActivity())[GameViewModel::class.java]
 
 

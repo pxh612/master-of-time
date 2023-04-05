@@ -11,7 +11,7 @@ interface DdEventRepository {
 
     suspend fun delete(ddEvent: DdEvent)
 
-    suspend fun getDailyDay(id: Int): DdEvent
+    suspend fun getDdEvent(id: Int): DdEvent
 
     suspend fun getAllDaylyDay(): List<DdEvent>
 
@@ -20,6 +20,5 @@ interface DdEventRepository {
     fun getDailyDayStream(id: Int): Flow<DdEvent>
 
     fun getAllDailyDayStream(): Flow<List<DdEvent>>
-
 
 }

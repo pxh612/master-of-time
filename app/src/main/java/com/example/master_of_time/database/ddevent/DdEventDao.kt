@@ -30,10 +30,13 @@ interface DdEventDao {
 
     @Query(
         """
-            SELECT DdGroup.name
-            FROM DdGroup
-            WHERE id = :id 
-                AND groupId = DdGroup.id
+            SELECT g.name
+            
+            FROM $DD_EVENT_TABLE AS e
+            LEFT JOIN DdGroup AS g
+                ON e.groupId = g.id
+            
+            WHERE e.id = :id 
         """
     )
     fun getGroupName(id: Int): Flow<String>

@@ -108,7 +108,6 @@ class DdEventFragment : Fragment(), View.OnClickListener {
                 navigateToGroupList()
             }
 
-
         }
     }
 

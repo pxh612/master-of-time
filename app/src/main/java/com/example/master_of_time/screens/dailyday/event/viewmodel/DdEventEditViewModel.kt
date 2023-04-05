@@ -35,7 +35,7 @@ class DdEventEditViewModel(
         }
     }
 
-    fun getGroupName(id: Int?): LiveData<String>? {
+    fun getGroupName(id: Int?): LiveData<String?>? {
         return id?.let {
             ddEventRepository.getGroupName(id).asLiveData()
         }
