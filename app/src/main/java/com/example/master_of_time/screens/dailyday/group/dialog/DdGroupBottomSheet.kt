@@ -39,7 +39,7 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), DdGroupPickerListener, Vi
         )[DdGroupViewModel::class.java]
 
         /** init Adapter for RecyclerView*/
-        val adapter = PickerDdGroupAdapter(this)
+        val adapter = PickDdGroupAdapter(this)
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup().collect() {
                 Timber.d("> collect FlowList for adapter: size = ${it.size}")

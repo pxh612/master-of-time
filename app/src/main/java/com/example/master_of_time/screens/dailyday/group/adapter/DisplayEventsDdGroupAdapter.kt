@@ -35,7 +35,7 @@ class DisplayEventsDdGroupAdapter(
 
         holder.itemView.setOnClickListener {
             val lastPickedPosition = pickedPosition
-            var pickedGroupId: Int? = null
+            var pickedGroupId: Int?
 
             when(position) {
                 pickedPosition -> {

@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.master_of_time.R
 import com.example.master_of_time.database.table.DdEvent
 import com.example.master_of_time.database.AppDatabase
-import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdEventFragmentBinding
 import com.example.master_of_time.screens.dailyday.event.DdEventListAdapter
 import com.example.master_of_time.screens.dailyday.event.DdEventLayoutManager
@@ -83,13 +82,15 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
                 layoutManager = ddEventLayoutManager.value
                 adapter = ddEventListAdapter
             }
+
+            noEventLayout.setOnClickListener(this@DdEventFragment)
         }
     }
 
     override fun onClick(view: View) {
         Timber.v("> reponsive click on DailyDayFragment ")
         when(view.id){
-            R.id.add -> navigateToAddScreen()
+            R.id.add -> navigateToAddDdEvent()
             R.id.layout -> {
                 ddEventLayoutManager.changeLayout()
                 binding.eventRecyclerView.layoutManager = ddEventLayoutManager.value
@@ -97,34 +98,32 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
             R.id.buttonOne -> {
                 navigateToGroupList()
             }
+            R.id.noEventLayout -> navigateToAddDdEvent()
 
         }
     }
 
     override fun onUpdate_PickedDdGroupId_DdEventListAdapter(groupId: Int?) {
-        when(groupId){
-            null -> {
-                lifecycle.coroutineScope.launch {
-                    viewModel.getAllDdEvent().collect() {
-                        ddEventListAdapter.submitList(it)
-                    }
+        lifecycle.coroutineScope.launch {
+            when (groupId) {
+                null -> viewModel.getAllDdEvent().collect() {
+                    ddEventListAdapter.submitList(it)
+                    onUpdate_NoEventLayout_DdEventListSize(it.size)
+
                 }
-            }
-            else -> {
-                lifecycle.coroutineScope.launch {
-                    viewModel.getDdEventListByGroupId(groupId).collect() {
-                        ddEventListAdapter.submitList(it)
-                    }
+
+                else -> viewModel.getDdEventListByGroupId(groupId).collect() {
+                    ddEventListAdapter.submitList(it)
+                    onUpdate_NoEventLayout_DdEventListSize(it.size)
                 }
             }
         }
     }
-
-
-
-
-    private fun updateEventListAdapter(ddGroup: DdGroup) {
-
+    fun onUpdate_NoEventLayout_DdEventListSize(listSize: Int) {
+        when(listSize){
+            0 -> binding.noEventLayout.visibility = View.VISIBLE
+            else -> binding.noEventLayout.visibility = View.GONE
+        }
     }
 
     private fun onItemClicked(ddEvent: DdEvent) {
@@ -140,7 +139,7 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         requireView().findNavController().navigate(action)
     }
 
-    private fun navigateToAddScreen() {
+    private fun navigateToAddDdEvent() {
         val action = DdEventFragmentDirections.actionDdEventFragmentToDdEventEditFragment(true)
         requireView().findNavController().navigate(action)
     }

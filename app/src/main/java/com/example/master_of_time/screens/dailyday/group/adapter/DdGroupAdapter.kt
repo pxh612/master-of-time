@@ -37,8 +37,8 @@ class DdGroupAdapter(
         fun bind(item: DdGroup) {
 
             binding.run{
-                title.text = item.name
-                title.setOnClickListener { listener.onTitleClick(item) }
+                groupName.text = "$item.name ${693}"
+                groupName.setOnClickListener { listener.onTitleClick(item) }
             }
         }
     }

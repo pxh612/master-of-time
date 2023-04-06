@@ -46,6 +46,7 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListen
         )[DdGroupViewModel::class.java]
 
 
+        // Update
         val ddGroupAdapter = DdGroupAdapter(this)
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup().collect() {

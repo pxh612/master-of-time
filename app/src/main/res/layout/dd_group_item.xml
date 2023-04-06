@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.master_of_time.screens.dailyday.group.DdGroupViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/layoutHeight_layout_adapterDailyday">
@@ -15,9 +21,9 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginStart="@dimen/marginLeft_title_adapterDailyDay"
 
-            tools:text="Group's title"
+            android:text="@{viewModel.groupName_DdGroupItem_Display}"
             android:textSize="@dimen/textSize_adapterDailyDay"
-            android:id="@+id/title" />
+            android:id="@+id/groupName" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -12,6 +12,16 @@ class DdGroupViewModel(
     private val dailyDayDao: DailyDayDao
     ): ViewModel() {
 
+
+
+    private val _groupName_DdGroupItem_Display = MutableLiveData<String>()
+    val groupName_DdGroupItem_Display: LiveData<String>
+        get() = _groupName_DdGroupItem_Display
+
+    init {
+        _groupName_DdGroupItem_Display.value = "test 275"
+    }
+
     fun insertGroup(name: String) {
         val ddGroup = DdGroup(name = name)
         viewModelScope.launch(Dispatchers.IO) {
@@ -28,8 +38,7 @@ class DdGroupViewModel(
     }
 
     fun getDdGroupName(groupId: Int): LiveData<String> = dailyDayDao.getGroupName(groupId).asLiveData()
-
-
+    
 
 }
 

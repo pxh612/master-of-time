@@ -19,4 +19,6 @@
     <string name="cancel_dialogFragmentDdGroupEdit">CANCEL</string>
     <string name="hint_name_dialogFragmentDdGroupEdit">Group Name</string>
     <string name="ddGroupPicker_ddEventEditFragment">GroupName…</string>
+    <string name="noEvent_ddEventFragment">No event</string>
+    <string name="addEvent_ddEventFragment">Add event</string>
 </resources>

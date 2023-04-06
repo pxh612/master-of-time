@@ -8,9 +8,9 @@ import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdGroupPickerItemBinding
 
 
-class PickerDdGroupAdapter(
+class PickDdGroupAdapter(
     private val listener: DdGroupPickerListener
-): ListAdapter<DdGroup, PickerDdGroupAdapter.MyViewHolder>(MyDiffUtil()) {
+): ListAdapter<DdGroup, PickDdGroupAdapter.MyViewHolder>(MyDiffUtil()) {
 
     var pickedPosition: Int? = null
 
@@ -36,6 +36,8 @@ class PickerDdGroupAdapter(
             pickedPosition?.let { notifyItemChanged(it) }
             pickedPosition = position
             pickedPosition?.let { notifyItemChanged(it) }
+
+            listener.onItemClick(item)
         }
     }
 
@@ -49,13 +51,11 @@ class PickerDdGroupAdapter(
 
             binding.run{
                 title.text = item.name
-                itemView.setOnClickListener { listener.onItemClick(item) }
+
             }
 
         }
     }
-
-
 }
 
 interface DdGroupPickerListener {
