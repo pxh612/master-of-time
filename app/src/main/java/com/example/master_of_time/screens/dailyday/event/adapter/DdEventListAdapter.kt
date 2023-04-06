@@ -11,9 +11,9 @@ import com.example.master_of_time.databinding.ItemDailyDayBinding
 import com.example.master_of_time.toDateFormat
 import com.example.master_of_time.toOffsetDateTime
 
-class DdEventAdapter(
+class DdEventListAdapter(
     private val onItemClicked: (DdEvent) -> Unit
-) : ListAdapter<DdEvent, DdEventAdapter.DailyDayViewHolder>(MyDiffUtil()) {
+) : ListAdapter<DdEvent, DdEventListAdapter.DailyDayViewHolder>(MyDiffUtil()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyDayViewHolder {

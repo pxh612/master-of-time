@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.master_of_time.R
 import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DisplayEventsDdGroupItemBinding
 
@@ -35,9 +34,24 @@ class DisplayEventsDdGroupAdapter(
         }
 
         holder.itemView.setOnClickListener {
+            val lastPickedPosition = pickedPosition
+            var pickedGroupId: Int? = null
+
+            when(position) {
+                pickedPosition -> {
+                    pickedPosition = null
+                    pickedGroupId = null
+                }
+                else -> {
+                    pickedPosition = position
+                    pickedGroupId = item.id
+                }
+            }
+
+            lastPickedPosition?.let { notifyItemChanged(it) }
             pickedPosition?.let { notifyItemChanged(it) }
-            pickedPosition = position
-            pickedPosition?.let { notifyItemChanged(it) }
+
+            listener.onUpdate_PickedDdGroupId_DdEventListAdapter(pickedGroupId)
         }
     }
 
@@ -51,9 +65,7 @@ class DisplayEventsDdGroupAdapter(
 
             binding.run{
                 name.text = item.name
-                itemView.setOnClickListener { listener.onDdGroupItemClick(item) }
             }
-
         }
     }
 
@@ -61,6 +73,6 @@ class DisplayEventsDdGroupAdapter(
 }
 
 interface DisplayEventsDdGroupAdapterListener {
-    fun onDdGroupItemClick(item: DdGroup)
+    fun onUpdate_PickedDdGroupId_DdEventListAdapter(groupId: Int?)
 }
 

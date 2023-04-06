@@ -25,6 +25,12 @@ interface DailyDayDao {
     @Query("SELECT * FROM DdEvent ORDER BY id ASC")
     fun getAllDdEvent(): Flow<List<DdEvent>>
 
+    @Query("""
+            SELECT * FROM DdEvent
+            WHERE groupId = :groupId
+        """)
+    fun getDdEventListByGroupId(groupId: Int): Flow<List<DdEvent>>
+
     /** DdGroup **/
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

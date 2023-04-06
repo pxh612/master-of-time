@@ -15,7 +15,7 @@ import com.example.master_of_time.database.table.DdEvent
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdEventFragmentBinding
-import com.example.master_of_time.screens.dailyday.event.DdEventAdapter
+import com.example.master_of_time.screens.dailyday.event.DdEventListAdapter
 import com.example.master_of_time.screens.dailyday.event.DdEventLayoutManager
 import com.example.master_of_time.screens.dailyday.event.DdEventViewModel
 import com.example.master_of_time.screens.dailyday.event.DdEventViewModelFactory
@@ -29,8 +29,9 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
     private lateinit var binding : DdEventFragmentBinding
     private lateinit var viewModel: DdEventViewModel
 
+    /** views */
     lateinit var ddEventLayoutManager: DdEventLayoutManager
-
+    val ddEventListAdapter = DdEventListAdapter { onItemClicked(it) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,18 +61,10 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         val displayEventsDdGroupAdapter = DisplayEventsDdGroupAdapter(this)
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup().collect() {
-                Timber.i("List<DdGroup>.size() = ${it.size}")
                 displayEventsDdGroupAdapter.submitList(it)
             }
         }
-        val ddEventAdapter = DdEventAdapter { DailyDay -> onItemClicked(DailyDay) }
-        lifecycle.coroutineScope.launch {
-            viewModel.getAllDdEvent().collect() {
-                Timber.i("List<DdEvent>.size() = ${it.size}")
-                ddEventAdapter.submitList(it)
-            }
-        }
-
+        onUpdate_PickedDdGroupId_DdEventListAdapter(groupId = null)
 
         binding.run {
 
@@ -88,21 +81,10 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
 
             eventRecyclerView.run {
                 layoutManager = ddEventLayoutManager.value
-                adapter = ddEventAdapter
+                adapter = ddEventListAdapter
             }
         }
     }
-
-    override fun onDdGroupItemClick(ddGroup: DdGroup) {
-        Timber.d("Clicked: $ddGroup")
-        Timber.w("TODO: Show only event belonging group")
-    }
-
-    private fun onItemClicked(ddEvent: DdEvent) {
-        Timber.i("> Item clicked: $ddEvent")
-        navigateToEditScreen(ddEvent.id)
-    }
-
 
     override fun onClick(view: View) {
         Timber.v("> reponsive click on DailyDayFragment ")
@@ -119,6 +101,40 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         }
     }
 
+    override fun onUpdate_PickedDdGroupId_DdEventListAdapter(groupId: Int?) {
+        when(groupId){
+            null -> {
+                lifecycle.coroutineScope.launch {
+                    viewModel.getAllDdEvent().collect() {
+                        ddEventListAdapter.submitList(it)
+                    }
+                }
+            }
+            else -> {
+                lifecycle.coroutineScope.launch {
+                    viewModel.getDdEventListByGroupId(groupId).collect() {
+                        ddEventListAdapter.submitList(it)
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+    private fun updateEventListAdapter(ddGroup: DdGroup) {
+
+    }
+
+    private fun onItemClicked(ddEvent: DdEvent) {
+        Timber.i("> Item clicked: $ddEvent")
+        navigateToEditScreen(ddEvent.id)
+    }
+
+
+
+
     private fun navigateToGroupList() {
         val action = DdEventFragmentDirections.actionDdEventFragmentToDdGroupFragment()
         requireView().findNavController().navigate(action)
@@ -133,6 +149,7 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         val action = DdEventFragmentDirections.actionDdEventFragmentToDdEventEditFragment(false, eventId)
         requireView().findNavController().navigate(action)
     }
+
 
 }
 

@@ -18,6 +18,8 @@ class DdEventViewModel(
 
     fun getAllDdGroup() = dailyDayDao.getAllDdGroup()
 
+    fun getDdEventListByGroupId(groupId: Int) = dailyDayDao.getDdEventListByGroupId(groupId)
+
 }
 
 class DdEventViewModelFactory(
