@@ -39,6 +39,10 @@ class DdGroupAdapter(
         holder.bind(item)
     }
 
+    fun testReponse(){
+        Timber.d("> hello from the other side")
+    }
+
     class MyViewHolder(
         internal val binding: DdGroupItemBinding,
         private val viewModel: DdGroupViewModel,

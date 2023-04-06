@@ -18,7 +18,6 @@ import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.databinding.DdEventEditFragmentBinding
 import com.example.master_of_time.screens.dailyday.event.DdEventEditViewModel
 import com.example.master_of_time.screens.dailyday.event.DdEventEditViewModelFactory
-import timber.log.Timber
 
 
 class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener {
@@ -31,7 +30,6 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
     lateinit var ddEvent: DdEvent
     lateinit var datePickerDialog: DatePickerDialog
     var isAdd: Boolean = false
-
 
 
     override fun onCreateView(
@@ -50,8 +48,6 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
 
         viewModel = ViewModelProvider(requireActivity(), DdEventEditViewModelFactory(dailyDayDao))[DdEventEditViewModel::class.java]
 
-
-        /** init Views  */
         binding.run {
             submitButton.setOnClickListener(this@DdEventEditFragment)
             date.setOnClickListener(this@DdEventEditFragment)
@@ -95,7 +91,7 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
                 findNavController().popBackStack()
             }
             R.id.ddGroupPicker -> {
-                showGroupPicker()
+                navigateGroupPicker()
             }
         }
     }
@@ -162,7 +158,7 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         }
     }
 
-    private fun showGroupPicker() {
+    private fun navigateGroupPicker() {
         val action = DdEventEditFragmentDirections.actionDdEventEditFragmentToDdGroupBottomSheet()
         requireView().findNavController().navigate(action)
     }
@@ -171,7 +167,6 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         val message = "Empty title!"
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
-
 
 }
 

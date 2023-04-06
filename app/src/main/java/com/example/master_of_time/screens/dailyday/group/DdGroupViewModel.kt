@@ -30,32 +30,6 @@ class DdGroupViewModel(
     fun getDdGroupName(groupId: Int): LiveData<String> = dailyDayDao.getGroupName(groupId).asLiveData()
 
     fun getDdEventCount_byGroupId(groupId: Int) = dailyDayDao.getDdEventCount_byGroupId(groupId).asLiveData()
-
-    suspend fun getDdEventCount_byGroupId_NoFlow(groupId: Int): Int = dailyDayDao.getDdEventCount_byGroupId_NoFlow(groupId)
-
-
-
-//    fun displayGroupName_DdGroupItem(item: DdGroup): String {
-//
-//        var resultString: String = ""
-//        var count: Int = 0
-//        viewModelScope.launch(Dispatchers.IO) {
-//            count = getDdEventCount_byGroupId(item.id)
-//            Timber.d("count = $count")
-//            Timber.d("item = $item")
-//            resultString = "${item.name} ($count)"
-//            resultString
-//        }
-//
-//
-//
-//        return resultString
-//    }
-
-
-
-
-
 }
 
 class DdGroupViewModelFactory(

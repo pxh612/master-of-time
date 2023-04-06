@@ -2,18 +2,17 @@ package com.example.master_of_time.screens.dailyday.event
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.master_of_time.database.table.DdEvent
 
 import com.example.master_of_time.databinding.ItemDailyDayBinding
+import com.example.master_of_time.screens.dailyday.event.adapter.DdEventDiffUtil
 import com.example.master_of_time.toDateFormat
-import com.example.master_of_time.toOffsetDateTime
 
 class DdEventListAdapter(
     private val onItemClicked: (DdEvent) -> Unit
-) : ListAdapter<DdEvent, DdEventListAdapter.DailyDayViewHolder>(MyDiffUtil()) {
+) : ListAdapter<DdEvent, DdEventListAdapter.DailyDayViewHolder>(DdEventDiffUtil()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyDayViewHolder {
@@ -50,12 +49,5 @@ class DdEventListAdapter(
         }
     }
     
-}
-
-class MyDiffUtil: DiffUtil.ItemCallback<DdEvent>() {
-
-    override fun areItemsTheSame(oldItem: DdEvent, newItem: DdEvent) = (oldItem.id == newItem.id)
-
-    override fun areContentsTheSame(oldItem: DdEvent, newItem: DdEvent) = (oldItem == newItem)
 }
 

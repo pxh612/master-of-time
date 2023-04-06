@@ -10,17 +10,6 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class MyApplication : Application() {
-    override fun onCreate() {
-        super.onCreate()
-
-        /** ThreeTen Android Backport: backport for java.time
-         * https://github.com/JakeWharton/ThreeTenABP
-         */
-
-        AndroidThreeTen.init(this);
-    }
-}
 
 fun Long.toOffsetDateTime(): OffsetDateTime{
     return Instant.ofEpochSecond(this)
@@ -40,7 +29,6 @@ fun DatePicker.toEpochTimeSeconds(): Long {
     Bug: calendar (no ZoneOffset) convert to Java.Time.Instant (with ZoneOffSet) make dayResult off by one day
     Fixed (temporary): add 7 hours to calendar when convert
      */
-
 
     val calendar = Calendar.getInstance()
     calendar.set(year, month, dayOfMonth, 7, 0, 0)

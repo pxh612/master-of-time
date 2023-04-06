@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.master_of_time.R
 import com.example.master_of_time.database.AppDatabase
@@ -52,10 +53,14 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupAdapter.Listene
             }
         }
 
+        val callback = DdGroupTouchHelperCallback(ddGroupAdapter)
+        val touchHelper = ItemTouchHelper(callback)
+        touchHelper.attachToRecyclerView(binding.groupRecyclerView)
+
 
         binding.run {
             ui = this@DdGroupFragment
-            viewModel = this@DdGroupFragment.viewModel
+            bindVM = this@DdGroupFragment.viewModel
 
             groupRecyclerView.run{
                 adapter = ddGroupAdapter
