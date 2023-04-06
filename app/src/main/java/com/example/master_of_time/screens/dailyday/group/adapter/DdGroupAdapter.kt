@@ -56,8 +56,6 @@ class DdGroupAdapter(
                  groupName.text = item.name
                  groupName.setOnClickListener { listener.onTitleClick(item) }
              }
-
-             Timber.d("Finish bind ${item.name}.")
         }
     }
 

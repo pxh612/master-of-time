@@ -14,6 +14,7 @@ import com.example.master_of_time.R
 import com.example.master_of_time.database.table.DdEvent
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.databinding.DdEventFragmentBinding
+import com.example.master_of_time.module.dailyday.DdEventCalculation
 import com.example.master_of_time.screens.dailyday.event.DdEventListAdapter
 import com.example.master_of_time.screens.dailyday.event.DdEventLayoutManager
 import com.example.master_of_time.screens.dailyday.event.DdEventViewModel
@@ -29,6 +30,7 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
 
     /** views */
     lateinit var ddEventLayoutManager: DdEventLayoutManager
+    var ddEventCalculation: DdEventCalculation = DdEventCalculation()
     val ddEventListAdapter = DdEventListAdapter { onItemClicked(it) }
 
     override fun onCreateView(
@@ -55,14 +57,13 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         )[DdEventViewModel::class.java]
 
 
-
         val displayEventsDdGroupAdapter = DisplayEventsDdGroupAdapter(this)
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup().collect() {
                 displayEventsDdGroupAdapter.submitList(it)
             }
         }
-        onUpdate_PickedDdGroupId_DdEventListAdapter(groupId = null)
+        onUpdate_PickedDdGroupId_byDdEventListAdapter(groupId = null)
 
         binding.run {
 
@@ -89,31 +90,28 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
                 ddEventLayoutManager.changeLayout()
                 binding.eventRecyclerView.layoutManager = ddEventLayoutManager.value
             }
-            R.id.buttonOne -> {
-                navigateToGroupList()
-            }
+            R.id.buttonOne -> navigateToGroupList()
             R.id.noEventLayout -> navigateToAddDdEvent()
-
         }
     }
 
-    override fun onUpdate_PickedDdGroupId_DdEventListAdapter(groupId: Int?) {
+
+    override fun onUpdate_PickedDdGroupId_byDdEventListAdapter(groupId: Int?) {
         lifecycle.coroutineScope.launch {
             when (groupId) {
                 null -> viewModel.getAllDdEvent().collect() {
                     ddEventListAdapter.submitList(it)
-                    onUpdate_NoEventLayout_DdEventListSize(it.size)
-
+                    onUpdate_NoEventLayout(it.size)
                 }
 
                 else -> viewModel.getDdEventListByGroupId(groupId).collect() {
                     ddEventListAdapter.submitList(it)
-                    onUpdate_NoEventLayout_DdEventListSize(it.size)
+                    onUpdate_NoEventLayout(it.size)
                 }
             }
         }
     }
-    fun onUpdate_NoEventLayout_DdEventListSize(listSize: Int) {
+    fun onUpdate_NoEventLayout(listSize: Int) {
         when(listSize){
             0 -> binding.noEventLayout.visibility = View.VISIBLE
             else -> binding.noEventLayout.visibility = View.GONE
@@ -142,15 +140,4 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         val action = DdEventFragmentDirections.actionDdEventFragmentToDdEventEditFragment(false, eventId)
         requireView().findNavController().navigate(action)
     }
-
-
 }
-
-
-// ========================================== IGNORE
-
-// === RecyclerView
-// https://developer.android.com/codelabs/basic-android-kotlin-training-recyclerview-scrollable-list?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-unit-2-pathway-3%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-recyclerview-scrollable-list#3
-
-// === ViewModelFactory
-// https://developer.android.com/codelabs/basic-android-kotlin-training-intro-room-flow?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-unit-5-pathway-1%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-intro-room-flow#7

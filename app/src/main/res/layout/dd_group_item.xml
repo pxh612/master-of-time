@@ -32,10 +32,10 @@
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginEnd="@dimen/marginRight_date_adapterDailyDay"
 
+            android:text="drag"
             android:visibility="visible"
-            tools:text="count"
             android:textSize="@dimen/textSize_adapterDailyDay"
-            android:id="@+id/count" />
+            android:id="@+id/arrange" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

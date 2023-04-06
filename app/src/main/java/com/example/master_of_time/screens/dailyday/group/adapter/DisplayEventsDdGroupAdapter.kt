@@ -15,7 +15,7 @@ class DisplayEventsDdGroupAdapter(
 ): ListAdapter<DdGroup, DisplayEventsDdGroupAdapter.MyViewHolder>(DdGroupDiffUtil()) {
 
     interface Listener {
-        fun onUpdate_PickedDdGroupId_DdEventListAdapter(groupId: Int?)
+        fun onUpdate_PickedDdGroupId_byDdEventListAdapter(groupId: Int?)
     }
 
     var pickedPosition: Int? = null
@@ -31,13 +31,16 @@ class DisplayEventsDdGroupAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
 
         when(position){
-            pickedPosition -> holder.binding.name.setTextColor(Color.YELLOW)
-            else -> holder.binding.name.setTextColor(Color.WHITE)
+            pickedPosition -> holder.setSelected(true)
+            else -> holder.setSelected(false)
         }
 
+        /** Bad practice: find better solution for handling pickedPosition
+         * 1. SharedPreferences
+         * 2. ViewModel
+         * */
         holder.itemView.setOnClickListener {
             val lastPickedPosition = pickedPosition
             var pickedGroupId: Int?
@@ -56,8 +59,9 @@ class DisplayEventsDdGroupAdapter(
             lastPickedPosition?.let { notifyItemChanged(it) }
             pickedPosition?.let { notifyItemChanged(it) }
 
-            listener.onUpdate_PickedDdGroupId_DdEventListAdapter(pickedGroupId)
+            listener.onUpdate_PickedDdGroupId_byDdEventListAdapter(pickedGroupId)
         }
+        holder.bind(item)
     }
 
 
@@ -70,6 +74,16 @@ class DisplayEventsDdGroupAdapter(
 
             binding.run{
                 name.text = item.name
+            }
+        }
+        fun setSelected(isSelected: Boolean){
+            when(isSelected){
+                true -> {
+                    binding.name.setTextColor(Color.YELLOW)
+                }
+                false -> {
+                    binding.name.setTextColor(Color.WHITE)
+                }
             }
         }
     }

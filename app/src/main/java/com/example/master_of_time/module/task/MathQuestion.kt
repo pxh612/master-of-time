@@ -9,6 +9,8 @@ class MathQuestion(difficulty : Int) {
     var numberTwo : Int = 0
     var correctAnswer : Int = 0
         get() = numberOne + numberTwo
+    var equationDisplay: String? = ""
+        get() = "$numberOne + $numberTwo"
 
     /** Difficulty-dependent */
     var integerLimit : Int = 10
@@ -36,9 +38,7 @@ class MathQuestion(difficulty : Int) {
     fun isEqualToCorrectAnswer(userAnswer: Int): Boolean {
         return userAnswer == correctAnswer
     }
-    fun getEquationString(): String? {
-        return "$numberOne + $numberTwo"
-    }
+
 
 
 }

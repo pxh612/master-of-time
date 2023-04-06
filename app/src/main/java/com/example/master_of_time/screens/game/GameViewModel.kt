@@ -111,7 +111,7 @@ class GameViewModel : ViewModel(){
         mathQuestion = MathQuestion(currentDifficulty)
 
         /** LiveData display */
-        _currentQuestionDisplay.value = mathQuestion.getEquationString()
+        _currentQuestionDisplay.value = mathQuestion.equationDisplay
         _currentQuestionCountDisplay.value = "Question: $currentQuestionCount/$totalRound"
     }
     internal fun processGame(){
