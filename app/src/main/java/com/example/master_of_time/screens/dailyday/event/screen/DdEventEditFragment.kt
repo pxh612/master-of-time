@@ -138,11 +138,12 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
             title.text = ddEvent.title.toEditable()
             date.text = ddEvent.date.toDateFormat().toEditable()
 
-            if(ddEvent.groupId != null) viewModel.getGroupName(ddEvent.groupId)?.observe(viewLifecycleOwner) {
-                ddGroupPicker.text = it
+            when(ddEvent.groupId) {
+                null -> ddGroupPicker.text = getString(R.string.ddGroupPicker_ddEventEditFragment)
+                else -> viewModel.getGroupName(ddEvent.groupId)?.observe(viewLifecycleOwner) {
+                    ddGroupPicker.text = it
+                }
             }
-            else ddGroupPicker.text = getString(R.string.ddGroupPicker_ddEventEditFragment)
-
 
             delete.visibility = deleteVisibility
         }

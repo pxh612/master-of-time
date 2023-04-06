@@ -20,12 +20,11 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
-class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListener{
+class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupAdapter.Listener {
 
     private lateinit var binding: DdGroupFragmentBinding
     private lateinit var viewModel: DdGroupViewModel
     private lateinit var dialogFragment: DdGroupEditDialogFragment
-
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -46,8 +45,7 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListen
         )[DdGroupViewModel::class.java]
 
 
-        // Update
-        val ddGroupAdapter = DdGroupAdapter(this)
+        val ddGroupAdapter = DdGroupAdapter(viewModel,this)
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup().collect() {
                 Timber.v("> collect FlowList for adapter: size = ${it.size}")
@@ -55,10 +53,10 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupItemClickListen
             }
         }
 
-        binding.run {
 
-            add.setOnClickListener(this@DdGroupFragment)
-            back.setOnClickListener(this@DdGroupFragment)
+        binding.run {
+            ui = this@DdGroupFragment
+            viewModel = this@DdGroupFragment.viewModel
 
             groupRecyclerView.run{
                 adapter = ddGroupAdapter

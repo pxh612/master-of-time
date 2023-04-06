@@ -8,7 +8,7 @@
             name="viewModel"
             type="com.example.master_of_time.screens.dailyday.event.DdEventViewModel" />
         <variable
-            name="view"
+            name="ui"
             type="com.example.master_of_time.screens.dailyday.event.screen.DdEventFragment" />
     </data>
 
@@ -19,6 +19,7 @@
 
             <include
                 layout="@layout/layout_daily_day_header"
+                app:ui="@{ui}"
                 android:id="@+id/header"/>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -49,6 +50,7 @@
 
                 android:orientation="vertical"
                 android:gravity="center"
+                android:onClick="@{(view) -> ui.onClick(view)}"
                 android:id="@+id/noEventLayout" >
 
                 <TextView

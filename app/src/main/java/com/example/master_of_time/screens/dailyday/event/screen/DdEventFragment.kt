@@ -19,11 +19,10 @@ import com.example.master_of_time.screens.dailyday.event.DdEventLayoutManager
 import com.example.master_of_time.screens.dailyday.event.DdEventViewModel
 import com.example.master_of_time.screens.dailyday.event.DdEventViewModelFactory
 import com.example.master_of_time.screens.dailyday.group.DisplayEventsDdGroupAdapter
-import com.example.master_of_time.screens.dailyday.group.DisplayEventsDdGroupAdapterListener
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAdapterListener {
+class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAdapter.Listener {
 
     private lateinit var binding : DdEventFragmentBinding
     private lateinit var viewModel: DdEventViewModel
@@ -67,11 +66,7 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
 
         binding.run {
 
-            header.run {
-                add.setOnClickListener(this@DdEventFragment)
-                layout.setOnClickListener(this@DdEventFragment)
-                buttonOne.setOnClickListener(this@DdEventFragment)
-            }
+            this.ui = this@DdEventFragment
 
             groupRecyclerView.run {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -83,7 +78,6 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
                 adapter = ddEventListAdapter
             }
 
-            noEventLayout.setOnClickListener(this@DdEventFragment)
         }
     }
 

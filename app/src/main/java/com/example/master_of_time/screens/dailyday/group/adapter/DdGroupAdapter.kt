@@ -7,19 +7,24 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdGroupItemBinding
+import com.example.master_of_time.screens.dailyday.group.adapter.DdGroupDiffUtil
 import com.example.master_of_time.screens.dailyday.group.DdGroupAdapter.DdGroupAdapterViewHolder as DdGroupAdapterViewHolder
 
 class DdGroupAdapter(
-    private val listener: DdGroupItemClickListener
-) : ListAdapter<DdGroup, DdGroupAdapterViewHolder>(MyDiffUtil()) {
+    private val viewModel: DdGroupViewModel,
+    private val listener: Listener
+) : ListAdapter<DdGroup, DdGroupAdapterViewHolder>(DdGroupDiffUtil()) {
 
-
+    interface Listener {
+        fun onTitleClick(item: DdGroup)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DdGroupAdapterViewHolder {
         return DdGroupAdapterViewHolder(
             DdGroupItemBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             ),
+            viewModel,
             listener
         )
     }
@@ -31,29 +36,25 @@ class DdGroupAdapter(
 
     class DdGroupAdapterViewHolder(
         internal val binding: DdGroupItemBinding,
-        private val listener: DdGroupItemClickListener
+        private val viewModel: DdGroupViewModel,
+        private val listener: Listener
         ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: DdGroup) {
 
             binding.run{
-                groupName.text = "$item.name ${693}"
+//                viewModel.getDdEventCount_byGroupId(item.id).observe()
                 groupName.setOnClickListener { listener.onTitleClick(item) }
             }
+
+//            viewModel.getGroupName(ddEvent.groupId)?.observe(viewLifecycleOwner) {
+//                ddGroupPicker.text = it
+//            }
+//            viewModel.displayGroupName_DdGroupItem(item)
         }
     }
 
 
 }
 
-class MyDiffUtil: DiffUtil.ItemCallback<DdGroup>() {
 
-    override fun areItemsTheSame(oldItem: DdGroup, newItem: DdGroup) = (oldItem.id == newItem.id)
-
-    override fun areContentsTheSame(oldItem: DdGroup, newItem: DdGroup) = (oldItem == newItem)
-}
-
-
-interface DdGroupItemClickListener {
-    fun onTitleClick(item: DdGroup)
-}

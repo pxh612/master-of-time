@@ -18,32 +18,28 @@ import timber.log.Timber
 class GameOverFragment : Fragment(), OnClickListener {
 
     private lateinit var binding : FragmentGameOverBinding
-    /** ViewModel */
     private lateinit var viewModel: GameViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        /** init DataBiding */
         binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_game_over,
-            container,
-            false
+            inflater, R.layout.fragment_game_over, container, false
         )
 
-        /** init ViewModel */
-//        viewModel = ViewModelProvider(this)[GameViewModel::class.java]
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         viewModel = ViewModelProvider(requireActivity()).get(GameViewModel::class.java)
 
         binding.gameViewModel = viewModel
         Timber.d("Value: current question count = ${viewModel.currentQuestionCount} & ${viewModel.currentQuestionCountDisplay.value}")
 
-        /** init Buttons */
         binding.retry.setOnClickListener(this)
-
-        return binding.root
     }
 
     override fun onClick(view: View) {

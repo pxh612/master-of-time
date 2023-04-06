@@ -6,6 +6,9 @@
        <variable
             name="ui"
             type="com.example.master_of_time.screens.dailyday.group.DdGroupFragment" />
+        <variable
+            name="viewModel"
+            type="com.example.master_of_time.screens.dailyday.group.DdGroupViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,6 +28,7 @@
             android:text="Back"
             android:textSize="30sp"
             android:textStyle="bold"
+            android:onClick="@{(view) -> ui.onClick(view)}"
             android:id="@+id/back" />
 
         <TextView
@@ -37,6 +41,7 @@
             android:text="Add"
             android:textSize="30sp"
             android:textStyle="bold"
+            android:onClick="@{(view) -> ui.onClick(view)}"
             android:id="@+id/add" />
 
 

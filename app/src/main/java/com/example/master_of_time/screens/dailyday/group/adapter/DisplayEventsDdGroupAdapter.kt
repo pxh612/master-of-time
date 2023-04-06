@@ -7,11 +7,16 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DisplayEventsDdGroupItemBinding
+import com.example.master_of_time.screens.dailyday.group.adapter.DdGroupDiffUtil
 
 
 class DisplayEventsDdGroupAdapter(
-    private val listener: DisplayEventsDdGroupAdapterListener
-): ListAdapter<DdGroup, DisplayEventsDdGroupAdapter.MyViewHolder>(MyDiffUtil()) {
+    private val listener: Listener
+): ListAdapter<DdGroup, DisplayEventsDdGroupAdapter.MyViewHolder>(DdGroupDiffUtil()) {
+
+    interface Listener {
+        fun onUpdate_PickedDdGroupId_DdEventListAdapter(groupId: Int?)
+    }
 
     var pickedPosition: Int? = null
 
@@ -58,7 +63,7 @@ class DisplayEventsDdGroupAdapter(
 
     class MyViewHolder(
         internal val binding: DisplayEventsDdGroupItemBinding,
-        private val listener: DisplayEventsDdGroupAdapterListener,
+        private val listener: Listener,
     ) : RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: DdGroup) {
@@ -72,7 +77,5 @@ class DisplayEventsDdGroupAdapter(
 
 }
 
-interface DisplayEventsDdGroupAdapterListener {
-    fun onUpdate_PickedDdGroupId_DdEventListAdapter(groupId: Int?)
-}
+
 

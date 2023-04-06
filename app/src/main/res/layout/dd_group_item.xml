@@ -5,7 +5,7 @@
 
     <data>
         <variable
-            name="viewModel"
+            name="bindViewModel"
             type="com.example.master_of_time.screens.dailyday.group.DdGroupViewModel" />
     </data>
 
@@ -21,7 +21,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginStart="@dimen/marginLeft_title_adapterDailyDay"
 
-            android:text="@{viewModel.groupName_DdGroupItem_Display}"
             android:textSize="@dimen/textSize_adapterDailyDay"
             android:id="@+id/groupName" />
 

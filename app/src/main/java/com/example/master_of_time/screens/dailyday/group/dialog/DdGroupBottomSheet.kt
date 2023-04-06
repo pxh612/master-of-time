@@ -17,7 +17,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class DdGroupBottomSheet: BottomSheetDialogFragment(), DdGroupPickerListener, View.OnClickListener {
+class DdGroupBottomSheet: BottomSheetDialogFragment(), View.OnClickListener,
+    PickDdGroupAdapter.Listener {
 
     private lateinit var binding: DdGroupBottomSheetBinding
     private lateinit var viewModel: DdGroupViewModel
@@ -38,7 +39,7 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), DdGroupPickerListener, Vi
             DdGroupViewModelFactory(dataSource)
         )[DdGroupViewModel::class.java]
 
-        /** init Adapter for RecyclerView*/
+
         val adapter = PickDdGroupAdapter(this)
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup().collect() {

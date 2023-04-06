@@ -12,16 +12,6 @@ class DdGroupViewModel(
     private val dailyDayDao: DailyDayDao
     ): ViewModel() {
 
-
-
-    private val _groupName_DdGroupItem_Display = MutableLiveData<String>()
-    val groupName_DdGroupItem_Display: LiveData<String>
-        get() = _groupName_DdGroupItem_Display
-
-    init {
-        _groupName_DdGroupItem_Display.value = "test 275"
-    }
-
     fun insertGroup(name: String) {
         val ddGroup = DdGroup(name = name)
         viewModelScope.launch(Dispatchers.IO) {
@@ -29,21 +19,44 @@ class DdGroupViewModel(
         }
     }
 
-    fun getAllDdGroup(): Flow<List<DdGroup>> = dailyDayDao.getAllDdGroup()
-
     fun updateGroup(ddGroup: DdGroup) {
         viewModelScope.launch(Dispatchers.IO) {
             dailyDayDao.update(ddGroup)
         }
     }
 
+    fun getAllDdGroup(): Flow<List<DdGroup>> = dailyDayDao.getAllDdGroup()
+
     fun getDdGroupName(groupId: Int): LiveData<String> = dailyDayDao.getGroupName(groupId).asLiveData()
-    
+
+    fun getDdEventCount_byGroupId(groupId: Int) = dailyDayDao.getDdEventCount_byGroupId(groupId).asLiveData()
+
+    fun displayGroupName_DdGroupItem(item: DdGroup) {
+
+    }
+
+//    fun displayGroupName_DdGroupItem(item: DdGroup): String {
+//
+//        var resultString: String = ""
+//        var count: Int = 0
+//        viewModelScope.launch(Dispatchers.IO) {
+//            count = getDdEventCount_byGroupId(item.id)
+//            Timber.d("count = $count")
+//            Timber.d("item = $item")
+//            resultString = "${item.name} ($count)"
+//            resultString
+//        }
+//
+//
+//
+//        return resultString
+//    }
+
+
+
+
 
 }
-
-
-
 
 class DdGroupViewModelFactory(
     private val dailyDayDao: DailyDayDao

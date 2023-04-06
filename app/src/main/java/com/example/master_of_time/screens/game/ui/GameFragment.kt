@@ -20,7 +20,6 @@ class GameFragment : Fragment(), View.OnClickListener {
 
     /** ViewModel */
     private lateinit var viewModel: GameViewModel
-//    private var viewModel: GameViewModel by activityViewModels()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

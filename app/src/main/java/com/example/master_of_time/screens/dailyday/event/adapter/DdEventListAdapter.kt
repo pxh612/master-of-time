@@ -41,7 +41,7 @@ class DdEventListAdapter(
         fun bind(item: DdEvent) {
             binding.apply {
                 title.text = item.title
-                date.text = item.date.toOffsetDateTime().toDateFormat()
+                date.text = item.date.toDateFormat()
             }
 
             itemView.setOnClickListener {
