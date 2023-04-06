@@ -15,7 +15,7 @@ import com.example.master_of_time.R
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdGroupFragmentBinding
-import com.example.master_of_time.screens.dailyday.group.dialog.DdGroupEditDialogFragment
+import com.example.master_of_time.screens.dailyday.group.adapter.DdGroupAdapter
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -24,10 +24,9 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupAdapter.Listene
 
     private lateinit var binding: DdGroupFragmentBinding
     private lateinit var viewModel: DdGroupViewModel
-    private lateinit var dialogFragment: DdGroupEditDialogFragment
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.dd_group_fragment, container, false
         )
@@ -47,7 +46,7 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupAdapter.Listene
 
         val ddGroupAdapter = DdGroupAdapter(viewModel,this)
         lifecycle.coroutineScope.launch {
-            viewModel.getAllDdGroup().collect() {
+            viewModel.getAllDdGroup().collect {
                 Timber.v("> collect FlowList for adapter: size = ${it.size}")
                 ddGroupAdapter.submitList(it)
             }

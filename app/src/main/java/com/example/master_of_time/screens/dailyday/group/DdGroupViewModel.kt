@@ -31,9 +31,9 @@ class DdGroupViewModel(
 
     fun getDdEventCount_byGroupId(groupId: Int) = dailyDayDao.getDdEventCount_byGroupId(groupId).asLiveData()
 
-    fun displayGroupName_DdGroupItem(item: DdGroup) {
+    suspend fun getDdEventCount_byGroupId_NoFlow(groupId: Int): Int = dailyDayDao.getDdEventCount_byGroupId_NoFlow(groupId)
 
-    }
+
 
 //    fun displayGroupName_DdGroupItem(item: DdGroup): String {
 //
