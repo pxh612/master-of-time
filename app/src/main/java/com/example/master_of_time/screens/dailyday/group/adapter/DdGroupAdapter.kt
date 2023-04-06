@@ -16,11 +16,12 @@ import timber.log.Timber
 
 class DdGroupAdapter(
     private val viewModel: DdGroupViewModel,
-    private val listener: Listener
+    internal val listener: Listener
 ) : ListAdapter<DdGroup, MyViewHolder>(DdGroupDiffUtil()) {
 
     interface Listener {
         fun onTitleClick(item: DdGroup)
+        fun onRowMoved(fromPosition: Int, toPosition: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

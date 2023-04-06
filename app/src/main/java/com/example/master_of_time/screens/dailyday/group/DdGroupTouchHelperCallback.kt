@@ -6,16 +6,13 @@ import com.example.master_of_time.screens.dailyday.group.adapter.DdGroupAdapter
 import timber.log.Timber
 
 class DdGroupTouchHelperCallback(
-    private val adapter: DdGroupAdapter
-): ItemTouchHelper.Callback() {
+    private val adapter: DdGroupAdapter,
+    dragDirs: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+    swipeDirs: Int = 0
+): ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs) {
 
-    override fun getMovementFlags(
-        recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder
-    ): Int {
-        Timber.d("> enter")
-        val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
-        return makeMovementFlags(dragFlags, 0)
+    public interface ItemTouchHelperContract {
+        fun onRowMoved(fromPosition: Int, toPosition: Int)
     }
 
     override fun onMove(
@@ -23,14 +20,13 @@ class DdGroupTouchHelperCallback(
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        Timber.d("> enter")
-        adapter.testReponse()
+        adapter.listener.onRowMoved(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
         return true
     }
 
+
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        Timber.d("> enter")
-        adapter.testReponse()
+        Timber.w("onSwiped")
     }
 
 }

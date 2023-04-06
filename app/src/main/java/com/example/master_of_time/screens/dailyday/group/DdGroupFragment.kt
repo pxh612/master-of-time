@@ -80,6 +80,10 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupAdapter.Listene
         navigateEditGroup(item.id)
     }
 
+    override fun onRowMoved(fromPosition: Int, toPosition: Int) {
+        Timber.d("row moved from $fromPosition to $toPosition")
+    }
+
     private fun navigateEditGroup(groupId: Int) {
         val action = DdGroupFragmentDirections.actionDdGroupFragmentToDdGroupEditDialogFragment(isAdd = false, groupId = groupId)
         requireView().findNavController().navigate(action)
