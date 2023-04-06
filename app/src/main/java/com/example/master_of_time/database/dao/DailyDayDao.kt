@@ -43,6 +43,8 @@ interface DailyDayDao {
         """)
     suspend fun getDdEventCount_byGroupId_NoFlow(groupId: Int): Int
 
+
+
     /** DdGroup **/
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -59,7 +61,5 @@ interface DailyDayDao {
 
     @Query(" SELECT name FROM DdGroup WHERE id = :groupId ")
     fun getGroupName(groupId: Int): Flow<String>
-
-
 
 }

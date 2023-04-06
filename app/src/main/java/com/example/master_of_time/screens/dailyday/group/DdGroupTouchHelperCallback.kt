@@ -11,7 +11,7 @@ class DdGroupTouchHelperCallback(
     swipeDirs: Int = 0
 ): ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs) {
 
-    public interface ItemTouchHelperContract {
+    interface Contract {
         fun onRowMoved(fromPosition: Int, toPosition: Int)
     }
 
@@ -20,7 +20,7 @@ class DdGroupTouchHelperCallback(
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        adapter.listener.onRowMoved(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
+        adapter.onRowMoved(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
         return true
     }
 

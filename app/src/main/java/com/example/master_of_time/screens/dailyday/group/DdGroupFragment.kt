@@ -80,8 +80,22 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupAdapter.Listene
         navigateEditGroup(item.id)
     }
 
-    override fun onRowMoved(fromPosition: Int, toPosition: Int) {
-        Timber.d("row moved from $fromPosition to $toPosition")
+    fun reassignEveryGroupOrder(){
+
+        Timber.d("> clicked")
+        lifecycle.coroutineScope.launch {
+            viewModel.getAllDdGroup().collect {
+                Timber.v("> collect FlowList for adapter: size = ${it.size}")
+                var orderAssigner: Int = 1
+
+
+                for (ddGroup in it) {
+                    ddGroup.order = orderAssigner
+                    orderAssigner++
+                    viewModel.updateGroup(ddGroup)
+                }
+            }
+        }
     }
 
     private fun navigateEditGroup(groupId: Int) {

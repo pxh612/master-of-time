@@ -9,19 +9,20 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdGroupItemBinding
+import com.example.master_of_time.screens.dailyday.group.DdGroupTouchHelperCallback
 import com.example.master_of_time.screens.dailyday.group.DdGroupViewModel
 import com.example.master_of_time.screens.dailyday.group.adapter.DdGroupAdapter.MyViewHolder
 import kotlinx.coroutines.*
 import timber.log.Timber
+import java.util.*
 
 class DdGroupAdapter(
     private val viewModel: DdGroupViewModel,
     internal val listener: Listener
-) : ListAdapter<DdGroup, MyViewHolder>(DdGroupDiffUtil()) {
+) : ListAdapter<DdGroup, MyViewHolder>(DdGroupDiffUtil()), DdGroupTouchHelperCallback.Contract {
 
     interface Listener {
         fun onTitleClick(item: DdGroup)
-        fun onRowMoved(fromPosition: Int, toPosition: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -32,7 +33,6 @@ class DdGroupAdapter(
             viewModel,
             listener
         )
-
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -40,8 +40,22 @@ class DdGroupAdapter(
         holder.bind(item)
     }
 
-    fun testReponse(){
-        Timber.d("> hello from the other side")
+    override fun onRowMoved(fromPosition: Int, toPosition: Int) {
+        Timber.d("Moved $fromPosition to $toPosition")
+
+        if (fromPosition < toPosition) {
+            for (i in fromPosition until toPosition) {
+                val item = getItem(i)
+                viewModel.updateGroup(item.copy( order = item.order + 1))
+            }
+        } else {
+            for (i in fromPosition downTo toPosition + 1) {
+                val item = getItem(i)
+                viewModel.updateGroup(item.copy( order = item.order - 1))
+            }
+        }
+
+        notifyItemMoved(fromPosition, toPosition)
     }
 
     class MyViewHolder(
@@ -60,9 +74,12 @@ class DdGroupAdapter(
              binding.run{
                  groupName.text = item.name
                  groupName.setOnClickListener { listener.onTitleClick(item) }
+                 drag.text = item.order.toString()
              }
         }
     }
+
+
 
 
 }

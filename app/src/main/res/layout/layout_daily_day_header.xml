@@ -24,7 +24,7 @@
             android:layout_marginStart="@dimen/marginRight_add_adapterDailyDayHeader"
 
             android:text="GROUPS"
-            android:onClick="@{(view) -> ui.onClick(view)}"
+            android:onClick="@{ui::onClick}"
             android:id="@+id/buttonOne" />
 
         <Button
@@ -37,7 +37,7 @@
 
             tools:text="1"
             android:text="layout"
-            android:onClick="@{(view) -> ui.onClick(view)}"
+            android:onClick="@{ui::onClick}"
             android:id="@+id/layout" />
 
         <Button
@@ -48,7 +48,7 @@
             android:layout_marginEnd="@dimen/marginRight_add_adapterDailyDayHeader"
 
             android:text="@string/text_add_fragmentDailyDay"
-            android:onClick="@{(view) -> ui.onClick(view)}"
+            android:onClick="@{ui::onClick}"
             android:id="@+id/add" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

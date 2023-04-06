@@ -66,7 +66,6 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         onUpdate_PickedDdGroupId_byDdEventListAdapter(groupId = null)
 
         binding.run {
-
             this.ui = this@DdEventFragment
 
             groupRecyclerView.run {
@@ -78,7 +77,6 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
                 layoutManager = ddEventLayoutManager.value
                 adapter = ddEventListAdapter
             }
-
         }
     }
 

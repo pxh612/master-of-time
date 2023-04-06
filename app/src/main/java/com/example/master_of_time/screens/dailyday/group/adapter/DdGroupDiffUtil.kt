@@ -8,4 +8,5 @@ class DdGroupDiffUtil: DiffUtil.ItemCallback<DdGroup>() {
     override fun areItemsTheSame(oldItem: DdGroup, newItem: DdGroup) = (oldItem.id == newItem.id)
 
     override fun areContentsTheSame(oldItem: DdGroup, newItem: DdGroup) = (oldItem == newItem)
+
 }

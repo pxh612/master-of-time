@@ -20,6 +20,7 @@ class DdGroupViewModel(
     }
 
     fun updateGroup(ddGroup: DdGroup) {
+        Timber.d("update $ddGroup")
         viewModelScope.launch(Dispatchers.IO) {
             dailyDayDao.update(ddGroup)
         }

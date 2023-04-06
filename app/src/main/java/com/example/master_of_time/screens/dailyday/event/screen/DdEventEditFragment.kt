@@ -36,7 +36,6 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         binding = DdEventEditFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }

@@ -35,7 +35,7 @@
             android:text="drag"
             android:visibility="visible"
             android:textSize="@dimen/textSize_adapterDailyDay"
-            android:id="@+id/arrange" />
+            android:id="@+id/drag" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
