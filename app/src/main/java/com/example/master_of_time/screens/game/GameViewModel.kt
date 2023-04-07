@@ -41,9 +41,11 @@ class GameViewModel : ViewModel(){
     private val _isGameWin = MutableLiveData<Boolean>()
     val isGameWin: LiveData<Boolean>
         get() = _isGameWin
+
     private val _isGameLose = MutableLiveData<Boolean>()
     val isGameLose: LiveData<Boolean>
         get() = _isGameLose
+
     var answerHintDisplay : String? = null /** Warning: this is updated through binding.invalidateAll() */
 
     /** Ongoing game's status - LiveData to XML_layout */

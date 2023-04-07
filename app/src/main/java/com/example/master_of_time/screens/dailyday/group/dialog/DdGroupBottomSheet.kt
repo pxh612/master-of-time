@@ -8,15 +8,12 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.master_of_time.R
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdGroupBottomSheetBinding
-import com.example.master_of_time.screens.dailyday.event.screen.DdEventEditFragmentArgs
 import com.example.master_of_time.screens.dailyday.group.*
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.launch
@@ -41,11 +38,11 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), View.OnClickListener,
 
         viewModel = ViewModelProvider(
             requireActivity(),
-            DdGroupViewModelFactory(dataSource)
+            DdGroupViewModel.Factory(dataSource)
         )[DdGroupViewModel::class.java]
 
 
-        val adapter = PickDdGroupAdapter(viewModel, this)
+        val adapter = PickDdGroupAdapter(viewLifecycleOwner, viewModel, this)
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup().collect() {
                 Timber.d("> collect FlowList for adapter: size = ${it.size}")
@@ -66,6 +63,7 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), View.OnClickListener,
     private fun retrieveParentView() {
         val navigationArgs: DdGroupBottomSheetArgs by navArgs()
         viewModel.selectedGroupId = navigationArgs.groupId
+        Timber.d("viewModel.selectedGroupId = ${viewModel.selectedGroupId}")
     }
 
     override fun onClick(view: View) {
@@ -81,7 +79,7 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), View.OnClickListener,
         }
     }
 
-    override fun onItemClick(item: DdGroup) {
+    override fun onDdGroupItemClick_atPickDdGroupAdapter(item: DdGroup) {
         Timber.i("> picked $item")
         findNavController().previousBackStackEntry?.savedStateHandle?.set("groupId", item.id)
     }

@@ -15,7 +15,6 @@ import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdGroupEditDialogFragmentBinding
 import com.example.master_of_time.screens.dailyday.group.DdGroupViewModel
-import com.example.master_of_time.screens.dailyday.group.DdGroupViewModelFactory
 import com.example.master_of_time.toEditable
 
 class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
@@ -42,13 +41,14 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
 
         viewModel = ViewModelProvider(
             requireActivity(),
-            DdGroupViewModelFactory(dataSource)
+            DdGroupViewModel.Factory(dataSource)
         )[DdGroupViewModel::class.java]
 
 
         binding.run{
             bindUI = this@DdGroupEditDialogFragment
         }
+
         retrieveParentView()
     }
 

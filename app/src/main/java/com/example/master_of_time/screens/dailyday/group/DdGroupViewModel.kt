@@ -11,27 +11,29 @@ import timber.log.Timber
 class DdGroupViewModel(
     private val dailyDayDao: DailyDayDao
     ): ViewModel() {
-/*
 
-    val selectedGroupId: LiveData<Int>
-        get() = _selectedGroupId
-    private val _selectedGroupId = MutableLiveData<Int>()
-*/
+//    var selectedGroupId = -1
+//    val selectedGroupId_LiveData: LiveData<Int>
 
-    var selectedGroupId = -1
+    //  private val _currentQuestionDisplay = MutableLiveData<String>()
+
+    var selectedGroupId: Int = -1
+        set(value){
+            selectedGroupId_MutableLiveData.value = value
+            field = value
+        }
+    private val selectedGroupId_MutableLiveData = MutableLiveData<Int>()
+    val selectedGroupId_LiveData: LiveData<Int>
+        get() = selectedGroupId_MutableLiveData
+
 
     fun insertGroup(name: String) {
         val ddGroup = DdGroup(name = name)
-        viewModelScope.launch(Dispatchers.IO) {
-            dailyDayDao.insert(ddGroup)
-        }
+        viewModelScope.launch(Dispatchers.IO) { dailyDayDao.insert(ddGroup) }
     }
 
     fun updateGroup(ddGroup: DdGroup) {
-        Timber.d("update $ddGroup")
-        viewModelScope.launch(Dispatchers.IO) {
-            dailyDayDao.update(ddGroup)
-        }
+        viewModelScope.launch(Dispatchers.IO) { dailyDayDao.update(ddGroup) }
     }
 
     fun getAllDdGroup(): Flow<List<DdGroup>> = dailyDayDao.getAllDdGroup()
@@ -40,22 +42,21 @@ class DdGroupViewModel(
 
     fun getDdEventCount_byGroupId(groupId: Int) = dailyDayDao.getDdEventCount_byGroupId(groupId).asLiveData()
 
-//    fun setSelectedGroupId(groupId: Int){
-//        selectedGroupId = groupId
-//    }
-}
 
-class DdGroupViewModelFactory(
-    private val dailyDayDao: DailyDayDao
-) : ViewModelProvider.Factory {
+    class Factory(
+        private val dailyDayDao: DailyDayDao
+    ) : ViewModelProvider.Factory {
 
         override fun <T: ViewModel> create(modelClass: Class<T>): T{
-        if(modelClass.isAssignableFrom(DdGroupViewModel::class.java)){
-            Timber.v("> create ViewModel")
-            @Suppress("UNCHECKED_CAST")
-            return DdGroupViewModel(dailyDayDao) as T
+            if(modelClass.isAssignableFrom(DdGroupViewModel::class.java)){
+                Timber.v("> create ViewModel")
+                @Suppress("UNCHECKED_CAST")
+                return DdGroupViewModel(dailyDayDao) as T
+            }
+            throw IllegalArgumentException("Unknown ViewModel class")
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
+
+
 

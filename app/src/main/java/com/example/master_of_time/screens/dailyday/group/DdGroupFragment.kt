@@ -41,7 +41,7 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupAdapter.Listene
         val dataSource = AppDatabase.getInstance(requireContext()).dailyDayDao()
         viewModel = ViewModelProvider(
             requireActivity(),
-            DdGroupViewModelFactory(dataSource)
+            DdGroupViewModel.Factory(dataSource)
         )[DdGroupViewModel::class.java]
 
 
