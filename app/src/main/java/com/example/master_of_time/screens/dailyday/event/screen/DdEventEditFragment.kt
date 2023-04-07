@@ -8,7 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.Toast
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -18,6 +22,7 @@ import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.databinding.DdEventEditFragmentBinding
 import com.example.master_of_time.screens.dailyday.event.DdEventEditViewModel
 import com.example.master_of_time.screens.dailyday.event.DdEventEditViewModelFactory
+import timber.log.Timber
 
 
 class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener {
@@ -95,8 +100,12 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         }
     }
 
-    private fun retrieveNavigationArgs() {
+    override fun onDestroy() {
+        super.onDestroy()
 
+    }
+
+    private fun retrieveNavigationArgs() {
         isAdd = navigationArgs.isAdd
         when(isAdd){
             true -> {
@@ -113,6 +122,7 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         }
     }
 
+    var isNavigate = false
     private fun observeNavigationArgs() {
         findNavController().currentBackStackEntry?.savedStateHandle?.run {
 
@@ -123,9 +133,28 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
             getLiveData<String>("groupName").observe(viewLifecycleOwner) { groupName ->
                 binding.ddGroupPicker.text = groupName
             }
+
+/*
+            getLiveData<Boolean>("action_ddGroupBottomSheet_to_ddGroupEditDialogFragment").observe(viewLifecycleOwner) { intent ->
+                isNavigate = intent
+                Timber.d("isNavigate = $isNavigate")
+            }
+            */
+
+
+/*
+            getLiveData<Boolean>("destroyed_ddGroupBottomSheet").observe(viewLifecycleOwner) { onDestroy ->
+                Timber.d("onDestroy = $onDestroy && isNavigate = $isNavigate")
+                if(onDestroy && isNavigate) {
+                    Timber.d("navigate to Add Group here")
+                }
+            }*/
         }
     }
 
+    private fun navigateAddDdGroup() {
+        Timber.w("navigate for adding group")
+    }
 
 
     private fun bind(ddEvent: DdEvent, deleteVisibility: Int = View.VISIBLE){
@@ -157,14 +186,15 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         }
     }
 
-    private fun navigateGroupPicker() {
-        val action = DdEventEditFragmentDirections.actionDdEventEditFragmentToDdGroupBottomSheet()
-        requireView().findNavController().navigate(action)
-    }
 
     private fun notifyEmptyInput() {
         val message = "Empty title!"
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun navigateGroupPicker() {
+        val action = DdEventEditFragmentDirections.actionDdEventEditFragmentToDdGroupBottomSheet()
+        requireView().findNavController().navigate(action)
     }
 
 }

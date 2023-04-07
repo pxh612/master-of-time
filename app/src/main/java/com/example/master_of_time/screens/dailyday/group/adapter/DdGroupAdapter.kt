@@ -46,12 +46,12 @@ class DdGroupAdapter(
         if (fromPosition < toPosition) {
             for (i in fromPosition until toPosition) {
                 val item = getItem(i)
-                viewModel.updateGroup(item.copy( order = item.order + 1))
+                viewModel.updateGroup(item.copy( orderId = item.orderId*100))
             }
         } else {
             for (i in fromPosition downTo toPosition + 1) {
                 val item = getItem(i)
-                viewModel.updateGroup(item.copy( order = item.order - 1))
+                viewModel.updateGroup(item.copy( orderId = item.orderId*100))
             }
         }
 
@@ -74,7 +74,7 @@ class DdGroupAdapter(
              binding.run{
                  groupName.text = item.name
                  groupName.setOnClickListener { listener.onTitleClick(item) }
-                 drag.text = item.order.toString()
+                 drag.text = item.orderId.toString()
              }
         }
     }

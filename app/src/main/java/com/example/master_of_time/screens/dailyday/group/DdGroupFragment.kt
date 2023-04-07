@@ -90,7 +90,7 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupAdapter.Listene
 
 
                 for (ddGroup in it) {
-                    ddGroup.order = orderAssigner
+                    ddGroup.orderId = orderAssigner
                     orderAssigner++
                     viewModel.updateGroup(ddGroup)
                 }

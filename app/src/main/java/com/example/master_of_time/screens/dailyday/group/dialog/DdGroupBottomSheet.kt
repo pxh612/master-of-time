@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.master_of_time.R
@@ -58,25 +61,62 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), View.OnClickListener,
     override fun onClick(view: View) {
         when(view.id){
             R.id.addGroup -> {
-                navigateAddGroup()
+                Timber.d("click: addGroup")
+
+                val result = true
+                setFragmentResult("requestKey", bundleOf("action_ddGroupBottomSheet_to_ddGroupEditDialogFragment" to result))
+            }
+
+
+                /*isNavigate = true
+                callbackPreviousFragment()
+                findNavController().popBackStack()
+                Timber.d("this should not show up")*/
             }
         }
-    }
+
     override fun onItemClick(item: DdGroup) {
         Timber.i("> picked $item")
         findNavController().previousBackStackEntry?.savedStateHandle?.set("groupId", item.id)
         findNavController().previousBackStackEntry?.savedStateHandle?.set("groupName", item.name)
     }
 
-    private fun navigateAddGroup() {
-        Timber.e("java.lang.IllegalStateException: " +
-                "View androidx.constraintlayout.widget.ConstraintLayout" +
-                "{bcc487 V.E...... ........ 0,0-1080,808} " +
-                "does not have a NavController set")
-        val action = DdGroupBottomSheetDirections.actionDdGroupBottomSheetToDdGroupEditDialogFragment(isAdd = true)
-        requireView().findNavController().navigate(action)
+    var isNavigate = false
+
+    /*private fun navigateAddGroup() {
+        findNavController().previousBackStackEntry?.savedStateHandle?.set("action_ddGroupBottomSheet_to_ddGroupEditDialogFragment", true)
+        findNavController().popBackStack()
+    }*/
+
+
+    /*fun callbackPreviousFragment(){
+        Timber.d("intented execution with $isNavigate")
+
+        if(isNavigate){
+            findNavController().previousBackStackEntry?.savedStateHandle?.set("action_ddGroupBottomSheet_to_ddGroupEditDialogFragment", true)
+        }
+    }*/
+
+    /*
+    override fun onPause() {
+        notifyPreviousFragment()
+        Timber.d("onPause")
+        super.onPause()
+        Timber.d("onPause 2")
     }
 
+    override fun onStop() {
+        notifyPreviousFragment()
+        Timber.d("onStop")
+        super.onStop()
+        Timber.d("onStop 2")
+    }*/
+
+    /*override fun onDestroy() {
+        Timber.d("onDestroy")
+        super.onDestroy()
+        Timber.d("onDestroy 2")
+    }*/
 
 
 

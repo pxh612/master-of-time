@@ -56,7 +56,10 @@ interface DailyDayDao {
     @Delete
     suspend fun delete(ddGroup: DdGroup)
 
-    @Query("SELECT * FROM DdGroup")
+    @Query("SELECT * FROM DdGroup ORDER BY id ASC")
+    fun getAllDdGroup_byPrimaryKeyId(): Flow<List<DdGroup>>
+
+    @Query("SELECT * FROM DdGroup ORDER BY orderId ASC")
     fun getAllDdGroup(): Flow<List<DdGroup>>
 
     @Query(" SELECT name FROM DdGroup WHERE id = :groupId ")

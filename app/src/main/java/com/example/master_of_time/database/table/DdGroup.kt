@@ -15,5 +15,5 @@ data class DdGroup(
     var name: String,
 
     @ColumnInfo
-    var order: Int = id*10000,
+    var orderId: Int = id*10000,
 )
