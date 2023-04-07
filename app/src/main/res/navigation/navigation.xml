@@ -104,5 +104,9 @@
         android:name="com.example.master_of_time.screens.dailyday.group.dialog.DdGroupBottomSheet"
         android:label="DdGroupBottomSheet"
         tools:layout="@layout/dd_group_bottom_sheet">
+        <argument
+            android:name="groupId"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </dialog>
 </navigation>

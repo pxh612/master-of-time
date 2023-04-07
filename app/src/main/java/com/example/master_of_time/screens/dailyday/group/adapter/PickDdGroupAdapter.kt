@@ -10,6 +10,7 @@ import com.example.master_of_time.screens.dailyday.group.adapter.DdGroupDiffUtil
 
 
 class PickDdGroupAdapter(
+    private val viewModel: DdGroupViewModel,
     private val listener: Listener
 ): ListAdapter<DdGroup, PickDdGroupAdapter.MyViewHolder>(DdGroupDiffUtil()) {
 
@@ -24,6 +25,7 @@ class PickDdGroupAdapter(
             DdGroupPickerItemBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             ),
+            viewModel,
             listener
         )
     }
@@ -49,6 +51,7 @@ class PickDdGroupAdapter(
 
     class MyViewHolder(
         internal val binding: DdGroupPickerItemBinding,
+        private val viewModel: DdGroupViewModel,
         private val listener: Listener,
     ) : RecyclerView.ViewHolder(binding.root){
 

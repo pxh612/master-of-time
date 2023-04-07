@@ -14,11 +14,15 @@
     <string name="confirm_fragmentDailyDayEdit">confirm</string>
     <string name="delete_fragmentDailyDayEdit">delete</string>
 
-    <string name="group_fragmentDailyDayGroup">Group</string>
+    <string name="fragmentDailyDayGroup_group">Group</string>
     <string name="add_dialogFragmentDdGroupEdit">ADD</string>
     <string name="cancel_dialogFragmentDdGroupEdit">CANCEL</string>
     <string name="hint_name_dialogFragmentDdGroupEdit">Group Name</string>
     <string name="ddGroupPicker_ddEventEditFragment">GroupName…</string>
+
     <string name="noEvent_ddEventFragment">No event</string>
     <string name="addEvent_ddEventFragment">Add event</string>
+
+    <string name="ddGroupBottomSheet_addgroup">Add group</string>
+    <string name="ddGroupBottomSheet_group">Group</string>
 </resources>

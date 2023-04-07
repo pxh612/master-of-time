@@ -37,4 +37,4 @@ fun DatePicker.toEpochTimeSeconds(): Long {
 }
 
 fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
-internal fun DatePicker.toDateFormat(): String = toEpochTimeSeconds().toOffsetDateTime().toDateFormat()
+internal fun DatePicker.toDateFormat(): String = toEpochTimeSeconds().toDateFormat()

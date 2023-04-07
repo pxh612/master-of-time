@@ -26,12 +26,12 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
 
     private lateinit var viewModel: DdEventEditViewModel
     private lateinit var binding: DdEventEditFragmentBinding
-    private val navigationArgs: DdEventEditFragmentArgs by navArgs()
 
     /** Data */
     lateinit var ddEvent: DdEvent
     lateinit var datePickerDialog: DatePickerDialog
     var isAdd: Boolean = false
+    var isPendingNavigate_DdGroupBottomSheet = false
 
 
     override fun onCreateView(
@@ -53,7 +53,6 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
             bindUI = this@DdEventEditFragment
         }
 
-        /** init DatePickerDialog */
         datePickerDialog = DatePickerDialog(requireContext())
         datePickerDialog.setOnDateSetListener(this)
 
@@ -81,20 +80,17 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
                     false -> notifyEmptyInput()
                 }
             }
-            R.id.date -> {
-                datePickerDialog.show()
-            }
+            R.id.date -> datePickerDialog.show()
             R.id.delete -> {
                 viewModel.deleteItem(ddEvent)
                 findNavController().popBackStack()
             }
-            R.id.ddGroupPicker -> {
-                navigateGroupPicker()
-            }
+            R.id.ddGroupPicker -> navigateGroupPicker()
         }
     }
 
     private fun retrieveParentView() {
+        val navigationArgs: DdEventEditFragmentArgs by navArgs()
         isAdd = navigationArgs.isAdd
         when(isAdd){
             true -> {
@@ -111,18 +107,18 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         }
     }
 
-    var isPendingNavigate_DdGroupBottomSheet = false
-    private fun retrieveChildView() {
-        findNavController().currentBackStackEntry?.savedStateHandle?.run {
 
+    private fun retrieveChildView() {
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.run {
             getLiveData<Int>("groupId").observe(viewLifecycleOwner) { groupId ->
                 ddEvent.groupId = groupId
-            }
-
-            getLiveData<String>("groupName").observe(viewLifecycleOwner) { groupName ->
-                binding.ddGroupPicker.text = groupName
+                viewModel.getGroupName_byGroupId(ddEvent.groupId)?.observe(viewLifecycleOwner) {
+                    binding.ddGroupPicker.text = it
+                }
             }
         }
+
         setFragmentResultListener("DdGroupBottomSheet") { _, bundle ->
             val isNavigateAddDdGroup = bundle.getBoolean("action_ddGroupBottomSheet_to_ddGroupEditDialogFragment")
             if(isNavigateAddDdGroup){
@@ -132,13 +128,7 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         }
         setFragmentResultListener("DdGroupEditDialogFragment") { _, bundle ->
             val onDestroy = bundle.getBoolean("onDestroy")
-            if(onDestroy){
-                Timber.d("reponsive death of DdGroupEditDialogFragment")
-                if(isPendingNavigate_DdGroupBottomSheet) {
-                    Timber.d("pending: navigate back")
-                    navigateGroupPicker()
-                }
-            }
+            if(onDestroy) if(isPendingNavigate_DdGroupBottomSheet) navigateGroupPicker()
         }
     }
 
@@ -149,10 +139,12 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
             title.text = ddEvent.title.toEditable()
             date.text = ddEvent.date.toDateFormat().toEditable()
 
-            when(ddEvent.groupId) {
-                null -> ddGroupPicker.text = getString(R.string.ddGroupPicker_ddEventEditFragment)
-                else -> viewModel.getGroupName(ddEvent.groupId)?.observe(viewLifecycleOwner) {
-                    ddGroupPicker.text = it
+            ddEvent.groupId.let{
+                when {
+                    (it < 0)  -> ddGroupPicker.text = getString(R.string.ddGroupPicker_ddEventEditFragment)
+                    else -> viewModel.getGroupName_byGroupId(it)?.observe(viewLifecycleOwner) { groupName ->
+                        ddGroupPicker.text = groupName
+                    }
                 }
             }
 
@@ -185,7 +177,7 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
     }
 
     private fun navigateGroupPicker() {
-        val action = DdEventEditFragmentDirections.actionDdEventEditFragmentToDdGroupBottomSheet()
+        val action = DdEventEditFragmentDirections.actionDdEventEditFragmentToDdGroupBottomSheet(groupId = ddEvent.groupId)
         requireView().findNavController().navigate(action)
     }
 

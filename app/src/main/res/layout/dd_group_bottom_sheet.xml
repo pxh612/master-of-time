@@ -25,7 +25,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
 
-                    android:text="Group"
+                    android:text="@string/ddGroupBottomSheet_group"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:id="@+id/groupText" />
@@ -53,7 +53,7 @@
             app:layout_constraintVertical_bias="1"
             android:paddingVertical="10dp"
 
-            android:text="Add group"
+            android:text="@string/ddGroupBottomSheet_addgroup"
             android:gravity="center"
             android:textSize="22sp"
             android:id="@+id/addGroup" />

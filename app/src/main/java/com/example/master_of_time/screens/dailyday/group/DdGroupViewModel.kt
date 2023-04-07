@@ -11,6 +11,14 @@ import timber.log.Timber
 class DdGroupViewModel(
     private val dailyDayDao: DailyDayDao
     ): ViewModel() {
+/*
+
+    val selectedGroupId: LiveData<Int>
+        get() = _selectedGroupId
+    private val _selectedGroupId = MutableLiveData<Int>()
+*/
+
+    var selectedGroupId = -1
 
     fun insertGroup(name: String) {
         val ddGroup = DdGroup(name = name)
@@ -28,9 +36,13 @@ class DdGroupViewModel(
 
     fun getAllDdGroup(): Flow<List<DdGroup>> = dailyDayDao.getAllDdGroup()
 
-    fun getDdGroupName(groupId: Int): LiveData<String> = dailyDayDao.getGroupName(groupId).asLiveData()
+    fun getDdGroupName(groupId: Int): LiveData<String> = dailyDayDao.getGroupName_byGroupId(groupId).asLiveData()
 
     fun getDdEventCount_byGroupId(groupId: Int) = dailyDayDao.getDdEventCount_byGroupId(groupId).asLiveData()
+
+//    fun setSelectedGroupId(groupId: Int){
+//        selectedGroupId = groupId
+//    }
 }
 
 class DdGroupViewModelFactory(

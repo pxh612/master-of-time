@@ -25,7 +25,7 @@ data class DdEvent (
     var date: Long = Instant.now().epochSecond,
 
     @ColumnInfo
-    var groupId: Int? = null,
+    var groupId: Int = -1,
 )
 
 

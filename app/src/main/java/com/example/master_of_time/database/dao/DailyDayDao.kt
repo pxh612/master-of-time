@@ -63,6 +63,6 @@ interface DailyDayDao {
     fun getAllDdGroup(): Flow<List<DdGroup>>
 
     @Query(" SELECT name FROM DdGroup WHERE id = :groupId ")
-    fun getGroupName(groupId: Int): Flow<String>
+    fun getGroupName_byGroupId(groupId: Int): Flow<String>
 
 }

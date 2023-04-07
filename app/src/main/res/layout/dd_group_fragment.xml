@@ -63,7 +63,7 @@
             android:layout_marginStart="@dimen/marginLeft_back_fragmentDailyDayGroup"
             android:layout_marginTop="@dimen/marginTop_title_fragmentDailyDayGroup"
 
-            android:text="@string/group_fragmentDailyDayGroup"
+            android:text="@string/fragmentDailyDayGroup_group"
             android:textSize="30sp"
             android:textStyle="bold"
             android:id="@+id/title" />
