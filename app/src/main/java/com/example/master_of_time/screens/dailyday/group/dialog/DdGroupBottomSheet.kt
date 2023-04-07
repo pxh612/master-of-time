@@ -51,19 +51,14 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), View.OnClickListener,
         }
 
         binding.run{
+            bindUI = this@DdGroupBottomSheet
+
             recyclerView.run{
                 this.adapter = adapter
             }
-            addGroup.setOnClickListener(this@DdGroupBottomSheet)
         }
 
         retrieveParentView()
-    }
-
-    private fun retrieveParentView() {
-        val navigationArgs: DdGroupBottomSheetArgs by navArgs()
-        viewModel.selectedGroupId = navigationArgs.groupId
-        Timber.d("viewModel.selectedGroupId = ${viewModel.selectedGroupId}")
     }
 
     override fun onClick(view: View) {
@@ -75,9 +70,18 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), View.OnClickListener,
                 setFragmentResult("DdGroupBottomSheet", bundleOf(
                     "action_ddGroupBottomSheet_to_ddGroupEditDialogFragment" to true
                 ))
-           }
+            }
         }
     }
+
+
+    private fun retrieveParentView() {
+        val navigationArgs: DdGroupBottomSheetArgs by navArgs()
+        viewModel.selectedGroupId = navigationArgs.groupId
+        Timber.d("viewModel.selectedGroupId = ${viewModel.selectedGroupId}")
+    }
+
+
 
     override fun onDdGroupItemClick_atPickDdGroupAdapter(item: DdGroup) {
         Timber.i("> picked $item")

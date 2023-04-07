@@ -80,7 +80,7 @@
     </fragment>
     <fragment
         android:id="@+id/ddGroupFragment"
-        android:name="com.example.master_of_time.screens.dailyday.group.DdGroupFragment"
+        android:name="com.example.master_of_time.screens.dailyday.group.fragment.DdGroupFragment"
         android:label="DdGroupFragment" >
         <action
             android:id="@+id/action_ddGroupFragment_to_ddGroupEditDialogFragment"

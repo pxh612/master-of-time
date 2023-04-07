@@ -23,11 +23,6 @@ class PickDdGroupAdapter(
     }
 
     var selectedPosition: Int? = null
-    fun notifyNewSelection(newPosition: Int){
-        selectedPosition?.let { notifyItemChanged(it) }
-        notifyItemChanged(newPosition)
-        selectedPosition = newPosition
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
@@ -45,6 +40,8 @@ class PickDdGroupAdapter(
     }
 
 
+
+
     class MyViewHolder(
         internal val binding: DdGroupPickerItemBinding,
         private val viewModel: DdGroupViewModel,
@@ -52,20 +49,25 @@ class PickDdGroupAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(ddGroup: DdGroup) {
-            Timber.d("ddGroup.id = ${ddGroup.id} & viewModel.selectedGroupId = ${viewModel.selectedGroupId}")
+            Timber.v("ddGroup.id = ${ddGroup.id} & viewModel.selectedGroupId = ${viewModel.selectedGroupId}")
 
             binding.run{
                 title.text = ddGroup.name
             }
 
             when(ddGroup.id){
-                viewModel.selectedGroupId -> binding.isPicked.text = "picked"
+                viewModel.selectedGroupId -> {
+                    binding.isPicked.text = "picked"
+                    adapter.selectedPosition = bindingAdapterPosition
+                }
                 else -> binding.isPicked.text = ""
             }
 
             itemView.setOnClickListener {
                 viewModel.selectedGroupId = ddGroup.id
-                adapter.notifyNewSelection(bindingAdapterPosition)
+                adapter.selectedPosition?.let { adapter.notifyItemChanged(it) }
+                adapter.notifyItemChanged(bindingAdapterPosition)
+
                 adapter.listener.onDdGroupItemClick_atPickDdGroupAdapter(ddGroup)
             }
         }

@@ -2,6 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="bindUI"
+            type="com.example.master_of_time.screens.dailyday.group.dialog.DdGroupBottomSheet" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -56,6 +61,7 @@
             android:text="@string/ddGroupBottomSheet_addgroup"
             android:gravity="center"
             android:textSize="22sp"
+            android:onClick="@{bindUI::onClick}"
             android:id="@+id/addGroup" />
 
 

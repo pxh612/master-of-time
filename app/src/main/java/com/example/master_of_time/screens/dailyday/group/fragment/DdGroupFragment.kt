@@ -1,4 +1,4 @@
-package com.example.master_of_time.screens.dailyday.group
+package com.example.master_of_time.screens.dailyday.group.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +16,8 @@ import com.example.master_of_time.R
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdGroupFragmentBinding
+import com.example.master_of_time.screens.dailyday.group.DdGroupTouchHelperCallback
+import com.example.master_of_time.screens.dailyday.group.DdGroupViewModel
 import com.example.master_of_time.screens.dailyday.group.adapter.DdGroupAdapter
 import kotlinx.coroutines.launch
 import timber.log.Timber

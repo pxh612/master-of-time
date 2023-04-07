@@ -5,7 +5,7 @@
     <data>
        <variable
             name="ui"
-            type="com.example.master_of_time.screens.dailyday.group.DdGroupFragment" />
+            type="com.example.master_of_time.screens.dailyday.group.fragment.DdGroupFragment" />
         <variable
             name="bindVM"
             type="com.example.master_of_time.screens.dailyday.group.DdGroupViewModel" />
