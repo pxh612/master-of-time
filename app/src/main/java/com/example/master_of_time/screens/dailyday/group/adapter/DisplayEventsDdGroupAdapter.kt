@@ -15,7 +15,7 @@ class DisplayEventsDdGroupAdapter(
 ): ListAdapter<DdGroup, DisplayEventsDdGroupAdapter.MyViewHolder>(DdGroupDiffUtil()) {
 
     interface Listener {
-        fun onUpdate_PickedDdGroupId_byDdEventListAdapter(groupId: Int?)
+        fun onUpdate_PickedDdGroupId_byDdEventListAdapter(groupId: Long?)
     }
 
     var pickedPosition: Int? = null
@@ -43,7 +43,7 @@ class DisplayEventsDdGroupAdapter(
          * */
         holder.itemView.setOnClickListener {
             val lastPickedPosition = pickedPosition
-            var pickedGroupId: Int?
+            var pickedGroupId: Long?
 
             when(position) {
                 pickedPosition -> {

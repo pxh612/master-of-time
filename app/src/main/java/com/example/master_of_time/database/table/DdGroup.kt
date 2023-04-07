@@ -9,11 +9,11 @@ import androidx.room.PrimaryKey
 data class DdGroup(
 
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+    var id: Long = 0,
 
     @ColumnInfo
     var name: String,
 
     @ColumnInfo
-    var orderId: Int = id*10000,
+    var orderId: Long = 0,
 )

@@ -11,7 +11,7 @@ interface DailyDayDao {
     /** DdEvent **/
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(ddEvent: DdEvent)
+    suspend fun insert(ddEvent: DdEvent) : Long
 
     @Update
     suspend fun update(ddEvent: DdEvent)
@@ -20,7 +20,7 @@ interface DailyDayDao {
     suspend fun delete(ddEvent: DdEvent)
 
     @Query("SELECT * FROM DdEvent WHERE id = :id")
-    fun getDdEvent(id: Int): Flow<DdEvent>
+    fun getDdEvent(id: Long): Flow<DdEvent>
 
     @Query("SELECT * FROM DdEvent ORDER BY id ASC")
     fun getAllDdEvent(): Flow<List<DdEvent>>
@@ -29,13 +29,13 @@ interface DailyDayDao {
             SELECT * FROM DdEvent
             WHERE groupId = :groupId
         """)
-    fun getDdEventListByGroupId(groupId: Int): Flow<List<DdEvent>>
+    fun getDdEventListByGroupId(groupId: Long?): Flow<List<DdEvent>>
 
     @Query("""
             SELECT COUNT(*) FROM DdEvent
             WHERE groupId = :groupId
         """)
-    fun getDdEventCount_byGroupId(groupId: Int): Flow<Int>
+    fun getDdEventCount_byGroupId(groupId: Long): Flow<Int>
 
     @Query("""
             SELECT COUNT(*) FROM DdEvent
@@ -48,7 +48,7 @@ interface DailyDayDao {
     /** DdGroup **/
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(ddGroup: DdGroup)
+    suspend fun insert(ddGroup: DdGroup) : Long
 
     @Update
     suspend fun update(ddGroup: DdGroup)
@@ -63,6 +63,6 @@ interface DailyDayDao {
     fun getAllDdGroup(): Flow<List<DdGroup>>
 
     @Query(" SELECT name FROM DdGroup WHERE id = :groupId ")
-    fun getGroupName_byGroupId(groupId: Int): Flow<String>
+    fun getGroupName_byGroupId(groupId: Long): Flow<String>
 
 }

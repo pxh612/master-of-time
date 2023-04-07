@@ -69,8 +69,8 @@
             app:argType="boolean" />
         <argument
             android:name="eventId"
-            app:argType="integer"
-            android:defaultValue="0" />
+            app:argType="long"
+            android:defaultValue="-1L" />
         <action
             android:id="@+id/action_ddEventEditFragment_to_ddGroupBottomSheet"
             app:destination="@id/ddGroupBottomSheet" />
@@ -96,8 +96,8 @@
             app:argType="boolean" />
         <argument
             android:name="groupId"
-            app:argType="integer"
-            android:defaultValue="0" />
+            app:argType="long"
+            android:defaultValue="-1L" />
     </dialog>
     <dialog
         android:id="@+id/ddGroupBottomSheet"
@@ -106,7 +106,7 @@
         tools:layout="@layout/dd_group_bottom_sheet">
         <argument
             android:name="groupId"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            app:argType="long"
+            android:defaultValue="-1L" />
     </dialog>
 </navigation>

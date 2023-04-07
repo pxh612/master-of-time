@@ -16,7 +16,7 @@ import java.time.Instant
 data class DdEvent (
 
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+    var id: Long = 0,
 
     @ColumnInfo
     var title: String = "",
@@ -25,7 +25,7 @@ data class DdEvent (
     var date: Long = Instant.now().epochSecond,
 
     @ColumnInfo
-    var groupId: Int = -1,
+    var groupId: Long = -1,
 )
 
 

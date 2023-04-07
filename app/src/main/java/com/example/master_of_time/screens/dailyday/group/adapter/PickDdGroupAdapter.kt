@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdGroupPickerItemBinding
 import com.example.master_of_time.screens.dailyday.group.adapter.DdGroupDiffUtil
+import com.example.master_of_time.screens.dailyday.group.viewmodel.DdGroupViewModel
 import timber.log.Timber
 
 
@@ -39,7 +40,10 @@ class PickDdGroupAdapter(
         holder.bind(item)
     }
 
-
+    private fun notifyNewPosition(newPosition: Int) {
+        selectedPosition?.let { notifyItemChanged(it) }
+        notifyItemChanged(newPosition)
+    }
 
 
     class MyViewHolder(
@@ -65,14 +69,14 @@ class PickDdGroupAdapter(
 
             itemView.setOnClickListener {
                 viewModel.selectedGroupId = ddGroup.id
-                adapter.selectedPosition?.let { adapter.notifyItemChanged(it) }
-                adapter.notifyItemChanged(bindingAdapterPosition)
-
+                adapter.notifyNewPosition(bindingAdapterPosition)
                 adapter.listener.onDdGroupItemClick_atPickDdGroupAdapter(ddGroup)
             }
         }
 
     }
+
+
 }
 
 

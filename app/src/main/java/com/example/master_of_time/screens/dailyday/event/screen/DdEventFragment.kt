@@ -94,7 +94,7 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
     }
 
 
-    override fun onUpdate_PickedDdGroupId_byDdEventListAdapter(groupId: Int?) {
+    override fun onUpdate_PickedDdGroupId_byDdEventListAdapter(groupId: Long?) {
         lifecycle.coroutineScope.launch {
             when (groupId) {
                 null -> viewModel.getAllDdEvent().collect() {
@@ -134,7 +134,7 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         requireView().findNavController().navigate(action)
     }
 
-    private fun navigateToEditScreen(eventId: Int) {
+    private fun navigateToEditScreen(eventId: Long) {
         val action = DdEventFragmentDirections.actionDdEventFragmentToDdEventEditFragment(false, eventId)
         requireView().findNavController().navigate(action)
     }

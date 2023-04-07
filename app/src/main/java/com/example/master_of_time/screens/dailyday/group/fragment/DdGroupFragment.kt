@@ -17,7 +17,7 @@ import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdGroupFragmentBinding
 import com.example.master_of_time.screens.dailyday.group.DdGroupTouchHelperCallback
-import com.example.master_of_time.screens.dailyday.group.DdGroupViewModel
+import com.example.master_of_time.screens.dailyday.group.viewmodel.DdGroupViewModel
 import com.example.master_of_time.screens.dailyday.group.adapter.DdGroupAdapter
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -88,19 +88,19 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupAdapter.Listene
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup().collect {
                 Timber.v("> collect FlowList for adapter: size = ${it.size}")
-                var orderAssigner: Int = 1
+                var orderIdAssigner: Long = 1
 
 
                 for (ddGroup in it) {
-                    ddGroup.orderId = orderAssigner
-                    orderAssigner++
+                    ddGroup.orderId = orderIdAssigner
+                    orderIdAssigner++
                     viewModel.updateGroup(ddGroup)
                 }
             }
         }
     }
 
-    private fun navigateEditGroup(groupId: Int) {
+    private fun navigateEditGroup(groupId: Long) {
         val action = DdGroupFragmentDirections.actionDdGroupFragmentToDdGroupEditDialogFragment(isAdd = false, groupId = groupId)
         requireView().findNavController().navigate(action)
     }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -14,8 +15,9 @@ import com.example.master_of_time.R
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdGroupEditDialogFragmentBinding
-import com.example.master_of_time.screens.dailyday.group.DdGroupViewModel
+import com.example.master_of_time.screens.dailyday.group.viewmodel.DdGroupViewModel
 import com.example.master_of_time.toEditable
+import timber.log.Timber
 
 class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
 
@@ -26,7 +28,8 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
     /** Data */
     lateinit var name: String
     var isAdd: Boolean = true
-    var groupId: Int? = 0
+    var groupId: Long? = null
+    var newGroupId: Long = -1
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -49,8 +52,11 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
             bindUI = this@DdGroupEditDialogFragment
         }
 
-        retrieveParentView()
+        retrieveParentData()
+        retrieveChildData()
     }
+
+
 
     override fun onClick(view: View) {
         when(view.id) {
@@ -62,7 +68,9 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
                 if(name.isEmpty()) findNavController()
                 else{
                     when(isAdd){
-                        true -> viewModel.insertGroup(name)
+                        true -> DdGroup(name = name)
+                            .let { viewModel.insertGroup(it) }
+
                         false -> groupId
                             ?.let { DdGroup(id = it, name = name) }
                             ?.let { viewModel.updateGroup(it) }
@@ -74,7 +82,7 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
         }
     }
 
-    private fun retrieveParentView() {
+    private fun retrieveParentData() {
 
         val navigationArgs: DdGroupEditDialogFragmentArgs by navArgs()
         isAdd = navigationArgs.isAdd
@@ -93,6 +101,13 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
             }
         }
     }
+    private fun retrieveChildData() {
+        Timber.e("java.lang.IllegalStateException: Cannot invoke setValue on a background thread")
+        // Let use SharedPreference
+        viewModel.newGroupId_LiveData.observe(viewLifecycleOwner){
+            newGroupId = it
+        }
+    }
 
     private fun fetchInput() {
         name = binding.name.text.toString()
@@ -100,7 +115,8 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
 
     private fun notifyOnDestroy(){
         setFragmentResult("DdGroupEditDialogFragment", bundleOf(
-            "onDestroy" to true
+            "onDestroy" to true,
+            "newGroupId" to newGroupId
         ))
     }
 

@@ -2,9 +2,6 @@ package com.example.master_of_time.screens.dailyday.event
 
 import androidx.lifecycle.*
 import com.example.master_of_time.database.dao.DailyDayDao
-import com.example.master_of_time.database.table.DdEvent
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
@@ -18,7 +15,7 @@ class DdEventViewModel(
 
     fun getAllDdGroup() = dailyDayDao.getAllDdGroup()
 
-    fun getDdEventListByGroupId(groupId: Int) = dailyDayDao.getDdEventListByGroupId(groupId)
+    fun getDdEventListByGroupId(groupId: Long?) = dailyDayDao.getDdEventListByGroupId(groupId)
 
 }
 

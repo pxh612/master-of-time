@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdGroupItemBinding
 import com.example.master_of_time.screens.dailyday.group.DdGroupTouchHelperCallback
-import com.example.master_of_time.screens.dailyday.group.DdGroupViewModel
+import com.example.master_of_time.screens.dailyday.group.viewmodel.DdGroupViewModel
 import com.example.master_of_time.screens.dailyday.group.adapter.DdGroupAdapter.MyViewHolder
 import kotlinx.coroutines.*
 import timber.log.Timber

@@ -1,4 +1,4 @@
-package com.example.master_of_time.screens.dailyday.group
+package com.example.master_of_time.screens.dailyday.group.viewmodel
 
 import androidx.lifecycle.*
 import com.example.master_of_time.database.dao.DailyDayDao
@@ -12,24 +12,32 @@ class DdGroupViewModel(
     private val dailyDayDao: DailyDayDao
     ): ViewModel() {
 
-//    var selectedGroupId = -1
-//    val selectedGroupId_LiveData: LiveData<Int>
 
-    //  private val _currentQuestionDisplay = MutableLiveData<String>()
-
-    var selectedGroupId: Int = -1
+    /** LiveData: selectedGroupId */
+    var selectedGroupId: Long = -1
         set(value){
             selectedGroupId_MutableLiveData.value = value
             field = value
         }
-    private val selectedGroupId_MutableLiveData = MutableLiveData<Int>()
-    val selectedGroupId_LiveData: LiveData<Int>
+    private val selectedGroupId_MutableLiveData = MutableLiveData<Long>()
+    val selectedGroupId_LiveData: LiveData<Long>
         get() = selectedGroupId_MutableLiveData
 
+    /** LiveData: newGroupId */
+    var newGroupId: Long = -1
+        set(value){
+            newGroupId_MLD.value = value
+            field = value
+        }
+    private val newGroupId_MLD = MutableLiveData<Long>()
+    val newGroupId_LiveData: LiveData<Long>
+        get() = newGroupId_MLD
 
-    fun insertGroup(name: String) {
-        val ddGroup = DdGroup(name = name)
-        viewModelScope.launch(Dispatchers.IO) { dailyDayDao.insert(ddGroup) }
+
+    fun insertGroup(ddGroup: DdGroup) {
+        viewModelScope.launch(Dispatchers.IO) {
+            newGroupId = dailyDayDao.insert(ddGroup)
+        }
     }
 
     fun updateGroup(ddGroup: DdGroup) {
@@ -38,9 +46,9 @@ class DdGroupViewModel(
 
     fun getAllDdGroup(): Flow<List<DdGroup>> = dailyDayDao.getAllDdGroup()
 
-    fun getDdGroupName(groupId: Int): LiveData<String> = dailyDayDao.getGroupName_byGroupId(groupId).asLiveData()
+    fun getDdGroupName(groupId: Long): LiveData<String> = dailyDayDao.getGroupName_byGroupId(groupId).asLiveData()
 
-    fun getDdEventCount_byGroupId(groupId: Int) = dailyDayDao.getDdEventCount_byGroupId(groupId).asLiveData()
+    fun getDdEventCount_byGroupId(groupId: Long) = dailyDayDao.getDdEventCount_byGroupId(groupId).asLiveData()
 
 
     class Factory(

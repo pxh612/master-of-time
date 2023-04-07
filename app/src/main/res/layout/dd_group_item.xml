@@ -6,7 +6,7 @@
     <data>
         <variable
             name="bindViewModel"
-            type="com.example.master_of_time.screens.dailyday.group.DdGroupViewModel" />
+            type="com.example.master_of_time.screens.dailyday.group.viewmodel.DdGroupViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

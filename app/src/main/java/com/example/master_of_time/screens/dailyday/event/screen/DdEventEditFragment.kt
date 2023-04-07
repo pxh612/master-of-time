@@ -47,7 +47,10 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
 
         val dailyDayDao = AppDatabase.getInstance(requireContext()).dailyDayDao()
 
-        viewModel = ViewModelProvider(requireActivity(), DdEventEditViewModelFactory(dailyDayDao))[DdEventEditViewModel::class.java]
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            DdEventEditViewModelFactory(dailyDayDao)
+        )[DdEventEditViewModel::class.java]
 
         binding.run {
             bindUI = this@DdEventEditFragment
@@ -56,14 +59,25 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         datePickerDialog = DatePickerDialog(requireContext())
         datePickerDialog.setOnDateSetListener(this)
 
-        retrieveParentView()
-        retrieveChildView()
+        retrieveParentData()
+        retrieveChildData()
     }
 
+    private fun bind(ddEvent: DdEvent, deleteVisibility: Int = View.VISIBLE){
+        binding.apply {
+            title.text = ddEvent.title.toEditable()
+            date.text = ddEvent.date.toDateFormat().toEditable()
 
-
-    override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
-        binding.date.text = view.toDateFormat().toEditable()
+            ddEvent.groupId.let{
+                when {
+                    (it < 0)  -> ddGroupPicker.text = getString(R.string.ddGroupPicker_ddEventEditFragment)
+                    else -> viewModel.getGroupName_byGroupId(it)?.observe(viewLifecycleOwner) { groupName ->
+                        ddGroupPicker.text = groupName
+                    }
+                }
+            }
+            delete.visibility = deleteVisibility
+        }
     }
 
     override fun onClick(view: View) {
@@ -89,7 +103,11 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         }
     }
 
-    private fun retrieveParentView() {
+    override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
+        binding.date.text = view.toDateFormat().toEditable()
+    }
+
+    private fun retrieveParentData() {
         val navigationArgs: DdEventEditFragmentArgs by navArgs()
         isAdd = navigationArgs.isAdd
         when(isAdd){
@@ -108,10 +126,10 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
     }
 
 
-    private fun retrieveChildView() {
+    private fun retrieveChildData() {
 
         findNavController().currentBackStackEntry?.savedStateHandle?.run {
-            getLiveData<Int>("groupId").observe(viewLifecycleOwner) { groupId ->
+            getLiveData<Long>("groupId").observe(viewLifecycleOwner) { groupId ->
                 ddEvent.groupId = groupId
                 viewModel.getGroupName_byGroupId(ddEvent.groupId)?.observe(viewLifecycleOwner) {
                     binding.ddGroupPicker.text = it
@@ -120,38 +138,22 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         }
 
         setFragmentResultListener("DdGroupBottomSheet") { _, bundle ->
-            val isNavigateAddDdGroup = bundle.getBoolean("action_ddGroupBottomSheet_to_ddGroupEditDialogFragment")
-            if(isNavigateAddDdGroup){
+            val isNavigateAddDdGroup =
+                bundle.getBoolean("action_ddGroupBottomSheet_to_ddGroupEditDialogFragment")
+            if (isNavigateAddDdGroup) {
                 isPendingNavigate_DdGroupBottomSheet = true
                 navigateAddDdGroup()
             }
         }
+
         setFragmentResultListener("DdGroupEditDialogFragment") { _, bundle ->
             val onDestroy = bundle.getBoolean("onDestroy")
-            if(onDestroy) if(isPendingNavigate_DdGroupBottomSheet) navigateGroupPicker()
+            if (onDestroy) if (isPendingNavigate_DdGroupBottomSheet) navigateGroupPicker()
+
+            val newGroupId = bundle.getInt("newGroupId")
+            Timber.d("newGroupId = $newGroupId")
         }
     }
-
-
-
-    private fun bind(ddEvent: DdEvent, deleteVisibility: Int = View.VISIBLE){
-        binding.apply {
-            title.text = ddEvent.title.toEditable()
-            date.text = ddEvent.date.toDateFormat().toEditable()
-
-            ddEvent.groupId.let{
-                when {
-                    (it < 0)  -> ddGroupPicker.text = getString(R.string.ddGroupPicker_ddEventEditFragment)
-                    else -> viewModel.getGroupName_byGroupId(it)?.observe(viewLifecycleOwner) { groupName ->
-                        ddGroupPicker.text = groupName
-                    }
-                }
-            }
-
-            delete.visibility = deleteVisibility
-        }
-    }
-
 
 
     private fun fetchInput(): Boolean {
@@ -180,6 +182,8 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         val action = DdEventEditFragmentDirections.actionDdEventEditFragmentToDdGroupBottomSheet(groupId = ddEvent.groupId)
         requireView().findNavController().navigate(action)
     }
+
+
 
 }
 

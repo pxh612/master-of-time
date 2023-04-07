@@ -15,6 +15,7 @@ import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DdGroupBottomSheetBinding
 import com.example.master_of_time.screens.dailyday.group.*
+import com.example.master_of_time.screens.dailyday.group.viewmodel.DdGroupViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -58,14 +59,12 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), View.OnClickListener,
             }
         }
 
-        retrieveParentView()
+        retrieveParentData()
     }
 
     override fun onClick(view: View) {
         when(view.id) {
             R.id.addGroup -> {
-                Timber.d("click: addGroup")
-
                 findNavController().popBackStack()
                 setFragmentResult("DdGroupBottomSheet", bundleOf(
                     "action_ddGroupBottomSheet_to_ddGroupEditDialogFragment" to true
@@ -74,18 +73,14 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), View.OnClickListener,
         }
     }
 
-
-    private fun retrieveParentView() {
+    private fun retrieveParentData() {
         val navigationArgs: DdGroupBottomSheetArgs by navArgs()
         viewModel.selectedGroupId = navigationArgs.groupId
-        Timber.d("viewModel.selectedGroupId = ${viewModel.selectedGroupId}")
     }
-
 
 
     override fun onDdGroupItemClick_atPickDdGroupAdapter(item: DdGroup) {
-        Timber.i("> picked $item")
         findNavController().previousBackStackEntry?.savedStateHandle?.set("groupId", item.id)
+        Timber.d("Clicked on BottomSheet: $item")
     }
-
 }
