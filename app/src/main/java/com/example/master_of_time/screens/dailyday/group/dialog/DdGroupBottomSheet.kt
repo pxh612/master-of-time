@@ -59,65 +59,22 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), View.OnClickListener,
         }
     }
     override fun onClick(view: View) {
-        when(view.id){
+        when(view.id) {
             R.id.addGroup -> {
                 Timber.d("click: addGroup")
 
-                val result = true
-                setFragmentResult("requestKey", bundleOf("action_ddGroupBottomSheet_to_ddGroupEditDialogFragment" to result))
-            }
-
-
-                /*isNavigate = true
-                callbackPreviousFragment()
                 findNavController().popBackStack()
-                Timber.d("this should not show up")*/
-            }
+                setFragmentResult("DdGroupBottomSheet", bundleOf(
+                    "action_ddGroupBottomSheet_to_ddGroupEditDialogFragment" to true
+                ))
+           }
         }
+    }
 
     override fun onItemClick(item: DdGroup) {
         Timber.i("> picked $item")
         findNavController().previousBackStackEntry?.savedStateHandle?.set("groupId", item.id)
         findNavController().previousBackStackEntry?.savedStateHandle?.set("groupName", item.name)
     }
-
-    var isNavigate = false
-
-    /*private fun navigateAddGroup() {
-        findNavController().previousBackStackEntry?.savedStateHandle?.set("action_ddGroupBottomSheet_to_ddGroupEditDialogFragment", true)
-        findNavController().popBackStack()
-    }*/
-
-
-    /*fun callbackPreviousFragment(){
-        Timber.d("intented execution with $isNavigate")
-
-        if(isNavigate){
-            findNavController().previousBackStackEntry?.savedStateHandle?.set("action_ddGroupBottomSheet_to_ddGroupEditDialogFragment", true)
-        }
-    }*/
-
-    /*
-    override fun onPause() {
-        notifyPreviousFragment()
-        Timber.d("onPause")
-        super.onPause()
-        Timber.d("onPause 2")
-    }
-
-    override fun onStop() {
-        notifyPreviousFragment()
-        Timber.d("onStop")
-        super.onStop()
-        Timber.d("onStop 2")
-    }*/
-
-    /*override fun onDestroy() {
-        Timber.d("onDestroy")
-        super.onDestroy()
-        Timber.d("onDestroy 2")
-    }*/
-
-
 
 }

@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -43,13 +45,11 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
             DdGroupViewModelFactory(dataSource)
         )[DdGroupViewModel::class.java]
 
+
         binding.run{
-            cancel.setOnClickListener(this@DdGroupEditDialogFragment)
-            submit.setOnClickListener(this@DdGroupEditDialogFragment)
+            bindUI = this@DdGroupEditDialogFragment
         }
-        retrieveNavigationArgs()
-
-
+        retrieveParentView()
     }
 
     override fun onClick(view: View) {
@@ -74,7 +74,7 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
         }
     }
 
-    private fun retrieveNavigationArgs() {
+    private fun retrieveParentView() {
 
         val navigationArgs: DdGroupEditDialogFragmentArgs by navArgs()
         isAdd = navigationArgs.isAdd
@@ -96,6 +96,17 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
 
     private fun fetchInput() {
         name = binding.name.text.toString()
+    }
+
+    private fun notifyOnDestroy(){
+        setFragmentResult("DdGroupEditDialogFragment", bundleOf(
+            "onDestroy" to true
+        ))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        notifyOnDestroy()
     }
 
 }
