@@ -5,48 +5,7 @@
     android:id="@+id/navigation"
     app:startDestination="@id/ddEventFragment">
 
-    <fragment
-        android:id="@+id/titleFragment"
-        android:name="com.example.master_of_time.screens.home.TitleFragment"
-        android:label="TitleFragment"
-        tools:layout="@layout/fragment_title">
-        <action
-            android:id="@+id/action_titleFragment_to_gameFragment"
-            app:destination="@id/gameFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/gameFragment"
-        android:name="com.example.master_of_time.screens.game.ui.GameFragment"
-        android:label="GameFragment"
-        tools:layout="@layout/fragment_game" >
-        <action
-            android:id="@+id/action_gameFragment_to_gameOverFragment"
-            app:destination="@id/gameOverFragment" />
-        <action
-            android:id="@+id/action_gameFragment_to_gameWinFragment"
-            app:destination="@id/gameWinFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/gameOverFragment"
-        android:name="com.example.master_of_time.screens.game.ui.GameOverFragment"
-        android:label="GameOverFragment"
-        tools:layout="@layout/fragment_game_over"
-        >
-        <action
-            android:id="@+id/action_gameOverFragment_to_gameFragment"
-            app:destination="@id/gameFragment"
-            app:popUpTo="@id/titleFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/gameWinFragment"
-        android:name="com.example.master_of_time.screens.game.ui.GameWinFragment"
-        android:label="GameWinFragment"
-        tools:layout="@layout/fragment_game_win"
-        >
-        <action
-            android:id="@+id/action_gameWinFragment_to_titleFragment"
-            app:destination="@id/titleFragment" />
-    </fragment>
+
     <fragment
         android:id="@+id/ddEventFragment"
         android:name="com.example.master_of_time.screens.dailyday.event.screen.DdEventFragment"
@@ -77,6 +36,9 @@
         <action
             android:id="@+id/action_ddEventEditFragment_to_ddGroupEditDialogFragment"
             app:destination="@id/ddGroupEditDialogFragment" />
+        <action
+            android:id="@+id/action_ddEventEditFragment_to_ddEventCalculationTypeFragment"
+            app:destination="@id/ddEventCalculationTypeFragment" />
     </fragment>
     <fragment
         android:id="@+id/ddGroupFragment"
@@ -109,4 +71,9 @@
             app:argType="long"
             android:defaultValue="-1L" />
     </dialog>
+    <fragment
+        android:id="@+id/ddEventCalculationTypeFragment"
+        android:name="com.example.master_of_time.screens.dailyday.event.screen.DdEventCalculationTypeFragment"
+        android:label="DdEventCalculationTypeFragment"
+        tools:layout="@layout/dd_event_calculation_type_fragment" />
 </navigation>

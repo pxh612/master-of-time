@@ -3,6 +3,7 @@ package com.example.master_of_time.screens.dailyday.group
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.master_of_time.database.table.DdGroup
@@ -15,9 +16,10 @@ class DisplayEventsDdGroupAdapter(
 ): ListAdapter<DdGroup, DisplayEventsDdGroupAdapter.MyViewHolder>(DdGroupDiffUtil()) {
 
     interface Listener {
-        fun onUpdate_PickedDdGroupId_byDdEventListAdapter(groupId: Long?)
+        fun onDisplayEventsByGroup(groupId: Long?)
     }
 
+//    var ddEventCalculation: DdEventCalculation = DdEventCalculation(1)
     var pickedPosition: Int? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -59,7 +61,7 @@ class DisplayEventsDdGroupAdapter(
             lastPickedPosition?.let { notifyItemChanged(it) }
             pickedPosition?.let { notifyItemChanged(it) }
 
-            listener.onUpdate_PickedDdGroupId_byDdEventListAdapter(pickedGroupId)
+            listener.onDisplayEventsByGroup(pickedGroupId)
         }
         holder.bind(item)
     }
@@ -79,10 +81,11 @@ class DisplayEventsDdGroupAdapter(
         fun setSelected(isSelected: Boolean){
             when(isSelected){
                 true -> {
-                    binding.name.setTextColor(Color.YELLOW)
+//                    binding.name.background = ContextCompat.getDrawable(req)
+                    binding.name.setTextColor(Color.BLUE)
                 }
                 false -> {
-                    binding.name.setTextColor(Color.WHITE)
+                    binding.name.setTextColor(Color.BLACK)
                 }
             }
         }

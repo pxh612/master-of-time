@@ -29,8 +29,10 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
 
                     android:text="@string/ddGroupBottomSheet_group"
+                    android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:id="@+id/groupText" />
@@ -48,17 +50,20 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <TextView
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/nestedScrollView"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="10dp"
             app:layout_constraintVertical_bias="1"
             android:paddingVertical="10dp"
 
             android:text="@string/ddGroupBottomSheet_addgroup"
+            android:backgroundTint="@color/purple_500"
+            android:textColor="@color/white"
             android:gravity="center"
             android:textSize="22sp"
             android:onClick="@{bindUI::onClick}"

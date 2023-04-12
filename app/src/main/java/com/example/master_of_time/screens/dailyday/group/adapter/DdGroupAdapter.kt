@@ -23,6 +23,7 @@ class DdGroupAdapter(
 
     interface Listener {
         fun onTitleClick(item: DdGroup)
+        fun onDelete(item: DdGroup)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -64,17 +65,16 @@ class DdGroupAdapter(
         private val listener: Listener
         ) : RecyclerView.ViewHolder(binding.root) {
 
-         @SuppressLint("SetTextI18n")
          fun bind(item: DdGroup) {
 
-             viewModel.getDdEventCount_byGroupId(item.id).observe(itemView.context as LifecycleOwner, Observer { count ->
-                 binding.groupName.text = "${item.name} ($count)"
-             })
+             viewModel.getDdEventCount_byGroupId(item.id).observe(itemView.context as LifecycleOwner) { countValue ->
+                 binding.count.text = countValue.toString()
+             }
 
              binding.run{
                  groupName.text = item.name
                  groupName.setOnClickListener { listener.onTitleClick(item) }
-                 drag.text = item.orderId.toString()
+                 delete.setOnClickListener { listener.onDelete(item) }
              }
         }
     }

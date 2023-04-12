@@ -14,13 +14,14 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginStart="@dimen/marginLeft_title_adapterDailyDay"
+            android:layout_marginStart="5dp"
 
             tools:text="Group's title"
+            android:textColor="@color/black"
             android:textSize="17sp"
             android:id="@+id/title" />
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -28,6 +29,7 @@
             app:layout_constraintRight_toRightOf="parent"
 
             tools:text="picked"
+            android:src="@drawable/ic_baseline_check_24"
             android:textSize="15sp"
             android:id="@+id/isPicked" />
 

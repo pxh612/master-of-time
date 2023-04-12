@@ -8,4 +8,5 @@ class DdEventDiffUtil: DiffUtil.ItemCallback<DdEvent>() {
     override fun areItemsTheSame(oldItem: DdEvent, newItem: DdEvent) = (oldItem.id == newItem.id)
 
     override fun areContentsTheSame(oldItem: DdEvent, newItem: DdEvent) = (oldItem == newItem)
+
 }

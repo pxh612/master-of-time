@@ -11,7 +11,7 @@
 
     <dimen name="layoutHeight_layout_adapterDailyday">55dp</dimen>
     <dimen name="marginLeft_title_adapterDailyDay">30dp</dimen>
-    <dimen name="marginRight_date_adapterDailyDay">30dp</dimen>
+    <dimen name="marginRight_itemCountOfGroup">30dp</dimen>
     <dimen name="textSize_adapterDailyDay">20sp</dimen>
     <dimen name="textSize_date_adapterDailyDay">15sp</dimen>
 
@@ -23,7 +23,7 @@
     <dimen name="textSize_layout_adapterDailyDayHeader">20sp</dimen>
 
     <dimen name="marginTop_title_fragmentDailyDayGroup">50dp</dimen>
-    <dimen name="marginLeft_back_fragmentDailyDayGroup">10dp</dimen>
+    <dimen name="marginLeft_back_fragmentDailyDayGroup">40dp</dimen>
     <dimen name="layoutHeight_back_fragmentDailyDayGroup">30dp</dimen>
 
     <dimen name="layoutWidth_layout_dialogFragmentDdGroupEdit">250dp</dimen>
@@ -31,5 +31,9 @@
     <dimen name="innerMargin_dialogFragmentDdGroupEdit">17dp</dimen>
     <dimen name="fontSize_cancel_dialogFragmentDdGroupEdit">15sp</dimen>
     <dimen name="fontSize_title_dialogFragmentDdGroupEdit">20sp</dimen>
+    <dimen name="customToolbar_marginTop">20dp</dimen>
+
+    <dimen name="ddEventHeaderLayout_textSize">15sp</dimen>
+    <dimen name="toolbar_height">60dp</dimen>
 
 </resources>

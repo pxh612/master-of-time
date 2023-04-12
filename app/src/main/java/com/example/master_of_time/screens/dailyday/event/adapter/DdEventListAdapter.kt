@@ -5,46 +5,53 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.master_of_time.database.table.DdEvent
+import com.example.master_of_time.databinding.DdEventItemBinding
 
-import com.example.master_of_time.databinding.ItemDailyDayBinding
+import com.example.master_of_time.module.dailyday.DdEventCalculation
 import com.example.master_of_time.screens.dailyday.event.adapter.DdEventDiffUtil
 import com.example.master_of_time.toDateFormat
+import timber.log.Timber
 
 class DdEventListAdapter(
     private val onItemClicked: (DdEvent) -> Unit
-) : ListAdapter<DdEvent, DdEventListAdapter.DailyDayViewHolder>(DdEventDiffUtil()) {
+) : ListAdapter<DdEvent, DdEventListAdapter.MyViewHolder>(DdEventDiffUtil()) {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyDayViewHolder {
-        val holder = DailyDayViewHolder(
-            ItemDailyDayBinding.inflate(
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val holder = MyViewHolder(
+            DdEventItemBinding.inflate(
                 LayoutInflater.from( parent.context), parent, false
             ),
-            onItemClicked
+            this
         )
+
         return holder
     }
 
-    override fun onBindViewHolder(holder: DailyDayViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item: DdEvent = getItem(position)
         holder.bind(item)
     }
 
 
-    class DailyDayViewHolder(
-        private val binding: ItemDailyDayBinding,
-        private val onItemClicked: (DdEvent) -> Unit
+    class MyViewHolder(
+        private val binding: DdEventItemBinding,
+        private val adapter: DdEventListAdapter
     ) : RecyclerView.ViewHolder(binding.root) {
-
 
         fun bind(item: DdEvent) {
             binding.apply {
                 title.text = item.title
-                date.text = item.date.toDateFormat()
+
+                val ddEventCalculation = DdEventCalculation(item.calculationTypeId, item.date)
+                date.text = ddEventCalculation.displayPickedDate()
+                calculate.text = ddEventCalculation.displayCalculation()
+                searchedDate.text = ddEventCalculation.displaySearchedDate()
             }
 
             itemView.setOnClickListener {
-                onItemClicked(item)
+                adapter.onItemClicked(item)
             }
         }
     }

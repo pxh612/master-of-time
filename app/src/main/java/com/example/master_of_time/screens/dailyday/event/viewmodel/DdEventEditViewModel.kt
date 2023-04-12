@@ -12,6 +12,8 @@ class DdEventEditViewModel(
     private val dailyDayDao: DailyDayDao
 ) : ViewModel(){
 
+    var ddEventCalculationTypeIndex: Int? = null
+
     fun getDdEvent(id: Long): LiveData<DdEvent> {
         return dailyDayDao.getDdEvent(id).asLiveData()
     }
@@ -36,6 +38,8 @@ class DdEventEditViewModel(
     }
 
     fun getGroupName_byGroupId(id: Long): LiveData<String?> = dailyDayDao.getGroupName_byGroupId(id).asLiveData()
+
+    fun getDdGroup(groupId: Long) = dailyDayDao.getDdGroup(groupId).asLiveData()
 }
 
 class DdEventEditViewModelFactory(

@@ -1,6 +1,7 @@
 package com.example.master_of_time.screens.dailyday.group
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.ListAdapter
@@ -20,7 +21,7 @@ class PickDdGroupAdapter(
 ): ListAdapter<DdGroup, PickDdGroupAdapter.MyViewHolder>(DdGroupDiffUtil()) {
 
     interface Listener {
-        fun onDdGroupItemClick_atPickDdGroupAdapter(item: DdGroup)
+        fun onDdGroupPicked(isPicked: Boolean, item: DdGroup)
     }
 
     var selectedPosition: Int? = null
@@ -61,16 +62,26 @@ class PickDdGroupAdapter(
 
             when(ddGroup.id){
                 viewModel.selectedGroupId -> {
-                    binding.isPicked.text = "picked"
+                    binding.isPicked.visibility = View.VISIBLE
                     adapter.selectedPosition = bindingAdapterPosition
                 }
-                else -> binding.isPicked.text = ""
+                else -> binding.isPicked.visibility = View.INVISIBLE
             }
 
             itemView.setOnClickListener {
-                viewModel.selectedGroupId = ddGroup.id
+                viewModel.run{
+                    when(selectedGroupId){
+                        ddGroup.id -> {
+                            adapter.listener.onDdGroupPicked(false, ddGroup)
+                            selectedGroupId = -1
+                        }
+                        else -> {
+                            adapter.listener.onDdGroupPicked(true, ddGroup)
+                            selectedGroupId = ddGroup.id
+                        }
+                    }
+                }
                 adapter.notifyNewPosition(bindingAdapterPosition)
-                adapter.listener.onDdGroupItemClick_atPickDdGroupAdapter(ddGroup)
             }
         }
 

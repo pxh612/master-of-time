@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
@@ -47,6 +49,7 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupAdapter.Listene
         )[DdGroupViewModel::class.java]
 
 
+
         val ddGroupAdapter = DdGroupAdapter(viewModel,this)
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup().collect {
@@ -61,25 +64,39 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupAdapter.Listene
 
 
         binding.run {
-            ui = this@DdGroupFragment
-            bindVM = this@DdGroupFragment.viewModel
+            bindUI = this@DdGroupFragment
+            bindVM = viewModel
+
+            toolbar.run{
+                setNavigationOnClickListener { findNavController().popBackStack() }
+            }
 
             groupRecyclerView.run{
                 adapter = ddGroupAdapter
                 layoutManager = LinearLayoutManager(context)
             }
         }
+        retrieveDatabase()
+    }
+
+    private fun retrieveDatabase() {
+        viewModel.getDdEventTotalCount().observe(viewLifecycleOwner) { totalCount ->
+            binding.countTotal.text = totalCount.toString()
+        }
     }
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.back -> findNavController().popBackStack()
             R.id.add -> navigateAddGroup()
         }
     }
     override fun onTitleClick(item: DdGroup) {
         Timber.i("item = $item")
         navigateEditGroup(item.id)
+    }
+
+    override fun onDelete(item: DdGroup) {
+        viewModel.deleteGroup(item)
     }
 
     fun reassignEveryGroupOrder(){

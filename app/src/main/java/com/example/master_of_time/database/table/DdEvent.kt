@@ -14,7 +14,6 @@ import java.time.Instant
     )
 )
 data class DdEvent (
-
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
 
@@ -25,15 +24,8 @@ data class DdEvent (
     var date: Long = Instant.now().epochSecond,
 
     @ColumnInfo
-    var groupId: Long = -1,
+    var groupId: Long? = null,
+
+    @ColumnInfo
+    var calculationTypeId: Int = 0
 )
-
-
-
-/*
-
-[ksp] /home/pxh612/AndroidStudioProjects/master-of-time/app/src/main/java/com/example/master_of_time/database/ddevent/DdEvent.kt:19:
- groupId column references a foreign key but it is not part of an index.
- This may trigger full table scans whenever parent table is modified so you are highly advised to create an index that covers this column.
-
- */

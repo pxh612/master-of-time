@@ -10,19 +10,27 @@
     <string name="answerButton_fragmentGame">answer</string>
     <string name="message_fragmentGameOver">Game over</string>
     <string name="retryButton_fragmentGameOver">RETRY ?</string>
-    <string name="text_add_fragmentDailyDay">Add</string>
-    <string name="confirm_fragmentDailyDayEdit">confirm</string>
-    <string name="delete_fragmentDailyDayEdit">delete</string>
+    <string name="text_add_fragmentDailyDay">ADD</string>
+    <string name="confirm_fragmentDailyDayEdit">CONFIRM</string>
+    <string name="delete_fragmentDailyDayEdit">DELETE</string>
 
-    <string name="fragmentDailyDayGroup_group">Group</string>
+    <string name="fragmentDailyDayGroup_group">Groups</string>
     <string name="add_dialogFragmentDdGroupEdit">ADD</string>
     <string name="cancel_dialogFragmentDdGroupEdit">CANCEL</string>
     <string name="hint_name_dialogFragmentDdGroupEdit">Group Name</string>
-    <string name="ddGroupPicker_ddEventEditFragment">GroupName…</string>
+    <string name="ddGroupPicker_ddEventEditFragment">GroupName...</string>
 
     <string name="noEvent_ddEventFragment">No event</string>
     <string name="addEvent_ddEventFragment">Add event</string>
 
     <string name="ddGroupBottomSheet_addgroup">Add group</string>
     <string name="ddGroupBottomSheet_group">Group</string>
+
+    <string-array name="ddevent_calculation_picker">
+        <item>ONE TIME</item>
+        <item>MONTHLY</item>
+        <item>ANNUALLY</item>
+    </string-array>
+
+
 </resources>

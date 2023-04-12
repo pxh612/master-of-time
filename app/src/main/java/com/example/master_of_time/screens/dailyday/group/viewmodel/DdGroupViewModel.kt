@@ -13,20 +13,12 @@ class DdGroupViewModel(
     ): ViewModel() {
 
 
-    /** LiveData: selectedGroupId */
     var selectedGroupId: Long = -1
-        set(value){
-            selectedGroupId_MutableLiveData.value = value
-            field = value
-        }
-    private val selectedGroupId_MutableLiveData = MutableLiveData<Long>()
-    val selectedGroupId_LiveData: LiveData<Long>
-        get() = selectedGroupId_MutableLiveData
 
     /** LiveData: newGroupId */
     var newGroupId: Long = -1
         set(value){
-            newGroupId_MLD.value = value
+            newGroupId_MLD.postValue(value)
             field = value
         }
     private val newGroupId_MLD = MutableLiveData<Long>()
@@ -39,6 +31,12 @@ class DdGroupViewModel(
             newGroupId = dailyDayDao.insert(ddGroup)
         }
     }
+    fun deleteGroup(ddGroup: DdGroup) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dailyDayDao.delete(ddGroup)
+        }
+    }
+
 
     fun updateGroup(ddGroup: DdGroup) {
         viewModelScope.launch(Dispatchers.IO) { dailyDayDao.update(ddGroup) }
@@ -49,6 +47,9 @@ class DdGroupViewModel(
     fun getDdGroupName(groupId: Long): LiveData<String> = dailyDayDao.getGroupName_byGroupId(groupId).asLiveData()
 
     fun getDdEventCount_byGroupId(groupId: Long) = dailyDayDao.getDdEventCount_byGroupId(groupId).asLiveData()
+
+    fun getDdEventTotalCount() = dailyDayDao.getDdEventTotalCount().asLiveData()
+
 
 
     class Factory(

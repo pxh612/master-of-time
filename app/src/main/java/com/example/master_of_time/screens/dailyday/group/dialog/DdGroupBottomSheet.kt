@@ -46,7 +46,6 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), View.OnClickListener,
         val adapter = PickDdGroupAdapter(viewLifecycleOwner, viewModel, this)
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup().collect() {
-                Timber.d("> collect FlowList for adapter: size = ${it.size}")
                 adapter.submitList(it)
             }
         }
@@ -79,8 +78,8 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), View.OnClickListener,
     }
 
 
-    override fun onDdGroupItemClick_atPickDdGroupAdapter(item: DdGroup) {
-        findNavController().previousBackStackEntry?.savedStateHandle?.set("groupId", item.id)
-        Timber.d("Clicked on BottomSheet: $item")
+    override fun onDdGroupPicked(isPicked: Boolean, item: DdGroup) {
+        if(isPicked) findNavController().previousBackStackEntry?.savedStateHandle?.set("groupId", item.id)
+        else findNavController().previousBackStackEntry?.savedStateHandle?.set("groupId", -1L)
     }
 }

@@ -25,7 +25,7 @@ open class MyTimberDebugTree : Timber.DebugTree() {
         Timber.Tree::class.java.name,
         MyTimberDebugTree::class.java.name
     )
-    private val logSearching = "\t".repeat(50) + "logged_by_pxh612"
+    private val logSearching = "\t".repeat(20) + "logged_by_pxh612"
 
 
     fun methodLocation(element: StackTraceElement): String{
@@ -38,10 +38,19 @@ open class MyTimberDebugTree : Timber.DebugTree() {
         val element: StackTraceElement = Throwable().stackTrace
             .first { it.className !in fqcnIgnore }
 
+        var allLocation: String = ""
+        var stackCount = 0
+        Throwable().stackTrace.forEach {
+            if(it.className !in fqcnIgnore){
+                if(allLocation.isNullOrEmpty()) allLocation = methodLocation(it)
+                else if(stackCount < 3) allLocation = "$allLocation" + "\t".repeat(20) + "(from) " + methodLocation(it)
+                stackCount++
+            }
+        }
 
         // TODO: extract Tag without junk ("DdGroupFragment$onViewCreated.emit")
         val finalTag: String? = createStackElementTag(element)
-        val finalMessage = String.format("%s %s\n    %s \n", methodLocation(element), logSearching, message)
+        val finalMessage = String.format("%s %s\n    %s \n", allLocation, logSearching, message)
         Log.println(priority, finalTag, finalMessage)
     }
 

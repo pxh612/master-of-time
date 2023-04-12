@@ -9,99 +9,150 @@
             type="com.example.master_of_time.screens.dailyday.event.screen.DdEventEditFragment" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".screens.dailyday.event.screen.DdEventEditFragment"
-        android:padding="@dimen/outerMargin_dialogFragmentDdGroupEdit" >
+        android:orientation="vertical">
 
-        <EditText
+        <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginTop="@dimen/innerGap_ddEventEditFragment"
+            android:layout_height="@dimen/toolbar_height"
 
-            tools:text="title"
-            android:inputType="text"
-            android:onClick="@{bindUI::onClick}"
-            android:id="@+id/title" />
+            app:title="Edit event"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            android:id="@+id/toolbar" >
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            android:layout_marginTop="@dimen/innerGap_ddEventEditFragment"
-
-            tools:text="2022-5-6"
-            android:focusable="false"
-            android:onClick="@{bindUI::onClick}"
-            android:id="@+id/date" />
+        </androidx.appcompat.widget.Toolbar>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            app:layout_constraintTop_toBottomOf="@id/date"
-            android:layout_marginTop="@dimen/innerGap_ddEventEditFragment"
-            android:id="@+id/group">
+            android:layout_height="wrap_content"
+            android:padding="20dp" >
 
-            <TextView
-                android:layout_width="wrap_content"
+
+            <EditText
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginTop="@dimen/innerGap_ddEventEditFragment"
 
-                android:text="Group"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:id="@+id/groupTextView"/>
+                android:hint="Event title"
+                tools:text="title"
+                android:inputType="text"
+                android:onClick="@{bindUI::onClick}"
+                android:id="@+id/title" />
 
-            <TextView
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                android:layout_marginTop="@dimen/innerGap_ddEventEditFragment"
+
+                tools:text="2022-5-6"
+                android:focusable="false"
+                android:onClick="@{bindUI::onClick}"
+                android:id="@+id/date" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:layout_constraintTop_toBottomOf="@id/date"
+                android:layout_marginTop="@dimen/innerGap_ddEventEditFragment"
+                android:id="@+id/group">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="@dimen/innerGap_ddEventEditFragment"
+
+                    android:text="Group"
+                    tools:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:id="@+id/groupTextView"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:minWidth="80dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginRight="20dp"
+
+                    android:textSize="20sp"
+                    android:gravity="right|center_vertical"
+                    android:onClick="@{bindUI::onClick}"
+                    android:id="@+id/ddGroupPicker"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:layout_constraintTop_toBottomOf="@id/group"
+                android:layout_marginTop="@dimen/innerGap_ddEventEditFragment"
+                android:id="@+id/calculateType">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="@dimen/innerGap_ddEventEditFragment"
+
+                    android:text="Calculate type"
+                    tools:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:id="@+id/calculateTypeTextView"/>
+
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:minWidth="80dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+
+                    android:id="@+id/calculateTypePicker"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minWidth="50dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/calculateType"
+                android:layout_marginTop="55dp"
 
-                android:textSize="20dp"
-                android:gravity="right"
+                android:text="@string/confirm_fragmentDailyDayEdit"
                 android:onClick="@{bindUI::onClick}"
-                android:id="@+id/ddGroupPicker"/>
+                android:id="@+id/submitButton" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/submitButton"
+                android:layout_marginTop="@dimen/innerGap_ddEventEditFragment"
+
+                android:text="@string/delete_fragmentDailyDayEdit"
+                android:backgroundTint="@color/design_default_color_error"
+                android:textColor="@color/white"
+                android:onClick="@{bindUI::onClick}"
+                android:id="@+id/delete" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/group"
-            android:layout_marginTop="35dp"
-
-            android:text="@string/confirm_fragmentDailyDayEdit"
-            android:onClick="@{bindUI::onClick}"
-            android:id="@+id/submitButton" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/submitButton"
-            android:layout_marginTop="@dimen/innerGap_ddEventEditFragment"
-
-            android:text="@string/delete_fragmentDailyDayEdit"
-            android:backgroundTint="@color/design_default_color_error"
-            android:textColor="@color/white"
-            android:onClick="@{bindUI::onClick}"
-            android:id="@+id/delete" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </LinearLayout>
 </layout>

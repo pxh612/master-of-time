@@ -10,6 +10,7 @@ android {
     namespace 'com.example.master_of_time'
     compileSdk 33
 
+
     defaultConfig {
         applicationId "com.example.master_of_time"
         minSdk 26
@@ -60,4 +61,6 @@ dependencies {
     ksp "com.google.dagger:hilt-android-compiler:2.44"
     implementation 'com.jakewharton.threetenabp:threetenabp:1.4.4'
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+    implementation "androidx.appcompat:appcompat:1.2.0"
+    implementation "com.google.android.material:material:1.2.1"
 }

@@ -5,6 +5,9 @@
 
     <data>
         <variable
+            name="bindUI"
+            type="com.example.master_of_time.screens.dailyday.group.adapter.DdGroupAdapter" />
+        <variable
             name="bindViewModel"
             type="com.example.master_of_time.screens.dailyday.group.viewmodel.DdGroupViewModel" />
     </data>
@@ -19,10 +22,22 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginStart="@dimen/marginLeft_title_adapterDailyDay"
 
+            tools:text="groupName"
             android:textSize="@dimen/textSize_adapterDailyDay"
             android:id="@+id/groupName" />
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/count"
+            android:layout_marginRight="35dp"
+
+            android:src="@drawable/ic_baseline_delete_24"
+            android:id="@+id/delete" />
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,12 +45,12 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginEnd="@dimen/marginRight_date_adapterDailyDay"
+            android:layout_marginEnd="@dimen/marginRight_itemCountOfGroup"
 
-            android:text="drag"
+            tools:text="69"
             android:visibility="visible"
             android:textSize="@dimen/textSize_adapterDailyDay"
-            android:id="@+id/drag" />
+            android:id="@+id/count" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

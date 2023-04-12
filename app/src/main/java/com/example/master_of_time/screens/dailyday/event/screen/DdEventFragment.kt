@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
@@ -14,7 +15,6 @@ import com.example.master_of_time.R
 import com.example.master_of_time.database.table.DdEvent
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.databinding.DdEventFragmentBinding
-import com.example.master_of_time.module.dailyday.DdEventCalculation
 import com.example.master_of_time.screens.dailyday.event.DdEventListAdapter
 import com.example.master_of_time.screens.dailyday.event.DdEventLayoutManager
 import com.example.master_of_time.screens.dailyday.event.DdEventViewModel
@@ -30,8 +30,7 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
 
     /** views */
     lateinit var ddEventLayoutManager: DdEventLayoutManager
-    var ddEventCalculation: DdEventCalculation = DdEventCalculation()
-    val ddEventListAdapter = DdEventListAdapter { onItemClicked(it) }
+    val ddEventListAdapter = DdEventListAdapter { onEventItemClicked(it) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,10 +62,15 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
                 displayEventsDdGroupAdapter.submitList(it)
             }
         }
-        onUpdate_PickedDdGroupId_byDdEventListAdapter(groupId = null)
+        // TODO: SharePreferences:
+        onDisplayEventsByGroup(groupId = null)
+
+
 
         binding.run {
             this.ui = this@DdEventFragment
+
+            toolbar.setNavigationOnClickListener {  }
 
             groupRecyclerView.run {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -88,41 +92,38 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
                 ddEventLayoutManager.changeLayout()
                 binding.eventRecyclerView.layoutManager = ddEventLayoutManager.value
             }
-            R.id.buttonOne -> navigateToGroupList()
+            R.id.group -> navigateToGroupList()
             R.id.noEventLayout -> navigateToAddDdEvent()
         }
     }
 
 
-    override fun onUpdate_PickedDdGroupId_byDdEventListAdapter(groupId: Long?) {
+    override fun onDisplayEventsByGroup(groupId: Long?) {
         lifecycle.coroutineScope.launch {
             when (groupId) {
                 null -> viewModel.getAllDdEvent().collect() {
                     ddEventListAdapter.submitList(it)
-                    onUpdate_NoEventLayout(it.size)
+                    displayNoEventLayout(it.size)
                 }
-
                 else -> viewModel.getDdEventListByGroupId(groupId).collect() {
                     ddEventListAdapter.submitList(it)
-                    onUpdate_NoEventLayout(it.size)
+                    displayNoEventLayout(it.size)
                 }
             }
         }
     }
-    fun onUpdate_NoEventLayout(listSize: Int) {
+
+    fun displayNoEventLayout(listSize: Int) {
         when(listSize){
             0 -> binding.noEventLayout.visibility = View.VISIBLE
             else -> binding.noEventLayout.visibility = View.GONE
         }
     }
 
-    private fun onItemClicked(ddEvent: DdEvent) {
-        Timber.i("> Item clicked: $ddEvent")
+    private fun onEventItemClicked(ddEvent: DdEvent) {
+        Timber.i("Event clicked: $ddEvent")
         navigateToEditScreen(ddEvent.id)
     }
-
-
-
 
     private fun navigateToGroupList() {
         val action = DdEventFragmentDirections.actionDdEventFragmentToDdGroupFragment()
