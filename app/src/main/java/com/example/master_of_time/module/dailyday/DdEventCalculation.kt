@@ -31,7 +31,6 @@ class DdEventCalculation(
 
 
 
-    val EPOCHDAYS = 60*60*24
     val ddEventCalculationType: DdEventCalculationType
         get() = GivenList[index]
     val zonedDateTime: ZonedDateTime

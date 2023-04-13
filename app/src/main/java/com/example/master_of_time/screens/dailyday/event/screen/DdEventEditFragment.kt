@@ -10,6 +10,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -29,7 +30,13 @@ import timber.log.Timber
 class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener,
     AdapterView.OnItemSelectedListener {
 
-    private lateinit var viewModel: DdEventEditViewModel
+    private val viewModel: DdEventEditViewModel by lazy {
+        val dailyDayDao = AppDatabase.getInstance(requireContext()).dailyDayDao()
+        ViewModelProvider(
+            requireActivity(),
+            DdEventEditViewModelFactory(dailyDayDao)
+        )[DdEventEditViewModel::class.java]
+    }
     private lateinit var binding: DdEventEditFragmentBinding
 
     /** Data */
@@ -58,23 +65,16 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dailyDayDao = AppDatabase.getInstance(requireContext()).dailyDayDao()
-
-        viewModel = ViewModelProvider(
-            requireActivity(),
-            DdEventEditViewModelFactory(dailyDayDao)
-        )[DdEventEditViewModel::class.java]
-
         binding.run {
             bindUI = this@DdEventEditFragment
 
             toolbar.setNavigationOnClickListener { findNavController().popBackStack() }
+
+            initCalculationTypePicker()
         }
 
         retrieveParentData()
         retrieveChildData()
-
-        initCalculationTypePicker()
     }
 
     private fun initCalculationTypePicker() {
@@ -92,9 +92,7 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
     }
 
     override fun onDateSet(datePicker: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
-        Timber.v("date set: $year, $month, $dayOfMonth")
-        binding.date.text = formatDate(year, month+1, dayOfMonth).toEditable()
-
+        ddEvent = ddEvent.copy(date = datePickerDialog.datePicker.toEpochTimeSeconds())
     }
 
     private fun bind(){
@@ -102,37 +100,37 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
             invalidateAll()
 
             date.text = ddEvent.date.toDateFormat().toEditable()
+            ddEvent.date.toZonedDateTime().run{
+                datePickerDialog.updateDate(year, monthValue - 1, dayOfMonth)
+            }
+
             ddEvent.groupId.let{
                 when {
                     (it == null)  -> {
                         ddGroupPicker.text = getString(R.string.ddGroupPicker_ddEventEditFragment)
-                        ddGroupPicker.setTextColor(resources.getColor(R.color.gray))
+                        ddGroupPicker.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_gray))
                     }
                     else -> {
-                        viewModel.getGroupName_byGroupId(it)
-                            .observe(viewLifecycleOwner) { groupName ->
+                        viewModel.getGroupName_byGroupId(it).observe(viewLifecycleOwner) { groupName ->
                                 ddGroupPicker.text = groupName
-                            }
-                        ddGroupPicker.setTextColor(resources.getColor(R.color.black))
+                        }
+                        ddGroupPicker.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
                     }
                 }
             }
+
             calculateTypePicker.setSelection(ddEvent.calculationTypeId)
-        }
-        ddEvent.date.toZonedDateTime().run{
-            datePickerDialog.updateDate(year, monthValue - 1, dayOfMonth)
         }
     }
 
     override fun onClick(view: View) {
         when(view.id){
             R.id.submitButton -> {
-                val title: String = binding.title.text.toString()
-                val date:Long = datePickerDialog.datePicker.toEpochTimeSeconds()
+                val title = binding.title.text.toString().trim()
 
                 if(title.isEmpty()) notifyEmptyInput()
                 else {
-                    ddEvent = ddEvent.copy(title = title, date = date)
+                    ddEvent = ddEvent.copy(title = title)
                     when(isAdd) {
                         true -> viewModel.insertItem(ddEvent)
                         false -> viewModel.updateItem(ddEvent)
@@ -202,7 +200,7 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
             val newGroupId = bundle.getLong("newGroupId")
 
             if(newGroupId >= 0) ddEvent = ddEvent.copy(groupId = newGroupId)
-            if (onDestroy && isWaitingBottomSheet) navigateGroupPicker()
+            else if(onDestroy && isWaitingBottomSheet) navigateGroupPicker()
         }
 
         setFragmentResultListener("DdEventCalculationTypeFragment") { _, bundle ->

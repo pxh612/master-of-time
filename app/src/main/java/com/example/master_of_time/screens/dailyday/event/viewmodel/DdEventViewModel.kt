@@ -17,18 +17,18 @@ class DdEventViewModel(
 
     fun getDdEventListByGroupId(groupId: Long?) = dailyDayDao.getDdEventListByGroupId(groupId)
 
-}
+    class Factory(
+        private val dailyDayDao: DailyDayDao
+    ) : ViewModelProvider.Factory {
 
-class DdEventViewModelFactory(
-    private val dailyDayDao: DailyDayDao
-) : ViewModelProvider.Factory {
-
-    override fun <T: ViewModel> create(modelClass: Class<T>): T{
-        if(modelClass.isAssignableFrom(DdEventViewModel::class.java)){
-            Timber.v("> create ViewModel")
-            @Suppress("UNCHECKED_CAST")
-            return DdEventViewModel(dailyDayDao) as T
+        override fun <T: ViewModel> create(modelClass: Class<T>): T{
+            if(modelClass.isAssignableFrom(DdEventViewModel::class.java)){
+                Timber.v("> create ViewModel")
+                @Suppress("UNCHECKED_CAST")
+                return DdEventViewModel(dailyDayDao) as T
+            }
+            throw IllegalArgumentException("Unknown ViewModel class")
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
+

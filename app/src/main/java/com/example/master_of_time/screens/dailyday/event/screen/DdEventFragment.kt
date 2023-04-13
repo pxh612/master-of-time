@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
@@ -18,7 +17,6 @@ import com.example.master_of_time.databinding.DdEventFragmentBinding
 import com.example.master_of_time.screens.dailyday.event.DdEventListAdapter
 import com.example.master_of_time.screens.dailyday.event.DdEventLayoutManager
 import com.example.master_of_time.screens.dailyday.event.DdEventViewModel
-import com.example.master_of_time.screens.dailyday.event.DdEventViewModelFactory
 import com.example.master_of_time.screens.dailyday.group.DisplayEventsDdGroupAdapter
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -26,19 +24,21 @@ import timber.log.Timber
 class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAdapter.Listener {
 
     private lateinit var binding : DdEventFragmentBinding
-    private lateinit var viewModel: DdEventViewModel
+    private val viewModel: DdEventViewModel by lazy {
+        val dailyDayDao = AppDatabase.getInstance(requireContext()).dailyDayDao()
+        ViewModelProvider(
+            requireActivity(),
+            DdEventViewModel.Factory(dailyDayDao)
+        )[DdEventViewModel::class.java]
+    }
 
-    /** views */
-    lateinit var ddEventLayoutManager: DdEventLayoutManager
-    val ddEventListAdapter = DdEventListAdapter { onEventItemClicked(it) }
+    private val ddEventLayoutManager: DdEventLayoutManager by lazy {
+        DdEventLayoutManager(requireContext())
+    }
+    private val ddEventListAdapter = DdEventListAdapter { onEventItemClicked(it) }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.dd_event_fragment, container, false
-        )
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.dd_event_fragment, container, false)
         return binding.root
     }
 
@@ -46,23 +46,14 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dailyDayDao = AppDatabase.getInstance(requireContext()).dailyDayDao()
-        ddEventLayoutManager = DdEventLayoutManager(requireContext())
-
-
-        viewModel = ViewModelProvider(
-            requireActivity(),
-            DdEventViewModelFactory(dailyDayDao)
-        )[DdEventViewModel::class.java]
-
-
         val displayEventsDdGroupAdapter = DisplayEventsDdGroupAdapter(this)
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup().collect() {
                 displayEventsDdGroupAdapter.submitList(it)
             }
         }
-        // TODO: SharePreferences:
+
+        // TODO: Save state using SharePreferences:
         onDisplayEventsByGroup(groupId = null)
 
 
@@ -85,7 +76,6 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
     }
 
     override fun onClick(view: View) {
-        Timber.v("> reponsive click on DailyDayFragment ")
         when(view.id){
             R.id.add -> navigateToAddDdEvent()
             R.id.layout -> {
@@ -102,15 +92,18 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         lifecycle.coroutineScope.launch {
             when (groupId) {
                 null -> viewModel.getAllDdEvent().collect() {
-                    ddEventListAdapter.submitList(it)
-                    displayNoEventLayout(it.size)
+                    pushEventListToAdapter(it)
                 }
                 else -> viewModel.getDdEventListByGroupId(groupId).collect() {
-                    ddEventListAdapter.submitList(it)
-                    displayNoEventLayout(it.size)
+                    pushEventListToAdapter(it)
                 }
             }
         }
+    }
+
+    private fun pushEventListToAdapter(list: List<DdEvent>) {
+        ddEventListAdapter.submitList(list)
+        displayNoEventLayout(list.size)
     }
 
     fun displayNoEventLayout(listSize: Int) {
@@ -121,7 +114,6 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
     }
 
     private fun onEventItemClicked(ddEvent: DdEvent) {
-        Timber.i("Event clicked: $ddEvent")
         navigateToEditScreen(ddEvent.id)
     }
 

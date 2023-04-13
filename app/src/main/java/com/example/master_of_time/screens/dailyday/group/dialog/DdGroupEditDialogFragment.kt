@@ -63,7 +63,7 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
                 override fun afterTextChanged(editable: Editable?) {
-                    val text  = editable.toString()
+                    val text  = editable.toString().trim()
                     when{
                         text.isNullOrBlank() -> disableSubmitButton()
                         text.startsWith(" ") -> disableSubmitButton()
@@ -108,8 +108,7 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
             R.id.cancel -> findNavController().popBackStack()
             R.id.submitEnabled -> {
 
-                fetchInput()
-
+                name = binding.name.text.toString().trim()
                 if(name.isEmpty()) findNavController()
                 else{
                     when(isAdd){
@@ -184,10 +183,6 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
         viewModel.newGroupId_LiveData.observe(viewLifecycleOwner){
             newGroupId = it
         }
-    }
-
-    private fun fetchInput() {
-        name = binding.name.text.toString()
     }
 
     private fun notifyOnDestroy(){
