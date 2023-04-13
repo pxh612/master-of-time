@@ -1,5 +1,6 @@
 package com.example.master_of_time.screens.dailyday.event.screen
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,15 +15,16 @@ import com.example.master_of_time.R
 import com.example.master_of_time.database.table.DdEvent
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.databinding.DdEventFragmentBinding
-import com.example.master_of_time.screens.dailyday.event.DdEventListAdapter
+import com.example.master_of_time.module.dailyday.DdEventListSorter
 import com.example.master_of_time.screens.dailyday.event.DdEventLayoutManager
 import com.example.master_of_time.screens.dailyday.event.DdEventViewModel
+import com.example.master_of_time.screens.dailyday.event.adapter.DdEventRecyclerViewAdapter
 import com.example.master_of_time.screens.dailyday.group.DisplayEventsDdGroupAdapter
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAdapter.Listener {
 
+    /** Architecture */
     private lateinit var binding : DdEventFragmentBinding
     private val viewModel: DdEventViewModel by lazy {
         val dailyDayDao = AppDatabase.getInstance(requireContext()).dailyDayDao()
@@ -32,10 +34,25 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         )[DdEventViewModel::class.java]
     }
 
-    private val ddEventLayoutManager: DdEventLayoutManager by lazy {
-        DdEventLayoutManager(requireContext())
-    }
-    private val ddEventListAdapter = DdEventListAdapter { onEventItemClicked(it) }
+    /** Module */
+    private val ddEventLayoutManager: DdEventLayoutManager by lazy { DdEventLayoutManager(requireContext()) }
+    private val mLayoutManager
+        get() = ddEventLayoutManager.layoutManager
+    private val ddEventListSorter = DdEventListSorter()
+
+    /** Data */
+    private var ddEventList: List<DdEvent> = emptyList()
+        set(value){
+            field = value
+            displayEvents()
+        }
+
+
+    private var selectedGroupId
+        get() = viewModel.selectedGroupId
+        set(value) { viewModel.selectedGroupId = value }
+
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.dd_event_fragment, container, false)
@@ -46,72 +63,101 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val displayEventsDdGroupAdapter = DisplayEventsDdGroupAdapter(this)
+        displayGroupsPicker()
+        displayEventsFromGroupId(groupId = selectedGroupId)
+
+        binding.run {
+            this.ui = this@DdEventFragment
+        }
+    }
+
+    private fun displayGroupsPicker() {
+        val displayEventsDdGroupAdapter = DisplayEventsDdGroupAdapter(this, viewModel)
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup().collect() {
                 displayEventsDdGroupAdapter.submitList(it)
             }
         }
+        binding.groupRecyclerView.run{
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = displayEventsDdGroupAdapter
+        }
+    }
 
-        // TODO: Save state using SharePreferences:
-        onDisplayEventsByGroup(groupId = null)
+    override fun displayEventsFromGroupId(groupId: Long?) {
+        selectedGroupId = when{
+            (groupId == null || groupId < 0) -> -1L
+            else -> groupId
+        }
 
-
-
-        binding.run {
-            this.ui = this@DdEventFragment
-
-            toolbar.setNavigationOnClickListener {  }
-
-            groupRecyclerView.run {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                adapter = displayEventsDdGroupAdapter
+        lifecycle.coroutineScope.launch {
+            when (selectedGroupId) {
+                -1L -> viewModel.getAllDdEvent().collect() {
+                    ddEventList = it
+                }
+                else -> viewModel.getDdEventListByGroupId(selectedGroupId).collect() {
+                    ddEventList = it
+                }
             }
+        }
+    }
+    var ddEventRecyclerViewAdapter = DdEventRecyclerViewAdapter(emptyList(), { onEventItemClicked(it) })
+    var mLinearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    @SuppressLint("NotifyDataSetChanged")
+    private fun displayEvents(){
 
-            eventRecyclerView.run {
-                layoutManager = ddEventLayoutManager.value
-                adapter = ddEventListAdapter
-            }
+/*        var topOffset: Int
+        var firstItem: Int
+
+        mLinearLayoutManager.run{
+            firstItem = findFirstVisibleItemPosition()
+            val firstItemView = findViewByPosition(firstItem)
+            topOffset = firstItemView?.top ?: 0
+        }*/
+
+//        val layoutManagerState = mLinearLayoutManager.onSaveInstanceState()
+
+//        ddEventRecyclerViewAdapter.setList(ddEventListSorter.sort(ddEventList))
+//        ddEventRecyclerViewAdapter
+//
+//        mLinearLayoutManager.onRestoreInstanceState(layoutManagerState)
+
+//        mLinearLayoutManager.run{
+//            scrollToPositionWithOffset(firstItem, topOffset)
+//        }
+
+        val mLinearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        val ddEventRecyclerViewAdapter = DdEventRecyclerViewAdapter(ddEventList, { onEventItemClicked(it) })
+//        ddEventRecyclerViewAdapter.setList(ddEventList)
+//        ddEventRecyclerViewAdapter.notifyDataSetChanged()
+
+        binding.eventRecyclerView.run{
+            layoutManager = mLinearLayoutManager
+            adapter = ddEventRecyclerViewAdapter
+        }
+        when(ddEventList.size){
+            0 -> binding.noEventLayout.visibility = View.VISIBLE
+            else -> binding.noEventLayout.visibility = View.GONE
         }
     }
 
     override fun onClick(view: View) {
         when(view.id){
-            R.id.add -> navigateToAddDdEvent()
+            R.id.add -> navigateToAddDdEvent(selectedGroupId)
             R.id.layout -> {
-                ddEventLayoutManager.changeLayout()
-                binding.eventRecyclerView.layoutManager = ddEventLayoutManager.value
+                ddEventLayoutManager.circleLayout()
+                displayEvents()
+            }
+            R.id.sort -> {
+                ddEventListSorter.cycleSortMethod()
+                displayEvents()
             }
             R.id.group -> navigateToGroupList()
-            R.id.noEventLayout -> navigateToAddDdEvent()
+            R.id.noEventLayout -> navigateToAddDdEvent(selectedGroupId)
         }
     }
 
 
-    override fun onDisplayEventsByGroup(groupId: Long?) {
-        lifecycle.coroutineScope.launch {
-            when (groupId) {
-                null -> viewModel.getAllDdEvent().collect() {
-                    pushEventListToAdapter(it)
-                }
-                else -> viewModel.getDdEventListByGroupId(groupId).collect() {
-                    pushEventListToAdapter(it)
-                }
-            }
-        }
-    }
-
-    private fun pushEventListToAdapter(list: List<DdEvent>) {
-        ddEventListAdapter.submitList(list)
-        displayNoEventLayout(list.size)
-    }
-
-    fun displayNoEventLayout(listSize: Int) {
-        when(listSize){
-            0 -> binding.noEventLayout.visibility = View.VISIBLE
-            else -> binding.noEventLayout.visibility = View.GONE
-        }
-    }
 
     private fun onEventItemClicked(ddEvent: DdEvent) {
         navigateToEditScreen(ddEvent.id)
@@ -122,13 +168,13 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         requireView().findNavController().navigate(action)
     }
 
-    private fun navigateToAddDdEvent() {
-        val action = DdEventFragmentDirections.actionDdEventFragmentToDdEventEditFragment(true)
+    private fun navigateToAddDdEvent(groupId: Long = -1) {
+        val action = DdEventFragmentDirections.actionDdEventFragmentToDdEventEditFragment(isAdd = true, groupId = groupId)
         requireView().findNavController().navigate(action)
     }
 
     private fun navigateToEditScreen(eventId: Long) {
-        val action = DdEventFragmentDirections.actionDdEventFragmentToDdEventEditFragment(false, eventId)
+        val action = DdEventFragmentDirections.actionDdEventFragmentToDdEventEditFragment(isAdd = false, eventId = eventId)
         requireView().findNavController().navigate(action)
     }
 }

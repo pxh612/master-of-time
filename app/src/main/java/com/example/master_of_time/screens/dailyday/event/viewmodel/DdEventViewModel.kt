@@ -10,6 +10,9 @@ class DdEventViewModel(
 
 ) : ViewModel(){
 
+    /** Data */
+    var lastSelectedAdapterPosition: Int = -1
+    var selectedGroupId: Long = -1L
 
     fun getAllDdEvent() = dailyDayDao.getAllDdEvent()
 

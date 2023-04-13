@@ -6,12 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.master_of_time.R
@@ -21,6 +19,7 @@ import com.example.master_of_time.databinding.DdGroupFragmentBinding
 import com.example.master_of_time.screens.dailyday.group.DdGroupTouchHelperCallback
 import com.example.master_of_time.screens.dailyday.group.viewmodel.DdGroupViewModel
 import com.example.master_of_time.screens.dailyday.group.adapter.DdGroupAdapter
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -96,24 +95,34 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupAdapter.Listene
     }
 
     override fun onDelete(item: DdGroup) {
-        viewModel.deleteGroup(item)
-    }
-
-    fun reassignEveryGroupOrder(){
-
-        Timber.d("> clicked")
-        lifecycle.coroutineScope.launch {
-            viewModel.getAllDdGroup().collect {
-                Timber.v("> collect FlowList for adapter: size = ${it.size}")
-                var orderIdAssigner: Long = 1
-
-
-                for (ddGroup in it) {
-                    ddGroup.orderId = orderIdAssigner
-                    orderIdAssigner++
-                    viewModel.updateGroup(ddGroup)
+        viewModel.getDdEventCount_byGroupId(item.id).observe(viewLifecycleOwner){ groupCount ->
+            when (groupCount) {
+                0 -> deleteGroup(item)
+                else -> {
+                    navigateDeleteConfirmation(item, groupCount)
+                    setFragmentResultListener("DdGroupDeleteConfirmation") { _, bundle ->
+                        val isConfirmed = bundle.getBoolean("isConfirmed")
+                        if(isConfirmed) {
+                            deleteGroup(item)
+                            viewModel.selectedGroupId = -1L
+                        }
+                    }
                 }
             }
+        }
+    }
+
+    private fun deleteGroup(item: DdGroup) {
+        lifecycle.coroutineScope.launch {
+            viewModel.getDdEventListByGroupId(item.id).collect(){
+                for(ddEvent in it){
+                    Timber.d("delete group ${item.name}: $ddEvent")
+                    viewModel.updateDdEvent(ddEvent.copy(groupId = null))
+                }
+            }
+        }
+        viewModel.getDdEventCount_byGroupId(item.id).observe(viewLifecycleOwner) { groupCount ->
+            if (groupCount == 0) viewModel.deleteGroup(item)
         }
     }
 
@@ -126,5 +135,9 @@ class DdGroupFragment : Fragment(), View.OnClickListener, DdGroupAdapter.Listene
         requireView().findNavController().navigate(action)
     }
 
+    private fun navigateDeleteConfirmation(item: DdGroup, groupCount: Int) {
+        val action = DdGroupFragmentDirections.actionDdGroupFragmentToDdGroupDeleteConfirmation(groupCount = groupCount, groupTitle = item.name)
+        requireView().findNavController().navigate(action)
+    }
 
 }

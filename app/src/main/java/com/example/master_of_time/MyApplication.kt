@@ -4,7 +4,7 @@ import android.text.Editable
 import android.widget.DatePicker
 import java.time.*
 import java.time.format.DateTimeFormatter
-import java.util.*
+
 /*
 class MyApplication: Application(){
     override fun onCreate() {
@@ -40,4 +40,17 @@ fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(
 
 fun formatDate(year: Int, month: Int, dayOfMonth: Int): String{
     return "$dayOfMonth/$month/$year"
+}
+
+fun plural(count: Long): String{
+    return when{
+        (-1L <= count && count <= 1L) -> ""
+        else -> "s"
+    }
+}
+fun plural(count: Int): String{
+    return when{
+        (-1 <= count && count <= 1) -> ""
+        else -> "s"
+    }
 }

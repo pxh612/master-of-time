@@ -1,13 +1,17 @@
 package com.example.master_of_time.screens.dailyday.group.dialog
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
-import android.text.Layout.Directions
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
+import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
+import androidx.drawerlayout.widget.DrawerLayout.LayoutParams
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
@@ -26,7 +30,13 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
 
 
     private lateinit var binding: DdGroupEditDialogFragmentBinding
-    private lateinit var viewModel: DdGroupViewModel
+    private val viewModel: DdGroupViewModel by lazy {
+        val dataSource = AppDatabase.getInstance(requireContext()).dailyDayDao()
+
+        ViewModelProvider(
+            requireActivity(), DdGroupViewModel.Factory(dataSource)
+        )[DdGroupViewModel::class.java]
+    }
 
     /** Data */
     var originalName: String = ""
@@ -44,19 +54,10 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dataSource = AppDatabase.getInstance(requireContext()).dailyDayDao()
-
-        viewModel = ViewModelProvider(
-            requireActivity(),
-            DdGroupViewModel.Factory(dataSource)
-        )[DdGroupViewModel::class.java]
-
-
         disableSubmitButton()
         binding.run{
             bindUI = this@DdGroupEditDialogFragment
 
-            name.requestFocus()
             name.addTextChangedListener(object: TextWatcher{
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
@@ -76,10 +77,10 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
             })
         }
 
-        showKeyboard()
-
         retrieveParentData()
         retrieveChildData()
+
+        showKeyboard()
     }
 
     private fun isDuplicateName(name: String): Boolean {
@@ -105,7 +106,9 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when(view.id) {
-            R.id.cancel -> findNavController().popBackStack()
+            R.id.cancel -> {
+                findNavController().popBackStack()
+            }
             R.id.submitEnabled -> {
 
                 name = binding.name.text.toString().trim()
@@ -127,30 +130,9 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     private fun showKeyboard() {
-        // TODO: show keyboard unsuccessful
-        /*
-        val inputMethodManager = requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        requireView().requestFocus()
-        inputMethodManager.showSoftInput(requireView(), 0)
-        */
-
-
-        /*
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        */
-
-        /*
-        val view = requireActivity().currentFocus
-        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
-        */
-
-        /*
-        val view = requireActivity().currentFocus
-        val methodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        assert(view != null)
-        methodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-        */
+        binding.name.requestFocus()
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(binding.name, 0)
     }
 
     private fun retrieveParentData() {
@@ -166,6 +148,7 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
                     originalName = it
                     binding.name.text = it.toEditable()
                 }
+                binding.dialogTitle.text = "Edit group"
                 submitText = "OK"
             }
             true -> {
@@ -179,7 +162,6 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
         }
     }
     private fun retrieveChildData() {
-        // Let use SharedPreference
         viewModel.newGroupId_LiveData.observe(viewLifecycleOwner){
             newGroupId = it
         }

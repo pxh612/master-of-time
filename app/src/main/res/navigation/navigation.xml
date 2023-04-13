@@ -39,14 +39,22 @@
         <action
             android:id="@+id/action_ddEventEditFragment_to_ddEventCalculationTypeFragment"
             app:destination="@id/ddEventCalculationTypeFragment" />
+        <argument
+            android:name="groupId"
+            app:argType="long"
+            android:defaultValue="-1L" />
     </fragment>
     <fragment
         android:id="@+id/ddGroupFragment"
         android:name="com.example.master_of_time.screens.dailyday.group.fragment.DdGroupFragment"
-        android:label="DdGroupFragment" >
+        android:label="DdGroupFragment"
+        tools:layout="@layout/dd_group_fragment">
         <action
             android:id="@+id/action_ddGroupFragment_to_ddGroupEditDialogFragment"
             app:destination="@id/ddGroupEditDialogFragment" />
+        <action
+            android:id="@+id/action_ddGroupFragment_to_ddGroupDeleteConfirmation"
+            app:destination="@id/ddGroupDeleteConfirmation" />
     </fragment>
     <dialog
         android:id="@+id/ddGroupEditDialogFragment"
@@ -76,4 +84,16 @@
         android:name="com.example.master_of_time.screens.dailyday.event.screen.DdEventCalculationTypeFragment"
         android:label="DdEventCalculationTypeFragment"
         tools:layout="@layout/dd_event_calculation_type_fragment" />
+    <dialog
+        android:id="@+id/ddGroupDeleteConfirmation"
+        android:name="com.example.master_of_time.screens.dailyday.group.dialog.DdGroupDeleteConfirmation"
+        android:label="DdGroupDeleteConfirmation"
+        tools:layout="@layout/dd_droup_deletion_confirmation">
+        <argument
+            android:name="groupCount"
+            app:argType="integer" />
+        <argument
+            android:name="groupTitle"
+            app:argType="string" />
+    </dialog>
 </navigation>

@@ -42,8 +42,11 @@ class DdGroupAdapter(
     }
 
     override fun onRowMoved(fromPosition: Int, toPosition: Int) {
+
+
         Timber.d("Moved $fromPosition to $toPosition")
 
+        /* Pxh612: Unused
         if (fromPosition < toPosition) {
             for (i in fromPosition until toPosition) {
                 val item = getItem(i)
@@ -54,7 +57,7 @@ class DdGroupAdapter(
                 val item = getItem(i)
                 viewModel.updateGroup(item.copy( orderId = item.orderId*100))
             }
-        }
+        }*/
 
         notifyItemMoved(fromPosition, toPosition)
     }

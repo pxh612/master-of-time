@@ -19,14 +19,12 @@ class DdEventListAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val holder = MyViewHolder(
+        return MyViewHolder(
             DdEventItemBinding.inflate(
-                LayoutInflater.from( parent.context), parent, false
+                LayoutInflater.from(parent.context), parent, false
             ),
-            this
+            onItemClicked
         )
-
-        return holder
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -37,7 +35,7 @@ class DdEventListAdapter(
 
     class MyViewHolder(
         private val binding: DdEventItemBinding,
-        private val adapter: DdEventListAdapter
+        private val onItemClicked: (DdEvent) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: DdEvent) {
@@ -50,9 +48,7 @@ class DdEventListAdapter(
                 searchedDate.text = ddEventCalculation.displaySearchedDate()
             }
 
-            itemView.setOnClickListener {
-                adapter.onItemClicked(item)
-            }
+            itemView.setOnClickListener { onItemClicked(item) }
         }
     }
     

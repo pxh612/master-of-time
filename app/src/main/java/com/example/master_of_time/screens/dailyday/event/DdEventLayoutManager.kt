@@ -18,7 +18,7 @@ class DdEventLayoutManager(
         private val SPAN_COUNT = 3
     }
 
-    var value: LayoutManager? = null
+    val layoutManager: LayoutManager
         get() = when(layout) {
             LAYOUT_LINEAR -> LinearLayoutManager(context)
             LAYOUT_GRID -> GridLayoutManager(context, SPAN_COUNT)
@@ -32,7 +32,7 @@ class DdEventLayoutManager(
         return (state+1)%totalState
     }
 
-    fun changeLayout() {
+    fun circleLayout() {
         layout = cycleThrough(layout, LAYOUTS)
     }
 }

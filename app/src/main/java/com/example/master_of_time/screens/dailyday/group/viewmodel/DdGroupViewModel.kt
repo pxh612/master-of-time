@@ -2,6 +2,7 @@ package com.example.master_of_time.screens.dailyday.group.viewmodel
 
 import androidx.lifecycle.*
 import com.example.master_of_time.database.dao.DailyDayDao
+import com.example.master_of_time.database.table.DdEvent
 import com.example.master_of_time.database.table.DdGroup
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -37,6 +38,7 @@ class DdGroupViewModel(
         }
     }
 
+    fun getDdEventListByGroupId(groupId: Long?) = dailyDayDao.getDdEventListByGroupId(groupId)
 
     fun updateGroup(ddGroup: DdGroup) {
         viewModelScope.launch(Dispatchers.IO) { dailyDayDao.update(ddGroup) }
@@ -50,6 +52,11 @@ class DdGroupViewModel(
 
     fun getDdEventTotalCount() = dailyDayDao.getDdEventTotalCount().asLiveData()
 
+    fun updateDdEvent(ddEvent: DdEvent) {
+        viewModelScope.launch(Dispatchers.IO){
+            dailyDayDao.update(ddEvent)
+        }
+    }
 
 
     class Factory(

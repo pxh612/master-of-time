@@ -1,8 +1,8 @@
 package com.example.master_of_time.module.dailyday
 
+import com.example.master_of_time.plural
 import com.example.master_of_time.toDateFormat
 import com.example.master_of_time.toZonedDateTime
-import timber.log.Timber
 import java.lang.IllegalArgumentException
 import java.time.Instant
 import java.time.LocalDate
@@ -13,6 +13,12 @@ class DdEventCalculation(
     private val index: Int,
     private val date: Long
 ) {
+
+    data class DdEventCalculationType(
+        val name: String = "",
+        val description: String = ""
+    )
+
 
     companion object {
         val GivenList: List<DdEventCalculationType> = listOf(
@@ -33,21 +39,15 @@ class DdEventCalculation(
 
     val ddEventCalculationType: DdEventCalculationType
         get() = GivenList[index]
+    
     val zonedDateTime: ZonedDateTime
         get() = ZonedDateTime.ofInstant(Instant.ofEpochSecond(date), ZoneId.systemDefault())
+    
     val nowZonedDateTime: ZonedDateTime
         get() = ZonedDateTime.ofInstant(Instant.now(), ZoneId.systemDefault())
 
-    fun plural(date: Long): String{
-        return when{
-            (date <= 1L) -> ""
-            else -> "s"
-        }
-    }
-
-
-    fun getSearchedDate(): Long{
-        return when(ddEventCalculationType.name){
+    val targetDate: Long 
+        get() = when(ddEventCalculationType.name){
             "ONE TIME" -> {
                 date
             }
@@ -65,9 +65,18 @@ class DdEventCalculation(
             }
             else -> throw IllegalArgumentException()
         }
+
+    fun ZonedDateTime.toEpochDay(): Long{
+        this.run{
+            return LocalDate.of(year, monthValue, dayOfMonth).toEpochDay()
+        }
+    }
+    
+    fun getDayDistanceFromPresent(date: Long = targetDate): Long {
+        return date.toZonedDateTime().toEpochDay() - nowZonedDateTime.toEpochDay()
     }
 
-    private fun displayDayDistance(date: Long): CharSequence {
+    private fun displayDayDistanceFromEpochDays(date: Long): CharSequence {
         if(date < 0){
             var dateFinal = -date
             val dateString = dateFinal.toString()
@@ -80,15 +89,9 @@ class DdEventCalculation(
             else return "$dateString day${plural(dateFinal)} left"
         }
     }
-
-    private fun displayDayDistanceFromPresent(date: Long): CharSequence? {
-        return displayDayDistance(date.toZonedDateTime().toEpochDay() - nowZonedDateTime.toEpochDay())
-    }
-
-    fun ZonedDateTime.toEpochDay(): Long{
-        this.run{
-            return LocalDate.of(year, monthValue, dayOfMonth).toEpochDay()
-        }
+    
+    private fun displayDayDistanceFromPresent(date: Long): CharSequence {
+        return displayDayDistanceFromEpochDays(getDayDistanceFromPresent(date))
     }
 
     fun displayPickedDate(): String{
@@ -100,7 +103,6 @@ class DdEventCalculation(
                 }
             }
             "ANNUALLY" -> {
-
                 zonedDateTime.run {
                     "$dayOfMonth/$monthValue every year"
                 }
@@ -110,11 +112,11 @@ class DdEventCalculation(
     }
 
     fun displaySearchedDate(): CharSequence {
-        return getSearchedDate().toDateFormat()
+        return targetDate.toDateFormat()
     }
 
     fun displayCalculation(): CharSequence? {
-        return displayDayDistanceFromPresent(getSearchedDate())
+        return displayDayDistanceFromPresent(targetDate)
     }
 
 }

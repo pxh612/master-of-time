@@ -24,7 +24,12 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), View.OnClickListener,
     PickDdGroupAdapter.Listener {
 
     private lateinit var binding: DdGroupBottomSheetBinding
-    private lateinit var viewModel: DdGroupViewModel
+    private val viewModel: DdGroupViewModel by lazy {
+        val dataSource = AppDatabase.getInstance(requireContext()).dailyDayDao()
+        ViewModelProvider(
+            requireActivity(), DdGroupViewModel.Factory(dataSource)
+        )[DdGroupViewModel::class.java]
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DdGroupBottomSheetBinding.inflate(inflater, container, false)
@@ -33,15 +38,6 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), View.OnClickListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        val dataSource = AppDatabase.getInstance(requireContext()).dailyDayDao()
-
-        viewModel = ViewModelProvider(
-            requireActivity(),
-            DdGroupViewModel.Factory(dataSource)
-        )[DdGroupViewModel::class.java]
-
 
         val adapter = PickDdGroupAdapter(viewLifecycleOwner, viewModel, this)
         lifecycle.coroutineScope.launch {
