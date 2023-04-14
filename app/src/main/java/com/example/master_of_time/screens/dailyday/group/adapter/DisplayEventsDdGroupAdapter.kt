@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.master_of_time.R
 import com.example.master_of_time.database.table.DdGroup
 import com.example.master_of_time.databinding.DisplayEventsDdGroupItemBinding
 import com.example.master_of_time.screens.dailyday.event.DdEventViewModel
@@ -65,7 +66,7 @@ class DisplayEventsDdGroupAdapter(
                         else -> groupItem.id
                     }
                     adapter.notifyItemReselection(bindingAdapterPosition)
-                    adapter.listener.displayEventsFromGroupId(selectedGroupId)
+                    adapter.listener.fetchForEventAdapter(selectedGroupId)
                 }
             }
         }
@@ -74,10 +75,17 @@ class DisplayEventsDdGroupAdapter(
             binding.run {
                 when (isSelected) {
                     true -> {
-                        name.setTextColor(Color.BLUE)
+//                        android:background="@drawable/round_corner_button"
+//                        android:textColor="@color/white"
+                        name.setTextColor(Color.WHITE)
+                        name.setBackgroundResource(R.drawable.round_corner_button)
                     }
                     false -> {
+//                        android:background="@drawable/round_corner_button"
+//                        android:textColor="@color/white"
                         name.setTextColor(Color.BLACK)
+                        name.setBackgroundResource(0)
+
                     }
                 }
             }
@@ -85,7 +93,7 @@ class DisplayEventsDdGroupAdapter(
     }
 
     interface Listener {
-        fun displayEventsFromGroupId(groupId: Long?)
+        fun fetchForEventAdapter(groupId: Long?)
     }
 
 

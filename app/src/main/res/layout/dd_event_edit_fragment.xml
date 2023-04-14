@@ -154,18 +154,6 @@
                 android:onClick="@{bindUI::onClick}"
                 android:id="@+id/delete" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/delete"
-                android:layout_marginTop="20dp"
-
-                android:text="SHOW KEYBOARD"
-                android:onClick="@{bindUI::onClick}"
-                android:id="@+id/debug" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </layout>

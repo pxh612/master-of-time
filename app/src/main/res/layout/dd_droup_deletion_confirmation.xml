@@ -48,7 +48,7 @@
                 app:layout_constraintTop_toBottomOf="@id/message"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginTop="@dimen/innerMargin_dialogFragmentDdGroupEdit">
+                android:layout_marginTop="13dp">
 
                 <TextView
                     android:layout_width="0dp"

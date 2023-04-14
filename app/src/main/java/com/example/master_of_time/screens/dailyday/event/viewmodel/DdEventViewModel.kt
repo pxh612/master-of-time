@@ -2,6 +2,7 @@ package com.example.master_of_time.screens.dailyday.event
 
 import androidx.lifecycle.*
 import com.example.master_of_time.database.dao.DailyDayDao
+import com.example.master_of_time.module.animation.MyAnimator
 import timber.log.Timber
 
 
@@ -10,9 +11,12 @@ class DdEventViewModel(
 
 ) : ViewModel(){
 
+
     /** Data */
     var lastSelectedAdapterPosition: Int = -1
     var selectedGroupId: Long = -1L
+    val addMyAnimator = MyAnimator()
+
 
     fun getAllDdEvent() = dailyDayDao.getAllDdEvent()
 

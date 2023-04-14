@@ -87,7 +87,7 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
             R.array.ddevent_calculation_picker,
             android.R.layout.simple_spinner_dropdown_item
         ).also{ mAdapter ->
-            mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
+            mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.calculateTypePicker.run{
                 adapter = mAdapter
                 onItemSelectedListener = this@DdEventEditFragment
@@ -164,9 +164,6 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
                 findNavController().popBackStack()
             }
             R.id.ddGroupPicker -> navigateGroupPicker()
-            R.id.debug -> {
-                showKeyboard()
-            }
         }
     }
 
@@ -176,30 +173,6 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         val view = requireActivity().currentFocus
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
-        */
-
-        /* Not work: setSoftInputMode
-        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);*/
-
-
-        /* Not work: showSoftInput with activity
-        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)*/
-
-        /* Not work: shotSoftInput with context
-        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        requireView().requestFocus()
-        inputMethodManager.showSoftInput(requireView(), InputMethodManager.SHOW_FORCED)*/
-
-        /* Not work: assert failed
-        val view = requireActivity().currentFocus
-        val methodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        assert(view != null)
-        methodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)*/
-
-
-        /* Not work: setSoftInputMode (https://stackoverflow.com/a/62681421)
-        (context as AppCompatActivity?)!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         */
 
         /* Worked: SHOW_FORCED & manually get view, but only when editText is focused
@@ -216,8 +189,6 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         imm.showSoftInput(binding.title, 0) */
 
     }
-
-
 
     private fun retrieveParentData() {
         val navigationArgs: DdEventEditFragmentArgs by navArgs()
@@ -276,16 +247,6 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
             if(newGroupId >= 0) ddEvent = ddEvent.copy(groupId = newGroupId)
             else if(onDestroy && isWaitingBottomSheet) navigateGroupPicker()
         }
-
-        /*
-        setFragmentResultListener("DdEventCalculationTypeFragment") { _, bundle ->
-            val id = bundle.getInt("DdEventCalculationType")
-
-            ddEvent = ddEvent.copy(calculationTypeId = id)
-            viewModel.updateItem(ddEvent)
-        }
-        */
-
     }
 
     private fun notifyEmptyInput() {

@@ -11,20 +11,22 @@ class DdEventListSorter {
         val SORT_BY_NEAREST_EVENT = 2
         val SORT_BY_ALPHABET = 3
     }
-    private var isReverse = false
+
     private var sortMethodDefault = SORT_BY_DATE
     private var sortMethod = sortMethodDefault
+
+    private var isReverseFlag = false
 
 
     fun sort(list: List<DdEvent>): List<DdEvent> {
         var resultList = list
         when(sortMethod){
             SORT_BY_DATE_CREATED -> {
-                Timber.i("sort by date created")
+                Timber.v("sort by date created")
                 resultList = resultList.sortedBy { it.id }
             }
             SORT_BY_DATE -> {
-                Timber.i("sort by target")
+                Timber.v("sort by target date")
                 resultList = resultList.sortedBy {
                     val ddEventCalculation = DdEventCalculation(it.calculationTypeId, it.date)
                     ddEventCalculation.targetDate
@@ -32,14 +34,14 @@ class DdEventListSorter {
 
             }
             SORT_BY_NEAREST_EVENT -> {
-                Timber.i("sort by nearest")
+                Timber.v("sort by nearest")
                 resultList = resultList.sortedBy {
                     val ddEventCalculation = DdEventCalculation(it.calculationTypeId, it.date)
                     ddEventCalculation.getDayDistanceFromPresent()
                 }
             }
             SORT_BY_ALPHABET -> {
-                Timber.i("sort by alphabet")
+                Timber.v("sort by alphabet")
                 resultList = resultList.sortedBy { it.title }
             }
         }

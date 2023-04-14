@@ -15,6 +15,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
 
+            android:padding="5dp"
             tools:text="Group's title"
             android:textSize="15sp"
             android:id="@+id/name" />

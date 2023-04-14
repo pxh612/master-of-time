@@ -11,34 +11,43 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.master_of_time.R
 import com.example.master_of_time.database.table.DdEvent
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.databinding.DdEventFragmentBinding
+import com.example.master_of_time.module.animation.MyAnimator
 import com.example.master_of_time.module.dailyday.DdEventListSorter
 import com.example.master_of_time.screens.dailyday.event.DdEventLayoutManager
 import com.example.master_of_time.screens.dailyday.event.DdEventViewModel
 import com.example.master_of_time.screens.dailyday.event.adapter.DdEventRecyclerViewAdapter
 import com.example.master_of_time.screens.dailyday.group.DisplayEventsDdGroupAdapter
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
-class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAdapter.Listener {
+class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAdapter.Listener{
 
     /** Architecture */
     private lateinit var binding : DdEventFragmentBinding
     private val viewModel: DdEventViewModel by lazy {
         val dailyDayDao = AppDatabase.getInstance(requireContext()).dailyDayDao()
+        Timber.d("viewModel created: not fast enough?")
         ViewModelProvider(
             requireActivity(),
             DdEventViewModel.Factory(dailyDayDao)
         )[DdEventViewModel::class.java]
     }
 
+    /** View */
+    private val displayEventsDdGroupAdapter by lazy {  DisplayEventsDdGroupAdapter(this, viewModel) }
+    var ddEventRecyclerViewAdapter = DdEventRecyclerViewAdapter(emptyList(), { onEventItemClicked(it) })
+    var mLinearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
     /** Module */
     private val ddEventLayoutManager: DdEventLayoutManager by lazy { DdEventLayoutManager(requireContext()) }
-    private val mLayoutManager
-        get() = ddEventLayoutManager.layoutManager
     private val ddEventListSorter = DdEventListSorter()
+    private val addMyAnimator: MyAnimator
+        get() = viewModel.addMyAnimator
 
     /** Data */
     private var ddEventList: List<DdEvent> = emptyList()
@@ -47,10 +56,12 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
             displayEvents()
         }
 
-
     private var selectedGroupId
         get() = viewModel.selectedGroupId
         set(value) { viewModel.selectedGroupId = value }
+
+    private val mLayoutManager
+        get() = ddEventLayoutManager.layoutManager
 
 
 
@@ -59,32 +70,61 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        displayGroupsPicker()
-        displayEventsFromGroupId(groupId = selectedGroupId)
+        Timber.d("verbose: onViewCreated")
+
+        fetchForGroupAdapter()
+        fetchForEventAdapter(groupId = selectedGroupId)
 
         binding.run {
             this.ui = this@DdEventFragment
+
+            groupRecyclerView.run{
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = displayEventsDdGroupAdapter
+            }
+            eventRecyclerView.run{
+                layoutManager = mLayoutManager
+                adapter = ddEventRecyclerViewAdapter
+            }
         }
+
+        addMyAnimator.view = binding.add
+        initOnScrollListener()
     }
 
-    private fun displayGroupsPicker() {
-        val displayEventsDdGroupAdapter = DisplayEventsDdGroupAdapter(this, viewModel)
+    private fun initOnScrollListener() {
+        var absoluteY = binding.eventRecyclerView.computeHorizontalScrollOffset()
+        Timber.d("absoluteY = $absoluteY")
+        val onScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                absoluteY = binding.eventRecyclerView.computeVerticalScrollOffset()
+                when{
+                    (absoluteY <= 300) -> addMyAnimator.show()
+                    else -> addMyAnimator.hide()
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if(newState != 0)
+            }
+        }
+        binding.eventRecyclerView.addOnScrollListener(onScrollListener)
+    }
+
+    private fun fetchForGroupAdapter() {
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup().collect() {
                 displayEventsDdGroupAdapter.submitList(it)
             }
         }
-        binding.groupRecyclerView.run{
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = displayEventsDdGroupAdapter
-        }
     }
 
-    override fun displayEventsFromGroupId(groupId: Long?) {
+    override fun fetchForEventAdapter(groupId: Long?) {
         selectedGroupId = when{
             (groupId == null || groupId < 0) -> -1L
             else -> groupId
@@ -101,40 +141,18 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
             }
         }
     }
-    var ddEventRecyclerViewAdapter = DdEventRecyclerViewAdapter(emptyList(), { onEventItemClicked(it) })
-    var mLinearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
     @SuppressLint("NotifyDataSetChanged")
     private fun displayEvents(){
+        /** Restore ScrollPosition using saveInstanceState */
+        val layoutManagerState = mLayoutManager.onSaveInstanceState()
+        ddEventRecyclerViewAdapter.setList(ddEventListSorter.sort(ddEventList))
+        ddEventRecyclerViewAdapter.notifyDataSetChanged()
+        mLayoutManager.onRestoreInstanceState(layoutManagerState)
 
-/*        var topOffset: Int
-        var firstItem: Int
+        binding.eventRecyclerView.layoutManager = mLayoutManager
 
-        mLinearLayoutManager.run{
-            firstItem = findFirstVisibleItemPosition()
-            val firstItemView = findViewByPosition(firstItem)
-            topOffset = firstItemView?.top ?: 0
-        }*/
 
-//        val layoutManagerState = mLinearLayoutManager.onSaveInstanceState()
-
-//        ddEventRecyclerViewAdapter.setList(ddEventListSorter.sort(ddEventList))
-//        ddEventRecyclerViewAdapter
-//
-//        mLinearLayoutManager.onRestoreInstanceState(layoutManagerState)
-
-//        mLinearLayoutManager.run{
-//            scrollToPositionWithOffset(firstItem, topOffset)
-//        }
-
-        val mLinearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        val ddEventRecyclerViewAdapter = DdEventRecyclerViewAdapter(ddEventList, { onEventItemClicked(it) })
-//        ddEventRecyclerViewAdapter.setList(ddEventList)
-//        ddEventRecyclerViewAdapter.notifyDataSetChanged()
-
-        binding.eventRecyclerView.run{
-            layoutManager = mLinearLayoutManager
-            adapter = ddEventRecyclerViewAdapter
-        }
         when(ddEventList.size){
             0 -> binding.noEventLayout.visibility = View.VISIBLE
             else -> binding.noEventLayout.visibility = View.GONE
@@ -177,4 +195,5 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         val action = DdEventFragmentDirections.actionDdEventFragmentToDdEventEditFragment(isAdd = false, eventId = eventId)
         requireView().findNavController().navigate(action)
     }
+
 }

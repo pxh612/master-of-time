@@ -42,8 +42,8 @@ open class MyTimberDebugTree : Timber.DebugTree() {
         var stackCount = 0
         Throwable().stackTrace.forEach {
             if(it.className !in fqcnIgnore){
-                if(allLocation.isNullOrEmpty()) allLocation = methodLocation(it)
-                else if(stackCount < 10) allLocation = "$allLocation" + "\t".repeat(20) + "(from) " + methodLocation(it)
+                if(allLocation.isEmpty()) allLocation = methodLocation(it)
+                else if(stackCount < 10) allLocation = allLocation + "\t".repeat(20) + "(from) " + methodLocation(it)
                 stackCount++
             }
         }

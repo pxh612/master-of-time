@@ -45,7 +45,6 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
     var groupId: Long? = null
     var newGroupId: Long = -1
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DdGroupEditDialogFragmentBinding.inflate(inflater, container, false)
         return binding.root
