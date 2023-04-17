@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.master_of_time.R
 import com.example.master_of_time.databinding.BeFragmentBinding
 import com.example.master_of_time.databinding.DdEventFragmentBinding
@@ -21,6 +24,19 @@ class BeFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.locationRecyclerView.run{
+            adapter = LocationRecyclerViewAdapter()
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        }
 
+        binding.foodOptionRecyclerView.run{
+            adapter = FoodOptionRecyclerViewAdapter()
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        }
+
+        binding.couponRecyclerView.run{
+            adapter = CouponsRecyclerViewAdapter()
+            layoutManager = GridLayoutManager(context, 2)
+        }
     }
 }

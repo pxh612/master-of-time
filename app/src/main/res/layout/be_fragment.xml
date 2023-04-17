@@ -1,22 +1,441 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content"
+        android:background="#EAE6E6">
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
 
-            android:text="be"
-            android:id="@+id/welcomeTextView" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                app:layout_constraintTop_toTopOf="parent"
+
+                android:background="@color/yellow"
+                android:id="@+id/firstPanel" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+
+                android:text="Hello user!"
+                android:textSize="23sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:id="@+id/welcomeMessage" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/setLocationContainter"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:padding="25dp"
+
+                android:textSize="30sp"
+                android:text="Ưu đãi hơn 50%"
+                android:textStyle="bold"
+                android:id="@+id/couponAdTextView" />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:layout_constraintLeft_toRightOf="@id/couponAdTextView"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/setLocationContainter"
+
+                android:src="@drawable/square_preview" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="110dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/firstPanel"
+                android:layout_marginHorizontal="23dp"
+                android:layout_marginBottom="8dp"
+
+                android:src="@drawable/round_corner_button"
+                android:background="@color/white"
+                android:padding="10dp"
+                android:id="@+id/setLocationContainter"/>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                app:layout_constraintLeft_toLeftOf="@id/setLocationContainter"
+                app:layout_constraintTop_toTopOf="@id/setLocationContainter"
+                android:layout_marginHorizontal="15dp"
+
+                android:src="@drawable/ic_baseline_location_on_24"
+                android:id="@+id/locationImageView" />
+
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                app:layout_constraintLeft_toRightOf="@id/locationImageView"
+                app:layout_constraintRight_toRightOf="@id/setLocationContainter"
+                app:layout_constraintTop_toTopOf="@id/setLocationContainter"
+                android:layout_marginLeft="5dp"
+
+                android:background="@null"
+                android:hint="Please input your drop-off location"
+                android:textSize="17sp"
+                android:id="@+id/setLocationEditText" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                app:layout_constraintBottom_toBottomOf="@id/setLocationContainter"
+                app:layout_constraintLeft_toLeftOf="@id/setLocationContainter"
+                app:layout_constraintRight_toRightOf="@id/setLocationContainter"
+                android:layout_marginHorizontal="20dp"
+                android:id="@+id/locationRecyclerView" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:layout_constraintTop_toBottomOf="@id/firstPanel"
+
+                android:id="@+id/deliveryOption">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/packageDeliveryContainer"
+
+                    android:background="@color/gray_200"
+                    android:layout_marginVertical="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/foodDeliveryContainer" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintLeft_toLeftOf="@id/foodDeliveryContainer"
+                    app:layout_constraintTop_toTopOf="@id/foodDeliveryContainer"
+                    app:layout_constraintBottom_toBottomOf="@id/foodDeliveryContainer"
+                    android:layout_marginLeft="10dp"
+
+                    android:src="@drawable/square_preview"
+                    android:id="@+id/foodDeliveryImageView"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toRightOf="@id/foodDeliveryImageView"
+                    app:layout_constraintTop_toTopOf="@id/foodDeliveryImageView"
+                    app:layout_constraintBottom_toBottomOf="@id/foodDeliveryImageView"
+                    android:layout_marginLeft="5dp"
+
+                    android:text="Giao đồ ăn"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/foodDeliveryContainer"
+
+                    android:background="@color/gray_200"
+                    android:layout_marginVertical="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="5dp"
+
+                    android:id="@+id/packageDeliveryContainer" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintLeft_toLeftOf="@id/packageDeliveryContainer"
+                    app:layout_constraintTop_toTopOf="@id/foodDeliveryContainer"
+                    app:layout_constraintBottom_toBottomOf="@id/foodDeliveryContainer"
+                    android:layout_marginLeft="10dp"
+
+                    android:src="@drawable/square_preview"
+                    android:id="@+id/packageDeliveryImageView"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toRightOf="@id/packageDeliveryImageView"
+                    app:layout_constraintTop_toTopOf="@id/packageDeliveryImageView"
+                    app:layout_constraintBottom_toBottomOf="@id/packageDeliveryImageView"
+                    android:layout_marginLeft="5dp"
+
+                    android:text="Giao hàng"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                app:layout_constraintTop_toBottomOf="@id/deliveryOption"
+
+                android:id="@+id/utilitiesOption"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/carImageView"
+
+                    android:src="@drawable/square_preview"
+                    tools:background="@color/gray_200"
+                    android:id="@+id/bikeImageView" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="@id/bikeImageView"
+                    app:layout_constraintRight_toRightOf="@id/bikeImageView"
+                    app:layout_constraintTop_toBottomOf="@id/bikeImageView"
+
+                    android:text="Xe máy"
+                    android:id="@+id/bikeTextView" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/bikeImageView"
+                    app:layout_constraintRight_toLeftOf="@id/carAirportImageView"
+
+                    android:src="@drawable/square_preview"
+                    tools:background="@color/gray_200"
+                    android:id="@+id/carImageView" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="@id/carImageView"
+                    app:layout_constraintRight_toRightOf="@id/carImageView"
+                    app:layout_constraintTop_toBottomOf="@id/carImageView"
+
+                    android:text="Ô tô"
+                    android:id="@+id/carTextView" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/carImageView"
+                    app:layout_constraintRight_toLeftOf="@id/beVinfastImageView"
+
+                    android:src="@drawable/square_preview"
+                    tools:background="@color/gray_200"
+                    android:id="@+id/carAirportImageView" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="@id/carAirportImageView"
+                    app:layout_constraintRight_toRightOf="@id/carAirportImageView"
+                    app:layout_constraintTop_toBottomOf="@id/carAirportImageView"
+
+                    android:text="Ô tô sân bay"
+                    android:id="@+id/carAirportTextView" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/carAirportImageView"
+                    app:layout_constraintRight_toRightOf="parent"
+
+                    android:src="@drawable/square_preview"
+                    tools:background="@color/gray_200"
+                    android:id="@+id/beVinfastImageView" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="@id/beVinfastImageView"
+                    app:layout_constraintRight_toRightOf="@id/beVinfastImageView"
+                    app:layout_constraintTop_toBottomOf="@id/beVinfastImageView"
+
+                    android:text="beVinfast"
+                    android:id="@+id/beVinfastTextView" />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                app:layout_constraintTop_toBottomOf="@id/utilitiesOption"
+
+                android:id="@+id/utilitiesOption2"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/membershipImageView"
+
+                    android:src="@drawable/square_preview"
+                    tools:background="@color/gray_200"
+                    android:id="@+id/planeImageView" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="@id/planeImageView"
+                    app:layout_constraintRight_toRightOf="@id/planeImageView"
+                    app:layout_constraintTop_toBottomOf="@id/planeImageView"
+
+                    android:text="Vé máy bay"
+                    android:id="@+id/planeTextView" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/planeImageView"
+                    app:layout_constraintRight_toLeftOf="@id/phoneImageView"
+
+                    android:src="@drawable/square_preview"
+                    tools:background="@color/gray_200"
+                    android:id="@+id/membershipImageView" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="@id/membershipImageView"
+                    app:layout_constraintRight_toRightOf="@id/membershipImageView"
+                    app:layout_constraintTop_toBottomOf="@id/membershipImageView"
+
+                    android:text="Gói hội viện"
+                    android:id="@+id/membershipTextView" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/membershipImageView"
+                    app:layout_constraintRight_toLeftOf="@id/otherServiceImageView"
+
+                    android:src="@drawable/square_preview"
+                    tools:background="@color/gray_200"
+                    android:id="@+id/phoneImageView" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="@id/phoneImageView"
+                    app:layout_constraintRight_toRightOf="@id/phoneImageView"
+                    app:layout_constraintTop_toBottomOf="@id/phoneImageView"
+
+                    android:text="Nạp ĐT/3G"
+                    android:id="@+id/phoneTextView" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/phoneImageView"
+                    app:layout_constraintRight_toRightOf="parent"
+
+                    android:src="@drawable/square_preview"
+                    tools:background="@color/gray_200"
+                    android:id="@+id/otherServiceImageView" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="@id/otherServiceImageView"
+                    app:layout_constraintRight_toRightOf="@id/otherServiceImageView"
+                    app:layout_constraintTop_toBottomOf="@id/otherServiceImageView"
+
+                    android:text="Other services"
+                    android:id="@+id/otherServiceTextView" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/utilitiesOption2"
+                android:layout_marginLeft="@dimen/beFragment_marginLeft"
+
+                android:text="Quán ngon gần bạn"
+                android:layout_marginVertical="8dp"
+                android:textSize="23sp"
+                android:textStyle="bold"
+                android:id="@+id/foodOptionTextView" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/foodOptionTextView"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_marginLeft="@dimen/beFragment_marginLeft"
+
+                android:id="@+id/foodOptionRecyclerView" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                app:layout_constraintTop_toBottomOf="@id/foodOptionRecyclerView"
+                android:layout_marginTop="15dp"
+
+                android:src="@drawable/square_preview"
+                android:scaleType="fitXY"
+                android:id="@+id/couponPreview" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/couponPreview"
+                android:layout_marginLeft="@dimen/beFragment_marginLeft"
+
+                android:text="be tặng bạn nè"
+                android:textSize="23sp"
+                android:textStyle="bold"
+                android:id="@+id/couponTextView" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintTop_toBottomOf="@id/couponTextView"
+                android:id="@+id/couponRecyclerView" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </layout>

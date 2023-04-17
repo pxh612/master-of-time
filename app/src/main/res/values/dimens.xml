@@ -46,5 +46,6 @@
 
     <dimen name="ddEventEditFragment_item_height">50dp</dimen>
     <dimen name="toolbar_icon_width">50dp</dimen>
+    <dimen name="beFragment_marginLeft">10dp</dimen>
 
 </resources>

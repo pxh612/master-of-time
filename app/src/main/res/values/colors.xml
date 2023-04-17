@@ -19,4 +19,7 @@
     <color name="toolbar_color">@color/purple_500</color>
     <color name="lineDivider_color">#A19B9B</color>
     <color name="miniTab">#BD7FC8</color>
+    <color name="yellow">#FFC107</color>
+    <color name="light_blue">#75A9F8</color>
+    <color name="very_light_white">#E0D7D6</color>
 </resources>

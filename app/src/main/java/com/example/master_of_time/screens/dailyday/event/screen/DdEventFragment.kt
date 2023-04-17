@@ -97,12 +97,6 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
 
     }
 
-
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
     override fun onResume() {
         super.onResume()
         initMenuSpinner()
