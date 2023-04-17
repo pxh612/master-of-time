@@ -277,13 +277,6 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
     }
 
 
-    private fun navigateCalculationTypePicker() {
-        val action = DdEventEditFragmentDirections.actionDdEventEditFragmentToDdEventCalculationTypeFragment()
-        requireView().findNavController().navigate(action)
-    }
-
-
-
 }
 
 

@@ -36,9 +36,6 @@
         <action
             android:id="@+id/action_ddEventEditFragment_to_ddGroupEditDialogFragment"
             app:destination="@id/ddGroupEditDialogFragment" />
-        <action
-            android:id="@+id/action_ddEventEditFragment_to_ddEventCalculationTypeFragment"
-            app:destination="@id/ddEventCalculationTypeFragment" />
         <argument
             android:name="groupId"
             app:argType="long"
@@ -79,11 +76,7 @@
             app:argType="long"
             android:defaultValue="-1L" />
     </dialog>
-    <fragment
-        android:id="@+id/ddEventCalculationTypeFragment"
-        android:name="com.example.master_of_time.screens.dailyday.event.screen.DdEventCalculationTypeFragment"
-        android:label="DdEventCalculationTypeFragment"
-        tools:layout="@layout/dd_event_calculation_type_fragment" />
+
     <dialog
         android:id="@+id/ddGroupDeleteConfirmation"
         android:name="com.example.master_of_time.screens.dailyday.group.dialog.DdGroupDeleteConfirmation"

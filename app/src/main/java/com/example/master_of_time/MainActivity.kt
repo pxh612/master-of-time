@@ -7,12 +7,17 @@ import android.os.PersistableBundle
 import android.util.AttributeSet
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.master_of_time.R
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(){
     private lateinit var binding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,18 +29,69 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.layout.activity_main
         )
 
-        binding.bottomNavigationView.setOnClickListener(this)
-
-    }
-
-    override fun onClick(view: View) {
-        when(view.id){
-            R.id.bottomNavigationView -> {
-                Timber.d("Click: reponsed")
+        /*binding.bottomNav.setOnItemSelectedListener {
+            Timber.d("MenuItem = $it")
+            when(it.title){
+                "be" -> {
+                    Timber.d("Reponse: click be")
+                }
+                "Event" -> {
+                    Timber.d("Reponse: click Event")
+                }
             }
-        }
+            true
+        }*/
+
+
+        /*val navView: BottomNavigationView = binding.bottomNav
+
+        val navController = findNavController(R.id.myNavHostFragment)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.beFragment,
+                R.id.beFragment,
+                R.id.ddEventFragment,
+                R.id.beFragment
+            )
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)*/
+
+
+//        setupBottomNavigationBar()
     }
 
+/*
+    private fun setupBottomNavigationBar() {
+        val bottomNavigationView = binding.bottomNav
+        val navGraphIds = listOf(R.navigation.navigation_be, R.navigation.navigation_daily_day)
+
+        val controller = bottomNavigationView.setupWithNavController(
+            navGraphIds = navGraphIds,
+            fragmentManager = supportFragmentManager,
+            containerId = R.id.myNavHostFragment,
+            intent = intent
+        )
+
+//
+//        // Setup the bottom navigation view with a list of navigation graphs
+//        val controller = bottomNavigationView.setupWithNavController(
+//            navGraphIds = navGraphIds,
+//            fragmentManager = supportFragmentManager,
+//            containerId = R.id.nav_host_fragment,
+//            intent = intent
+//        )
+//
+//        // Whenever the selected controller changes, setup the action bar.
+//        controller.observe(this, Observer { navController ->
+//            setupActionBarWithNavController(navController)
+//        })
+//        currentNavController = controller
+    }
+
+*/
 
 
 }

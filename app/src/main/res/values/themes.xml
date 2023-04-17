@@ -23,4 +23,12 @@
         <!-- color used by the icon -->
         <item name="colorOnSecondary">@color/white</item>
     </style>
+
+    <style name="MyToolbar" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="android:background">@color/purple_500</item>
+        <item name="titleTextColor">@color/white</item>
+        <item name="subtitleTextColor">@color/white</item>
+        <item name="tint">@color/white</item>
+    </style>
+
 </resources>

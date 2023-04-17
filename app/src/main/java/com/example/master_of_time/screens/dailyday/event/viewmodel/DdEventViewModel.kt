@@ -2,7 +2,7 @@ package com.example.master_of_time.screens.dailyday.event
 
 import androidx.lifecycle.*
 import com.example.master_of_time.database.dao.DailyDayDao
-import com.example.master_of_time.module.animation.MyAnimator
+import com.example.master_of_time.module.MyAnimator
 import timber.log.Timber
 
 

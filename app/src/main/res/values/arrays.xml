@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="ddEventFragment_menu" >
+        <item>Sort by</item>
+        <item>Group setting</item>
+    </string-array>
+</resources>

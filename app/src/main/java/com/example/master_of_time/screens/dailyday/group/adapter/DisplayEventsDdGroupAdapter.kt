@@ -56,7 +56,7 @@ class DisplayEventsDdGroupAdapter(
 
         fun bind(groupItem: DdGroup) {
             binding.run{
-                name.text = groupItem.name
+                name.text = " ${groupItem.name} "
 
                 displaySelected(groupItem.id == selectedGroupId)
 
@@ -75,17 +75,12 @@ class DisplayEventsDdGroupAdapter(
             binding.run {
                 when (isSelected) {
                     true -> {
-//                        android:background="@drawable/round_corner_button"
-//                        android:textColor="@color/white"
                         name.setTextColor(Color.WHITE)
                         name.setBackgroundResource(R.drawable.round_corner_button)
                     }
                     false -> {
-//                        android:background="@drawable/round_corner_button"
-//                        android:textColor="@color/white"
                         name.setTextColor(Color.BLACK)
-                        name.setBackgroundResource(0)
-
+                        name.setBackgroundResource(R.drawable.round_corner_button_white)
                     }
                 }
             }

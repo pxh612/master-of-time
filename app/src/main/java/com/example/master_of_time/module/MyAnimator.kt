@@ -1,4 +1,4 @@
-package com.example.master_of_time.module.animation
+package com.example.master_of_time.module
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -6,10 +6,6 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationSet
-import android.view.animation.ScaleAnimation
-import timber.log.Timber
 
 class MyAnimator {
     private val SHOW_STATE = 0
@@ -32,6 +28,7 @@ class MyAnimator {
             }
         }
 
+
     private fun updateState(desiredState: Int): Boolean {
         return when(state){
             desiredState -> false
@@ -42,7 +39,7 @@ class MyAnimator {
         }
     }
 
-    private fun animateScalingWithAnimator(){
+    private fun animateScaling(){
 
         val LOW_X = 0f
         val HIGH_X = 1f
@@ -114,12 +111,11 @@ class MyAnimator {
 
 
     fun show() {
-        if(updateState(SHOW_STATE)) animateScalingWithAnimator()
+        if(updateState(SHOW_STATE)) animateScaling()
     }
 
 
-
     fun hide() {
-        if(updateState(HIDE_STATE)) animateScalingWithAnimator()
+        if(updateState(HIDE_STATE)) animateScaling()
     }
 }

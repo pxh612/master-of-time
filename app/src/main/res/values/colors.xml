@@ -14,4 +14,9 @@
     <color name="textColor_clickableButton">#FFFFFFFF</color>
     <color name="light_gray">#B6B0B0</color>
     <color name="gray_200">#C8C8C2</color>
+    <color name="gray_220">#E2DCDC</color>
+
+    <color name="toolbar_color">@color/purple_500</color>
+    <color name="lineDivider_color">#A19B9B</color>
+    <color name="miniTab">#BD7FC8</color>
 </resources>

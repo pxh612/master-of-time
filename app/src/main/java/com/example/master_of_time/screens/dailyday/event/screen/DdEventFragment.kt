@@ -3,10 +3,10 @@ package com.example.master_of_time.screens.dailyday.event.screen
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
@@ -16,7 +16,7 @@ import com.example.master_of_time.R
 import com.example.master_of_time.database.table.DdEvent
 import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.databinding.DdEventFragmentBinding
-import com.example.master_of_time.module.animation.MyAnimator
+import com.example.master_of_time.module.MyAnimator
 import com.example.master_of_time.module.dailyday.DdEventListSorter
 import com.example.master_of_time.screens.dailyday.event.DdEventLayoutManager
 import com.example.master_of_time.screens.dailyday.event.DdEventViewModel
@@ -25,7 +25,8 @@ import com.example.master_of_time.screens.dailyday.group.DisplayEventsDdGroupAda
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAdapter.Listener{
+class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAdapter.Listener,
+    AdapterView.OnItemSelectedListener {
 
     /** Architecture */
     private lateinit var binding : DdEventFragmentBinding
@@ -46,7 +47,7 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
     /** Module */
     private val ddEventLayoutManager: DdEventLayoutManager by lazy { DdEventLayoutManager(requireContext()) }
     private val ddEventListSorter = DdEventListSorter()
-    private val addMyAnimator: MyAnimator
+    private val addAnimator: MyAnimator
         get() = viewModel.addMyAnimator
 
     /** Data */
@@ -73,13 +74,11 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Timber.d("verbose: onViewCreated")
-
         fetchForGroupAdapter()
         fetchForEventAdapter(groupId = selectedGroupId)
 
         binding.run {
-            this.ui = this@DdEventFragment
+            this.bindUI = this@DdEventFragment
 
             groupRecyclerView.run{
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -91,26 +90,34 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
             }
         }
 
-        addMyAnimator.view = binding.add
+
+
+        addAnimator.view = binding.add
         initOnScrollListener()
+
+    }
+
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initMenuSpinner()
     }
 
     private fun initOnScrollListener() {
-        var absoluteY = binding.eventRecyclerView.computeHorizontalScrollOffset()
-        Timber.d("absoluteY = $absoluteY")
         val onScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                absoluteY = binding.eventRecyclerView.computeVerticalScrollOffset()
-                when{
-                    (absoluteY <= 300) -> addMyAnimator.show()
-                    else -> addMyAnimator.hide()
-                }
-            }
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if(newState != 0)
+                when(newState){
+                    0 -> addAnimator.show()
+                    1 -> addAnimator.hide()
+                    2 -> addAnimator.show()
+                }
             }
         }
         binding.eventRecyclerView.addOnScrollListener(onScrollListener)
@@ -142,6 +149,49 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         }
     }
 
+
+    var selectionCount = 0
+    private fun initMenuSpinner() {
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.ddEventFragment_menu,
+            android.R.layout.simple_spinner_dropdown_item
+        ).also{ mAdapter ->
+            mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.menuSpinner.run{
+                adapter = mAdapter
+                onItemSelectedListener = this@DdEventFragment
+            }
+        }
+        binding.menuSpinner.setSelection(-1, false)
+    }
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+        selectionCount++
+        Timber.d("onItemSelected selectionCount = $selectionCount \n\tparent = $parent \n\tview =  $view \n\tposition = $position \n\tid = $id")
+        if(view == null) return
+        if(selectionCount <= 1) return
+
+        val selection = parent.getItemAtPosition(position)
+        Timber.d("selection = $selection")
+        when(selection) {
+            "Sort by" -> {
+                Timber.d("Reponse: clicked Sort by")
+                ddEventListSorter.cycleSortMethod()
+                displayEvents()
+            }
+            "Group setting" -> {
+                Timber.d("Reponse: clicked Group setting")
+                navigateToGroupList()
+            }
+            else -> { Timber.wtf("what case?") }
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        Timber.d("onNothingSelected")
+    }
+
+
     @SuppressLint("NotifyDataSetChanged")
     private fun displayEvents(){
         /** Restore ScrollPosition using saveInstanceState */
@@ -163,15 +213,16 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         when(view.id){
             R.id.add -> navigateToAddDdEvent(selectedGroupId)
             R.id.layout -> {
-                ddEventLayoutManager.circleLayout()
-                displayEvents()
-            }
-            R.id.sort -> {
                 ddEventListSorter.cycleSortMethod()
+                displayEvents()
+                return
+
+                ddEventLayoutManager.circleLayout()
                 displayEvents()
             }
             R.id.group -> navigateToGroupList()
             R.id.noEventLayout -> navigateToAddDdEvent(selectedGroupId)
+            R.id.menuImageView -> binding.menuSpinner.performClick()
         }
     }
 
@@ -195,5 +246,6 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         val action = DdEventFragmentDirections.actionDdEventFragmentToDdEventEditFragment(isAdd = false, eventId = eventId)
         requireView().findNavController().navigate(action)
     }
+
 
 }

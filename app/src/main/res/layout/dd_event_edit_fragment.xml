@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height"
 
+            style="@style/MyToolbar"
             app:title="Edit event"
             app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
             android:id="@+id/toolbar" >
@@ -34,34 +35,65 @@
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/ddEventEditFragment_item_height"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginTop="@dimen/innerGap_ddEventEditFragment"
 
-                android:hint="Event title"
+
+                android:hint="Title"
+                android:textSize="30sp"
+                android:background="@null"
                 android:imeOptions="actionDone"
-                tools:text="title"
                 android:inputType="text"
                 android:onClick="@{bindUI::onClick}"
                 android:id="@+id/title" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lineDivider_height"
+                app:layout_constraintTop_toBottomOf="@id/title"
+
+                android:background="@color/lineDivider_color"
+                android:id="@+id/title_lineDiv"/>
+
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/ddEventEditFragment_item_height"
                 app:layout_constraintTop_toBottomOf="@id/title"
-                android:layout_marginTop="@dimen/innerGap_ddEventEditFragment"
+                android:layout_marginTop="16dp"
 
-                tools:text="2022-5-6"
+                android:background="@null"
                 android:focusable="false"
                 android:onClick="@{bindUI::onClick}"
+
+                tools:layout_editor_absoluteX="4dp"
+                tools:text="2022-5-6"
                 android:id="@+id/date" />
+
+            <ImageView
+                android:layout_width="@dimen/ddEventEditFragment_item_height"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/date"
+                app:layout_constraintBottom_toBottomOf="@id/date"
+                app:layout_constraintRight_toRightOf="parent"
+                android:padding="10dp"
+
+                android:src="@drawable/monthly_calendar"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lineDivider_height"
+                app:layout_constraintTop_toBottomOf="@id/date"
+
+                android:background="@color/lineDivider_color"
+                android:id="@+id/date_lineDiv"/>
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="@dimen/ddEventEditFragment_item_height"
                 app:layout_constraintTop_toBottomOf="@id/date"
                 android:layout_marginTop="@dimen/innerGap_ddEventEditFragment"
                 android:id="@+id/group">
@@ -94,9 +126,17 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lineDivider_height"
+                app:layout_constraintTop_toBottomOf="@id/group"
+
+                android:background="@color/lineDivider_color"
+                android:id="@+id/group_lineDiv"/>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="@dimen/ddEventEditFragment_item_height"
                 app:layout_constraintTop_toBottomOf="@id/group"
                 android:layout_marginTop="@dimen/innerGap_ddEventEditFragment"
                 android:id="@+id/calculateType">
@@ -126,6 +166,13 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lineDivider_height"
+                app:layout_constraintTop_toBottomOf="@id/calculateType"
+
+                android:background="@color/lineDivider_color"
+                android:id="@+id/calculateType_lineDiv"/>
 
 
             <Button

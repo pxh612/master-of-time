@@ -65,7 +65,7 @@ class DdGroupEditDialogFragment : DialogFragment(), View.OnClickListener {
                 override fun afterTextChanged(editable: Editable?) {
                     val text  = editable.toString().trim()
                     when{
-                        text.isNullOrBlank() -> disableSubmitButton()
+                        text.isBlank() -> disableSubmitButton()
                         text.startsWith(" ") -> disableSubmitButton()
                         (!isAdd) && (text == originalName) -> disableSubmitButton()
                         isDuplicateName(text) -> disableSubmitButton()

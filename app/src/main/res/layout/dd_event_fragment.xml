@@ -8,90 +8,68 @@
             name="viewModel"
             type="com.example.master_of_time.screens.dailyday.event.DdEventViewModel" />
         <variable
-            name="ui"
+            name="bindUI"
             type="com.example.master_of_time.screens.dailyday.event.screen.DdEventFragment" />
     </data>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/gray_220">
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_height"
                 app:layout_constraintTop_toTopOf="parent"
 
+                style="@style/MyToolbar"
                 app:title="Events"
-                android:id="@+id/toolbar" >
+                android:id="@+id/toolbar" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="right" >
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="40dp"
+                android:layout_height="@dimen/toolbar_height"
+                app:layout_constraintTop_toTopOf="@+id/toolbar"
+                app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+                app:layout_constraintRight_toLeftOf="@id/menuImageView"
+                android:gravity="center"
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintLeft_toRightOf="@+id/group"
-                        app:layout_constraintRight_toLeftOf="@id/sort"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:gravity="center"
+                style="@style/MyToolbar"
+                android:src="@drawable/layout"
+                android:onClick="@{bindUI::onClick}"
+                android:id="@+id/layout" />
 
-                        android:src="@drawable/layout"
-                        android:layout_marginRight="10dp"
-                        android:textSize="@dimen/ddEventHeaderLayout_textSize"
-                        android:onClick="@{ui::onClick}"
-                        android:id="@+id/layout" />
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/menuImageView"
+                app:layout_constraintRight_toRightOf="@id/menuImageView"
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintLeft_toRightOf="@id/layout"
-                        app:layout_constraintRight_toLeftOf="@id/add"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:gravity="center"
+                android:visibility="invisible"
+                android:id="@+id/menuSpinner"/>
 
-                        android:src="@drawable/ic_baseline_sort_24"
-                        android:onClick="@{ui::onClick}"
-                        android:textSize="@dimen/ddEventHeaderLayout_textSize"
-                        android:id="@+id/sort" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/toolbar_icon_width"
+                android:layout_height="35dp"
+                app:layout_constraintTop_toTopOf="@+id/toolbar"
+                app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+                app:layout_constraintRight_toRightOf="parent"
+                android:gravity="center"
 
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="5dp"
-
-                        android:text="GROUPS"
-                        android:textSize="@dimen/ddEventHeaderLayout_textSize"
-                        android:onClick="@{ui::onClick}"
-                        android:id="@+id/group" />
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-
-                        android:text="test"
-                        android:onClick="@{ui::onClick}"
-                        android:visibility="gone"
-                        android:id="@+id/testButton" />
-
-                </LinearLayout>
-
-            </androidx.appcompat.widget.Toolbar>
+                style="@style/MyToolbar"
+                android:src="@drawable/dot_menu_more"
+                android:onClick="@{bindUI::onClick}"
+                android:textSize="@dimen/ddEventHeaderLayout_textSize"
+                android:id="@+id/menuImageView" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="20dp"
+                android:paddingVertical="7dp"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
+
+                android:background="@color/miniTab"
                 android:id="@+id/groupRecyclerView" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -99,6 +77,7 @@
                 android:layout_height="0dp"
                 app:layout_constraintTop_toBottomOf="@id/groupRecyclerView"
                 app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="4dp"
 
                 android:scrollbars="vertical"
                 android:visibility="visible"
@@ -115,7 +94,7 @@
 
                 android:orientation="vertical"
                 android:gravity="center"
-                android:onClick="@{ui::onClick}"
+                android:onClick="@{bindUI::onClick}"
                 android:visibility="gone"
                 tools:visibility="visible"
                 android:id="@+id/noEventLayout" >
@@ -146,10 +125,10 @@
                 style="@style/MyFloatingActionButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="80dp"
-                android:layout_marginBottom="48dp"
+                android:layout_marginRight="@dimen/addButton_marginRight"
+                android:layout_marginBottom="@dimen/addButton_marginBottom"
 
-                android:onClick="@{ui::onClick}"
+                android:onClick="@{bindUI::onClick}"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

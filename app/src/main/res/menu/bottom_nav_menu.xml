@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/beFragment"
+        android:icon="@drawable/motorbike"
+        android:title="be" />
+
+    <item
+        android:icon="@drawable/clock"
+        android:title="Activity" />
+
+    <item
+        android:id="@+id/ddEventFragment"
+        android:icon="@drawable/calendar"
+        android:title="Event" />
+
+    <item
+        android:icon="@drawable/account_avatar_person"
+        android:title="Account" />
+
+
+</menu>
