@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/toolbar_height"
+                app:layout_constraintTop_toTopOf="parent"
+
+                style="@style/MyToolbar"
+                app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+                app:title="Edit alarm"
+                android:id="@+id/toolbar" />
+
+            <ImageView
+                android:layout_width="@dimen/toolbar_icon_width"
+                android:layout_height="@dimen/toolbar_height"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:padding="7dp"
+
+                android:src="@drawable/ic_baseline_check_24" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                android:padding="@dimen/editFragment_padding" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+
+                    tools:text="1"
+                    android:textSize="@dimen/clock_textSize"
+                    android:id="@+id/clockNum1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/clockNum1"
+
+                    tools:text="8"
+                    android:textSize="@dimen/clock_textSize"
+                    android:id="@+id/clockNum2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/clockNum2"
+                    android:layout_marginHorizontal="5dp"
+
+                    android:text=":"
+                    android:textSize="@dimen/clock_textSize"
+                    android:id="@+id/clockSeparator" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/clockSeparator"
+
+                    tools:text="3"
+                    android:textSize="@dimen/clock_textSize"
+                    android:id="@+id/clockNum3" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/clockNum3"
+
+                    tools:text="6"
+                    android:textSize="@dimen/clock_textSize"
+                    android:id="@+id/clockNum4" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/clockNum1"
+                    app:layout_constraintLeft_toLeftOf="@+id/clockNum1"
+                    app:layout_constraintRight_toRightOf="@id/clockNum1"
+
+                    android:id="@+id/clockNum1Picker" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/clockNum2"
+                    app:layout_constraintLeft_toLeftOf="@+id/clockNum2"
+                    app:layout_constraintRight_toRightOf="@id/clockNum2"
+
+                    android:id="@+id/clockNum2Picker" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/clockNum3"
+                    app:layout_constraintLeft_toLeftOf="@+id/clockNum3"
+                    app:layout_constraintRight_toRightOf="@id/clockNum3"
+
+                    android:id="@+id/clockNum3Picker" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/clockNum4"
+                    app:layout_constraintLeft_toLeftOf="@+id/clockNum4"
+                    app:layout_constraintRight_toRightOf="@id/clockNum4"
+
+                    android:id="@+id/clockNum4Picker" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:switchMinWidth="55dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/clockNum1"
+                    app:layout_constraintLeft_toRightOf="@+id/clockNum4"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/clockNum1"
+                    android:padding="8dp"
+
+                    android:id="@+id/alarmEnableSwitch" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/lineDivider_height"
+                    app:layout_constraintTop_toBottomOf="@id/clockNum1Picker"
+                    android:layout_marginTop="@dimen/marginTop_toLineDiv"
+
+                    android:background="@color/lineDivider_color"
+                    android:id="@+id/clock_lineDiv"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/clock_lineDiv"
+                    android:layout_marginTop = "@dimen/marginTop_toLineDiv"
+
+                    android:id="@+id/daysInWeekPicker" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/daysInWeekPicker"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="5dp"
+                    android:padding="1dp"
+
+                    android:textSize="15sp"
+                    android:text="All week"
+                    android:id="@+id/allWeekButton" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/allWeekButton"
+                    app:layout_constraintLeft_toRightOf="@id/allWeekButton"
+                    android:layout_marginLeft="8dp"
+
+                    android:textSize="15sp"
+                    android:text="Mon to Fri"
+                    android:id="@+id/monToFriButton" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/allWeekButton"
+                    app:layout_constraintLeft_toRightOf="@id/monToFriButton"
+                    android:layout_marginLeft="8dp"
+
+                    android:textSize="15sp"
+                    android:text="None"
+                    android:id="@+id/noDayButton" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/lineDivider_height"
+                    app:layout_constraintTop_toBottomOf="@id/allWeekButton"
+                    android:layout_marginTop="8dp"
+
+                    android:background="@color/lineDivider_color"
+                    android:id="@+id/repetition_lineDiv"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/repetition_lineDiv"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="@dimen/marginTop_toLineDiv"
+
+                    android:text="Ringtone"
+                    android:textSize="@dimen/alarmEditFragment_textSize"
+                    android:id="@+id/ringtoneTextView" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/ringtoneTextView"
+                    app:layout_constraintRight_toRightOf="parent"
+
+                    android:textSize="@dimen/alarmEditFragment_textSize"
+                    android:text="sdf"
+                    android:textColor="@color/gray"
+                    android:id="@+id/ringToneSelection" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/lineDivider_height"
+                    app:layout_constraintTop_toBottomOf="@id/ringtoneTextView"
+                    android:layout_marginTop="@dimen/marginTop_toLineDiv"
+
+                    android:background="@color/lineDivider_color"
+                    android:id="@+id/alarmAction_lineDiv"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/alarmAction_lineDiv"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="@dimen/marginTop_toLineDiv"
+
+                    android:text="Alarm method"
+                    android:textSize="@dimen/alarmEditFragment_textSize"
+                    android:id="@+id/alarmMethodTextSize" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/alarmMethodTextSize"
+
+                    android:textSize="18sp"
+                    android:textColor="@color/gray"
+                    tools:text="Vivaldi - 4 seasons"
+                    android:id="@+id/alarmMethodSelection" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/lineDivider_height"
+                    app:layout_constraintTop_toBottomOf="@id/alarmMethodTextSize"
+                    android:layout_marginTop="@dimen/marginTop_toLineDiv"
+
+                    android:background="@color/lineDivider_color"
+                    android:id="@+id/alarmMethod_lineDiv"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/alarmMethod_lineDiv"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="@dimen/marginTop_toLineDiv"
+
+                    android:text="Description"
+                    android:textSize="@dimen/alarmEditFragment_textSize"
+                    android:id="@+id/descriptionTextView" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="60dp"
+                    app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
+                    app:layout_constraintLeft_toLeftOf="parent"
+
+                    android:inputType="text"
+                    android:id="@+id/descriptionEditText" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/lineDivider_height"
+                    app:layout_constraintTop_toBottomOf="@id/descriptionEditText"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="@dimen/marginTop_toLineDiv"
+
+                    android:background="@color/lineDivider_color"
+                    android:id="@+id/description_lineDiv" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/description_lineDiv"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginTop="30dp"
+
+                    android:text="CONFIRM"
+                    android:id="@+id/submitButton" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/submitButton"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/deleteButton"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="1dp"
+
+                    android:text="PREVIEW"
+                    android:id="@+id/previewButton" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toRightOf="@id/previewButton"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/previewButton"
+                    android:layout_marginTop="5dp"
+
+                    android:backgroundTint="@color/red"
+                    android:text="DELETE"
+                    android:id="@+id/deleteButton" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</layout>

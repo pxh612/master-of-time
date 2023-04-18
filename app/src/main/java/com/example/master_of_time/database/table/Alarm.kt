@@ -2,29 +2,30 @@ package com.example.master_of_time.database.table
 
 import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
-import java.time.Instant
 
 data class Alarm (
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
 
     @ColumnInfo
-    var title: String = "",
+    var description: String = "",
 
     @ColumnInfo
     var alarmTime: Long = 0,
     // get epochSecond in a day
 
     @ColumnInfo
-    var ringtone: Long,
+    var alarmMethod: Int,
+
+    @ColumnInfo
+    var ringtonePath: String? = null,
 
     @ColumnInfo
     var daysInWeek: Int,
 
     @ColumnInfo
-    var isOneTime: Boolean,
+    var repetitionType: Int,
 
     @ColumnInfo
-    var isEnabled: Boolean
-
+    var isEnabled: Boolean,
 )

@@ -75,6 +75,11 @@ class DdEventCalculation(
     fun getDayDistanceFromPresent(date: Long = targetDate): Long {
         return date.toZonedDateTime().toEpochDay() - nowZonedDateTime.toEpochDay()
     }
+    fun getDayDistanceFromPresentAbsolute(date: Long = targetDate): Long {
+        var distance = getDayDistanceFromPresent()
+        if(distance < 0) distance = -distance
+        return distance
+    }
 
     private fun displayDayDistanceFromEpochDays(date: Long): CharSequence {
         if(date < 0){
@@ -96,7 +101,10 @@ class DdEventCalculation(
 
     fun displayPickedDate(): String{
         return when(ddEventCalculationType.name){
-            "ONE TIME" -> date.toDateFormat()
+            "ONE TIME" -> {
+                ""
+//                date.toDateFormat()
+            }
             "MONTHLY" -> {
                 zonedDateTime.run {
                     "$dayOfMonth every month"
@@ -118,6 +126,8 @@ class DdEventCalculation(
     fun displayCalculation(): CharSequence? {
         return displayDayDistanceFromPresent(targetDate)
     }
+
+
 
 }
 /*

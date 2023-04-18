@@ -30,7 +30,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp" >
+            android:padding="@dimen/editFragment_padding" >
 
 
             <EditText
@@ -183,6 +183,7 @@
                 app:layout_constraintTop_toBottomOf="@id/calculateType"
                 android:layout_marginTop="55dp"
 
+
                 android:text="@string/confirm_fragmentDailyDayEdit"
                 android:onClick="@{bindUI::onClick}"
                 android:id="@+id/submitButton" />
@@ -196,7 +197,7 @@
                 android:layout_marginTop="@dimen/innerGap_ddEventEditFragment"
 
                 android:text="@string/delete_fragmentDailyDayEdit"
-                android:backgroundTint="@color/design_default_color_error"
+                android:backgroundTint="@color/red"
                 android:textColor="@color/white"
                 android:onClick="@{bindUI::onClick}"
                 android:id="@+id/delete" />

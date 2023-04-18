@@ -36,9 +36,9 @@
                 android:gravity="center"
 
                 style="@style/MyToolbar"
-                android:src="@drawable/layout"
+                android:src="@drawable/sort_ascending"
                 android:onClick="@{bindUI::onClick}"
-                android:id="@+id/layout" />
+                android:id="@+id/sortOption" />
 
             <Spinner
                 android:layout_width="wrap_content"
@@ -46,16 +46,17 @@
                 app:layout_constraintTop_toBottomOf="@id/menuImageView"
                 app:layout_constraintRight_toRightOf="@id/menuImageView"
 
-                android:visibility="invisible"
+                android:visibility="gone"
                 android:id="@+id/menuSpinner"/>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="@dimen/toolbar_icon_width"
-                android:layout_height="35dp"
+                android:layout_height="@dimen/toolbar_height"
                 app:layout_constraintTop_toTopOf="@+id/toolbar"
                 app:layout_constraintBottom_toBottomOf="@+id/toolbar"
                 app:layout_constraintRight_toRightOf="parent"
                 android:gravity="center"
+                android:padding="11dp"
 
                 style="@style/MyToolbar"
                 android:src="@drawable/dot_menu_more"

@@ -1,19 +1,19 @@
 package com.example.master_of_time.module.dailyday
 
 import com.example.master_of_time.database.table.DdEvent
-import timber.log.Timber
 
 class DdEventListSorter {
 
     companion object{
         val SORT_BY_DATE_CREATED = 0
-        val SORT_BY_DATE = 1
+        val SORT_BY_TARGET_DATE = 1
         val SORT_BY_NEAREST_EVENT = 2
         val SORT_BY_ALPHABET = 3
+
+        val DEFAULT_SORT_METHOD = SORT_BY_TARGET_DATE
     }
 
-    private var sortMethodDefault = SORT_BY_DATE
-    private var sortMethod = sortMethodDefault
+    var sortMethod = DEFAULT_SORT_METHOD
 
     private var isReverseFlag = false
 
@@ -22,11 +22,9 @@ class DdEventListSorter {
         var resultList = list
         when(sortMethod){
             SORT_BY_DATE_CREATED -> {
-                Timber.v("sort by date created")
                 resultList = resultList.sortedBy { it.id }
             }
-            SORT_BY_DATE -> {
-                Timber.v("sort by target date")
+            SORT_BY_TARGET_DATE -> {
                 resultList = resultList.sortedBy {
                     val ddEventCalculation = DdEventCalculation(it.calculationTypeId, it.date)
                     ddEventCalculation.targetDate
@@ -34,14 +32,13 @@ class DdEventListSorter {
 
             }
             SORT_BY_NEAREST_EVENT -> {
-                Timber.v("sort by nearest")
+                /** Deprecated: superseded by SORT_BY_DATE */
                 resultList = resultList.sortedBy {
                     val ddEventCalculation = DdEventCalculation(it.calculationTypeId, it.date)
-                    ddEventCalculation.getDayDistanceFromPresent()
+                    ddEventCalculation.getDayDistanceFromPresentAbsolute()
                 }
             }
             SORT_BY_ALPHABET -> {
-                Timber.v("sort by alphabet")
                 resultList = resultList.sortedBy { it.title }
             }
         }
@@ -50,9 +47,9 @@ class DdEventListSorter {
 
     fun cycleSortMethod() {
         sortMethod = when(sortMethod){
-            SORT_BY_DATE -> SORT_BY_ALPHABET
-            SORT_BY_ALPHABET -> SORT_BY_DATE
-            else -> sortMethodDefault
+            SORT_BY_TARGET_DATE -> SORT_BY_ALPHABET
+            SORT_BY_ALPHABET -> SORT_BY_TARGET_DATE
+            else -> DEFAULT_SORT_METHOD
         }
     }
 }

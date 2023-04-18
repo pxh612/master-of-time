@@ -93,10 +93,19 @@
         android:id="@+id/alarmFragment"
         android:name="com.example.master_of_time.screens.alarm.AlarmFragment"
         android:label="AlarmFragment"
-        tools:layout="@layout/alarm_fragment"/>
+        tools:layout="@layout/alarm_fragment">
+        <action
+            android:id="@+id/action_alarmFragment_to_alarmEditFragment"
+            app:destination="@id/alarmEditFragment" />
+    </fragment>
     <fragment
         android:id="@+id/timerFragment"
         android:name="com.example.master_of_time.screens.timer.TimerFragment"
         android:label="TimerFragment"
         tools:layout="@layout/timer_fragment"/>
+    <fragment
+        android:id="@+id/alarmEditFragment"
+        android:name="com.example.master_of_time.screens.alarm.AlarmEditFragment"
+        android:label="AlarmEditFragment"
+        tools:layout="@layout/alarm_edit_fragment"/>
 </navigation>

@@ -17,6 +17,10 @@ class DisplayEventsDdGroupAdapter(
     internal val viewModel: DdEventViewModel
 ): ListAdapter<DdGroup, DisplayEventsDdGroupAdapter.MyViewHolder>(DdGroupDiffUtil()) {
 
+    interface Listener {
+        fun onGroupDisplayClick(groupId: Long?)
+    }
+
     private var lastAdapterPosition
         get() = viewModel.lastSelectedAdapterPosition
         set(value) { viewModel.lastSelectedAdapterPosition = value }
@@ -66,7 +70,7 @@ class DisplayEventsDdGroupAdapter(
                         else -> groupItem.id
                     }
                     adapter.notifyItemReselection(bindingAdapterPosition)
-                    adapter.listener.fetchForEventAdapter(selectedGroupId)
+                    adapter.listener.onGroupDisplayClick(selectedGroupId)
                 }
             }
         }
@@ -87,9 +91,7 @@ class DisplayEventsDdGroupAdapter(
         }
     }
 
-    interface Listener {
-        fun fetchForEventAdapter(groupId: Long?)
-    }
+
 
 
 }

@@ -28,8 +28,7 @@ import com.example.master_of_time.screens.dailyday.event.DdEventEditViewModelFac
 import timber.log.Timber
 
 
-class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener,
-    AdapterView.OnItemSelectedListener {
+class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
     private val viewModel: DdEventEditViewModel by lazy {
         val dailyDayDao = AppDatabase.getInstance(requireContext()).dailyDayDao()
@@ -42,6 +41,8 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
     private lateinit var binding: DdEventEditFragmentBinding
 
     /** Data */
+    private lateinit var originalDdEvent: DdEvent
+
     var ddEvent: DdEvent = DdEvent()
         set(value){
             field = value
@@ -87,29 +88,29 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
             R.array.ddevent_calculation_picker,
             android.R.layout.simple_spinner_dropdown_item
         ).also{ mAdapter ->
+
             mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
             binding.calculateTypePicker.run{
                 adapter = mAdapter
-                onItemSelectedListener = this@DdEventEditFragment
+                onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+
+                    override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                        when(val dateCalculationType = parent.getItemAtPosition(position)){
+                            is String -> {
+                                val name: String = dateCalculationType
+                                ddEvent = ddEvent.copy(calculationTypeId = DdEventCalculation.findIdByName(name))
+                            }
+                            else -> throw Exception("Spinner's item is not string type")
+                        }
+                    }
+
+                    override fun onNothingSelected(p0: AdapterView<*>?) { }
+
+                }
             }
         }
     }
-
-
-    override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-        when(val dateCalculationType = parent.getItemAtPosition(position)){
-            is String -> {
-                val name: String = dateCalculationType
-                ddEvent = ddEvent.copy(calculationTypeId = DdEventCalculation.findIdByName(name))
-            }
-            else -> throw Exception("Spinner's item is not string type")
-        }
-    }
-
-    override fun onNothingSelected(p0: AdapterView<*>?) {
-
-    }
-
 
     override fun onDateSet(datePicker: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
         ddEvent = ddEvent.copy(date = datePickerDialog.datePicker.toEpochTimeSeconds())
@@ -119,11 +120,13 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         binding.apply {
             invalidateAll()
 
+            /** Date */
             date.text = ddEvent.date.toDateFormat().toEditable()
             ddEvent.date.toZonedDateTime().run{
                 datePickerDialog.updateDate(year, monthValue - 1, dayOfMonth)
             }
 
+            /** Group owner*/
             ddEvent.groupId.let{
                 when {
                     (it == null)  -> {
@@ -139,24 +142,31 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
                 }
             }
 
+            /** Calculation type */
             calculateTypePicker.setSelection(ddEvent.calculationTypeId)
+
         }
     }
+
+
 
     override fun onClick(view: View) {
         when(view.id){
             R.id.submitButton -> {
                 val title = binding.title.text.toString().trim()
 
-                if(title.isEmpty()) notifyEmptyInput()
-                else {
-                    ddEvent = ddEvent.copy(title = title)
-                    when(isAdd) {
-                        true -> viewModel.insertItem(ddEvent)
-                        false -> viewModel.updateItem(ddEvent)
+                when{
+                    (title.isEmpty()) -> notifyEmptyInput()
+                    else -> {
+                        ddEvent = ddEvent.copy(title = title)
+                        when(isAdd) {
+                            true -> viewModel.insertItem(ddEvent)
+                            false -> viewModel.updateItem(ddEvent)
+                        }
+                        findNavController().popBackStack()
                     }
-                    findNavController().popBackStack()
                 }
+
             }
             R.id.date -> datePickerDialog.show()
             R.id.delete -> {
@@ -167,28 +177,7 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         }
     }
 
-    private fun showKeyboard() {
 
-        /* Worked: but only for toggling
-        val view = requireActivity().currentFocus
-        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
-        */
-
-        /* Worked: SHOW_FORCED & manually get view, but only when editText is focused
-                (https://techenum.com/show-or-hide-soft-keyboard-in-android-application-and-more/)
-        var view = requireActivity().currentFocus
-        if (view == null) view = View(activity)
-        val mgr: InputMethodManager =
-            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        mgr.showSoftInput(view, InputMethodManager.SHOW_FORCED)*/
-
-        /* Worked: but not applicable to DdGroupEditDialogFragment, had to call through a button
-        binding.title.requestFocus()
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(binding.title, 0) */
-
-    }
 
     private fun retrieveParentData() {
         val navigationArgs: DdEventEditFragmentArgs by navArgs()
@@ -200,8 +189,10 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
                 if(groupId >= 0) ddEvent = ddEvent.copy(groupId = groupId)
                 else ddEvent = DdEvent()
 
-                binding.delete.visibility = View.GONE
-                binding.toolbar.title = "Add event"
+                binding.run{
+                    delete.visibility = View.GONE
+                    binding.toolbar.title = "Add event"
+                }
             }
             false -> {
                 val id = navigationArgs.eventId
@@ -209,7 +200,9 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
                 binding.toolbar.title = "Edit event"
                 binding.delete.visibility = View.VISIBLE
                 viewModel.getDdEvent(id).observe(this.viewLifecycleOwner) {
+
                     ddEvent = it
+                    originalDdEvent = ddEvent
                     binding.run{
                         toolbar.subtitle = it.title
                         title.text = it.title.toEditable()
@@ -218,6 +211,7 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
 
             }
         }
+        originalDdEvent = ddEvent
     }
 
 
@@ -257,17 +251,19 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
 
 
     private fun navigateGroupPicker() {
-        ddEvent.groupId.let{
+        val mGroupId = ddEvent.groupId.let{
             when {
-                (it == null || it < 0) -> {
-                    val action = DdEventEditFragmentDirections.actionDdEventEditFragmentToDdGroupBottomSheet(groupId = -1)
-                    requireView().findNavController().navigate(action)
-                }
-                else -> {
-                    val action = DdEventEditFragmentDirections.actionDdEventEditFragmentToDdGroupBottomSheet(groupId = it)
-                    requireView().findNavController().navigate(action)
-                }
+                (it == null || it < 0) -> -1
+                else -> it
             }
+        }
+        val action = DdEventEditFragmentDirections.actionDdEventEditFragmentToDdGroupBottomSheet(groupId = mGroupId)
+        /** Bug: navigation crash when make mutiple navigation call quickly
+         * Fix: Solution https://stackoverflow.com/a/59700496/13170425
+         * Fix2: https://dev.to/sh3lan93/android-navigation-component-issue-ik3
+         */
+        view?.post {
+            findNavController().navigate(action)
         }
     }
 
@@ -281,6 +277,29 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
 
 
 
+
+/*    private fun showKeyboard() {
+
+        *//* Worked: but only for toggling
+        val view = requireActivity().currentFocus
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
+        *//*
+
+        *//* Worked: SHOW_FORCED & manually get view, but only when editText is focused
+                (https://techenum.com/show-or-hide-soft-keyboard-in-android-application-and-more/)
+        var view = requireActivity().currentFocus
+        if (view == null) view = View(activity)
+        val mgr: InputMethodManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        mgr.showSoftInput(view, InputMethodManager.SHOW_FORCED)*//*
+
+        *//* Worked: but not applicable to DdGroupEditDialogFragment, had to call through a button
+        binding.title.requestFocus()
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(binding.title, 0) *//*
+
+    }*/
 
 
 

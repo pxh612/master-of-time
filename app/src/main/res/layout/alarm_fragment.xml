@@ -1,20 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="bindUI"
+            type="com.example.master_of_time.screens.alarm.AlarmFragment" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <TextView
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            app:layout_constraintTop_toTopOf="parent"
+
+            style="@style/MyToolbar"
+            app:title="Alarm"
+            android:id="@+id/toolbar" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintLeft_toLeftOf="parent"
+
+
+            android:id="@+id/alarmsRecyclerView" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            style="@style/MyFloatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="@dimen/addButton_marginRight"
+            android:layout_marginBottom="@dimen/addButton_marginBottom"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
 
-            android:text="Alarm fragment"
-            android:id="@+id/welcomeMessage" />
+            android:onClick="@{bindUI::onClick}"
+            app:srcCompat="@android:drawable/ic_input_add"
+            android:id="@+id/addButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

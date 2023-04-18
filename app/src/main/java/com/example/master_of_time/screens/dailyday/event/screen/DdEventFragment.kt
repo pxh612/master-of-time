@@ -1,12 +1,12 @@
 package com.example.master_of_time.screens.dailyday.event.screen
 
 import android.annotation.SuppressLint
+import android.content.Context.MODE_PRIVATE
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.*
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
@@ -26,31 +26,36 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAdapter.Listener,
-    AdapterView.OnItemSelectedListener {
+    PopupMenu.OnMenuItemClickListener {
 
     /** Architecture */
     private lateinit var binding : DdEventFragmentBinding
     private val viewModel: DdEventViewModel by lazy {
         val dailyDayDao = AppDatabase.getInstance(requireContext()).dailyDayDao()
-        Timber.d("viewModel created: not fast enough?")
         ViewModelProvider(
             requireActivity(),
             DdEventViewModel.Factory(dailyDayDao)
         )[DdEventViewModel::class.java]
     }
 
-    /** View */
+    /** View Classes */
     private val displayEventsDdGroupAdapter by lazy {  DisplayEventsDdGroupAdapter(this, viewModel) }
-    var ddEventRecyclerViewAdapter = DdEventRecyclerViewAdapter(emptyList(), { onEventItemClicked(it) })
-    var mLinearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    var ddEventRecyclerViewAdapter = DdEventRecyclerViewAdapter(emptyList(), { onDdEventItemClicked(it) })
 
-    /** Module */
+    /** Custom Module */
     private val ddEventLayoutManager: DdEventLayoutManager by lazy { DdEventLayoutManager(requireContext()) }
-    private val ddEventListSorter = DdEventListSorter()
+    private val ddEventListSorter: DdEventListSorter by lazy {
+        val sharedPreferences = requireActivity().getSharedPreferences("UserPreferences", MODE_PRIVATE)
+        val ddEventListSortMethod = sharedPreferences
+            .getInt("ddEventListSortMethod", DdEventListSorter.DEFAULT_SORT_METHOD)
+        DdEventListSorter().apply {
+            sortMethod = ddEventListSortMethod
+        }
+    }
     private val addAnimator: MyAnimator
         get() = viewModel.addMyAnimator
 
-    /** Data */
+    /** Variables */
     private var ddEventList: List<DdEvent> = emptyList()
         set(value){
             field = value
@@ -74,8 +79,8 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fetchForGroupAdapter()
-        fetchForEventAdapter(groupId = selectedGroupId)
+        initFetchForGroupAdapter()
+        onGroupDisplayClick(groupId = selectedGroupId)
 
         binding.run {
             this.bindUI = this@DdEventFragment
@@ -90,34 +95,10 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
             }
         }
 
-
-
-        addAnimator.view = binding.add
-        initOnScrollListener()
-
+        initAnimationForAddButton()
     }
 
-    override fun onResume() {
-        super.onResume()
-        initMenuSpinner()
-    }
-
-    private fun initOnScrollListener() {
-        val onScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                when(newState){
-                    0 -> addAnimator.show()
-                    1 -> addAnimator.hide()
-                    2 -> addAnimator.show()
-                }
-            }
-        }
-        binding.eventRecyclerView.addOnScrollListener(onScrollListener)
-    }
-
-    private fun fetchForGroupAdapter() {
+    private fun initFetchForGroupAdapter() {
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup().collect() {
                 displayEventsDdGroupAdapter.submitList(it)
@@ -125,7 +106,7 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         }
     }
 
-    override fun fetchForEventAdapter(groupId: Long?) {
+    override fun onGroupDisplayClick(groupId: Long?) {
         selectedGroupId = when{
             (groupId == null || groupId < 0) -> -1L
             else -> groupId
@@ -143,48 +124,21 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         }
     }
 
+    private fun initAnimationForAddButton() {
+        addAnimator.view = binding.add
 
-    var selectionCount = 0
-    private fun initMenuSpinner() {
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.ddEventFragment_menu,
-            android.R.layout.simple_spinner_dropdown_item
-        ).also{ mAdapter ->
-            mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.menuSpinner.run{
-                adapter = mAdapter
-                onItemSelectedListener = this@DdEventFragment
+        val onScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                when(newState){
+                    0 -> addAnimator.show()
+                    1 -> addAnimator.hide()
+                    2 -> addAnimator.show()
+                }
             }
         }
-        binding.menuSpinner.setSelection(-1, false)
+        binding.eventRecyclerView.addOnScrollListener(onScrollListener)
     }
-    override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-        selectionCount++
-        Timber.d("onItemSelected selectionCount = $selectionCount \n\tparent = $parent \n\tview =  $view \n\tposition = $position \n\tid = $id")
-        if(view == null) return
-        if(selectionCount <= 1) return
-
-        val selection = parent.getItemAtPosition(position)
-        Timber.d("selection = $selection")
-        when(selection) {
-            "Sort by" -> {
-                Timber.d("Reponse: clicked Sort by")
-                ddEventListSorter.cycleSortMethod()
-                displayEvents()
-            }
-            "Group setting" -> {
-                Timber.d("Reponse: clicked Group setting")
-                navigateToGroupList()
-            }
-            else -> { Timber.wtf("what case?") }
-        }
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        Timber.d("onNothingSelected")
-    }
-
 
     @SuppressLint("NotifyDataSetChanged")
     private fun displayEvents(){
@@ -203,28 +157,89 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         }
     }
 
-    override fun onClick(view: View) {
-        when(view.id){
+    override fun onClick(v: View) {
+        when(v.id){
             R.id.add -> navigateToAddDdEvent(selectedGroupId)
-            R.id.layout -> {
-                ddEventListSorter.cycleSortMethod()
-                displayEvents()
-                return
-
-                ddEventLayoutManager.circleLayout()
-                displayEvents()
+            R.id.sortOption -> {
+                displaySortOption(v)
             }
             R.id.group -> navigateToGroupList()
             R.id.noEventLayout -> navigateToAddDdEvent(selectedGroupId)
-            R.id.menuImageView -> binding.menuSpinner.performClick()
+            R.id.menuImageView -> displayFragmentOption(v)
+        }
+    }
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        return when(item!!.itemId){
+            R.id.groupSettingOption -> {
+                navigateToGroupList()
+                true
+            }
+            else -> false
         }
     }
 
 
 
-    private fun onEventItemClicked(ddEvent: DdEvent) {
+    private fun onDdEventItemClicked(ddEvent: DdEvent) {
         navigateToEditScreen(ddEvent.id)
     }
+
+    private fun displayFragmentOption(v: View) {
+        val popup = PopupMenu(requireContext(), v)
+        popup.setOnMenuItemClickListener(this@DdEventFragment)
+        popup.menuInflater.inflate(R.menu.dd_event_fragment_actionbar_menu, popup.menu)
+        popup.show()
+    }
+
+    private fun displaySortOption(v: View) {
+
+        val popup = PopupMenu(requireContext(), v).apply {
+            setOnMenuItemClickListener {
+
+                ddEventListSorter.sortMethod = when (it.itemId) {
+                    R.id.sortOptionAlphabet -> DdEventListSorter.SORT_BY_ALPHABET
+                    R.id.sortOptionDateCreated -> DdEventListSorter.SORT_BY_DATE_CREATED
+                    R.id.sortOptionTargetDate -> DdEventListSorter.SORT_BY_TARGET_DATE
+                    R.id.sortOptionNearestEvent -> DdEventListSorter.SORT_BY_NEAREST_EVENT
+                    else -> return@setOnMenuItemClickListener false
+                }
+
+                /** write data to SharePreferences */
+                val sharedPreferences = requireActivity().getSharedPreferences("UserPreferences", MODE_PRIVATE)
+                sharedPreferences.edit().putInt("ddEventListSortMethod", ddEventListSorter.sortMethod).apply()
+
+                /** Update screen */
+                displayEvents()
+                it.isChecked = true
+
+                /** Popup stay open */
+                it.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
+                it.actionView = View(context)
+                it.setOnActionExpandListener(object : MenuItem.OnActionExpandListener{
+                    override fun onMenuItemActionExpand(p0: MenuItem): Boolean { return false }
+                    override fun onMenuItemActionCollapse(p0: MenuItem): Boolean { return false }
+                })
+
+                false
+            }
+        }
+        val sortOptionItemId = findIdBySortMethod(ddEventListSorter.sortMethod)
+
+        popup.menuInflater.inflate(R.menu.dd_event_fragment_sort_option, popup.menu)
+        popup.menu.findItem(sortOptionItemId)?.isChecked = true
+        popup.show()
+    }
+    private fun findIdBySortMethod(sortMethod: Int): Int{
+        return when(sortMethod){
+            DdEventListSorter.SORT_BY_TARGET_DATE -> R.id.sortOptionTargetDate
+            DdEventListSorter.SORT_BY_ALPHABET -> R.id.sortOptionAlphabet
+            DdEventListSorter.SORT_BY_DATE_CREATED -> R.id.sortOptionDateCreated
+            DdEventListSorter.SORT_BY_NEAREST_EVENT -> R.id.sortOptionNearestEvent
+            else -> throw IllegalStateException()
+        }
+    }
+
+
 
     private fun navigateToGroupList() {
         val action = DdEventFragmentDirections.actionDdEventFragmentToDdGroupFragment()
