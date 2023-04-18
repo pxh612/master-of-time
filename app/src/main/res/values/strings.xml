@@ -25,6 +25,9 @@
 
     <string name="ddGroupBottomSheet_addgroup">Add group</string>
     <string name="ddGroupBottomSheet_group">Group</string>
+    <string name="alarmTabTitle">Alarm</string>
+    <string name="eventTabTitle">Event</string>
+    <string name="timerTabTitle">Timer</string>
 
     <string-array name="ddevent_calculation_picker">
         <item>ONE TIME</item>
