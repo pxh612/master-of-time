@@ -105,7 +105,7 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
             }
             eventRecyclerView.run{
                 layoutManager = mLayoutManager
-                adapter = ddEventRecyclerViewAdapter
+                adapter = ddEventLayoutWrapper.adapterLinear
             }
         }
 
@@ -162,13 +162,13 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
     }
 
     private fun displayEvents(){
-        /** Restore ScrollPosition using saveInstanceState */
+        /** Saved ScrollPosition using saveInstanceState */
         val layoutManagerState = mLayoutManager.onSaveInstanceState()
+        Timber.d("layoutManagerState = $layoutManagerState")
+        Timber.d("mLayoutManager (before) = $mLayoutManager")
+
+        /** what changed: adapter get assigned new value instead of modify existing one */
         ddEventLayoutWrapper.setList(ddEventListSorter.sort(ddEventList))
-        mLayoutManager.onRestoreInstanceState(layoutManagerState)
-
-
-
         when(ddEventLayoutWrapper.mLayoutState) {
             DdEventLayoutWrapper.LAYOUT_LINEAR -> {
                 binding.eventRecyclerView.adapter  = ddEventLayoutWrapper.adapterLinear
@@ -181,10 +181,15 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
             }
             else -> throw Exception("Illegal argument for layout")
         }
+//        ddEventLayoutWrapper.adapterLinear.setList(ddEventListSorter.sort(ddEventList))
+//        ddEventLayoutWrapper.adapterLinear.notifyDataSetChanged()
 
-        binding.eventRecyclerView.run{
-            layoutManager = mLayoutManager
-        }
+
+        /** Restore ScrollPosition using saveInstanceState */
+        mLayoutManager.onRestoreInstanceState(layoutManagerState)
+        binding.eventRecyclerView.layoutManager = mLayoutManager
+        Timber.d("mLayoutManager (after) = $mLayoutManager")
+
 
         when(ddEventList.size){
             0 -> binding.noEventLayout.visibility = View.VISIBLE
@@ -204,10 +209,7 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
             }
             R.id.group -> navigateToGroupList()
             R.id.noEventLayout -> navigateToAddDdEvent(selectedGroupId)
-            R.id.menuImageView -> {
-//                displayDrawerLayout()
-                displayMenuOptions(v)
-            }
+            R.id.menuImageView -> displayMenuOptions(v)
         }
     }
     override fun onMenuItemClick(item: MenuItem?): Boolean {

@@ -34,8 +34,8 @@
     <dimen name="customToolbar_marginTop">20dp</dimen>
 
     <dimen name="ddEventHeaderLayout_textSize">15sp</dimen>
-    <dimen name="toolbar_height">55dp</dimen>
 
+    <dimen name="toolbar_height">60dp</dimen>
     <dimen name="bottomNav_height">70dp</dimen>
 
     <dimen name="lineDivider_height">2dp</dimen>

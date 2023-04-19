@@ -47,10 +47,6 @@ class DdEventLayoutWrapper(
         mLayoutState = cycleThrough(mLayoutState, LAYOUTS)
     }
 
-    fun setAdapter(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>?) {
-
-    }
-
     @SuppressLint("NotifyDataSetChanged")
     fun setList(list: List<DdEvent>) {
         adapterLinear.setList(list)
