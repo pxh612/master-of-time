@@ -1,18 +1,16 @@
 package com.example.master_of_time
 
+import android.app.Application
 import android.text.Editable
 import android.widget.DatePicker
 import java.time.*
 import java.time.format.DateTimeFormatter
 
-/*
 class MyApplication: Application(){
-    override fun onCreate() {
-        super.onCreate()
-        AndroidThreeTen.init(this);
+    companion object{
+        val WORKING_MODE = false
     }
 }
-*/
 
 fun Long.toOffsetDateTime(): OffsetDateTime{
     return Instant.ofEpochSecond(this)

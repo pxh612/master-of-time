@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="5dp"
+
+            android:background="@drawable/view_dd_event_item_background"
+            android:id="@+id/itemContainter"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/itemContainter"
+            app:layout_constraintLeft_toLeftOf="@id/itemContainter"
+            app:layout_constraintRight_toRightOf="@id/itemContainter"
+            android:layout_marginStart="@dimen/ddEventItemGridLayout_margin_toItemContainer"
+            android:layout_marginEnd="@dimen/ddEventItemGridLayout_margin_toItemContainer"
+            android:layout_marginTop="5dp"
+
+            tools:text="title textview"
+            android:singleLine="true"
+            android:textSize="15sp"
+            android:id="@+id/title" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintLeft_toLeftOf="@id/itemContainter"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="@dimen/ddEventItemGridLayout_margin_toItemContainer"
+            android:layout_marginEnd="@dimen/ddEventItemGridLayout_margin_toItemContainer"
+
+            tools:text="date"
+            android:textColor="@color/gray"
+            android:textSize="12sp"
+            android:id="@+id/searchedDate" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/searchedDate"
+            app:layout_constraintBottom_toBottomOf="@id/itemContainter"
+            app:layout_constraintLeft_toLeftOf="@id/itemContainter"
+            android:layout_marginTop="@dimen/ddEventItemGridLayout_marginVertical_toItemContainer"
+            android:layout_marginBottom="@dimen/ddEventItemGridLayout_marginVertical_toItemContainer"
+            android:layout_marginStart="@dimen/ddEventItemGridLayout_margin_toItemContainer"
+            android:layout_marginEnd="@dimen/ddEventItemGridLayout_margin_toItemContainer"
+
+            tools:text="D+7"
+            android:textSize="12sp"
+            android:id="@+id/calculate" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
+
+

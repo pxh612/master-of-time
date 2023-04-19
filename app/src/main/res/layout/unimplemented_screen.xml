@@ -13,7 +13,6 @@
             app:layout_constraintTop_toTopOf="parent"
 
             style="@style/MyToolbar"
-            app:title="Timer"
             android:id="@+id/toolbar" />
 
         <TextView
@@ -25,7 +24,6 @@
             app:layout_constraintRight_toRightOf="parent"
 
             android:text="This feature is coming soon." />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

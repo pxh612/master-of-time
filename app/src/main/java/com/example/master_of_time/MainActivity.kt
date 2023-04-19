@@ -1,23 +1,14 @@
 package com.example.master_of_time
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.AttributeSet
-import android.view.View
 import androidx.databinding.DataBindingUtil
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.master_of_time.R
-import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.master_of_time.module.dailyday.DdEventListSorter
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(){
@@ -39,18 +30,31 @@ class MainActivity : AppCompatActivity(){
     private fun initBottomNavigationView(){
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment
         val navController = navHostFragment.navController
+        /*val navInflater = navController.navInflater
+        val navGraph = navInflater.inflate(R.navigation.navigation)*/
 
-        /*val sharedPreferences = getSharedPreferences("LAST_SESSION", MODE_PRIVATE)
-        val bottomNavigationViewSelectedItemId = sharedPreferences
-            .getInt("bottomNavigationViewSelectedItemId", R.id.alarmFragment)
-
-        Timber.d("bottomNavigationViewSelectedItemId = $bottomNavigationViewSelectedItemId")
-        Timber.d("${R.id.alarmFragment} && ${R.id.ddEventFragment}")*/
+        val sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE)
+        val bottomNavSelectedItemId = sharedPreferences
+            .getInt("bottomNavSelectedItemId", DdEventListSorter.DEFAULT_SORT_METHOD)
 
         binding.bottomNav.run {
             setupWithNavController(navController)
-            selectedItemId = R.id.ddEventFragment // this is dumb
+            selectedItemId = bottomNavSelectedItemId
+//            selectedItemId = R.id.ddEventFragment // this is dumb but it'll do for now
         }
+
+        navController.addOnDestinationChangedListener(object : NavController.OnDestinationChangedListener{
+            override fun onDestinationChanged(
+                controller: NavController,
+                destination: NavDestination,
+                arguments: Bundle?,
+            ) {
+                /** write data to SharePreferences */
+                val sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE)
+                sharedPreferences.edit().putInt("bottomNavSelectedItemId", destination.id).apply()
+            }
+
+        })
 
     }
 }

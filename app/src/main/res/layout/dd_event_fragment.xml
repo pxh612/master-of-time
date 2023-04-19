@@ -16,24 +16,61 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/gray_220">
+            android:background="@color/screen_background">
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_height"
                 app:layout_constraintTop_toTopOf="parent"
 
+                app:navigationIcon="@drawable/menu_symbol_of_three_parallel_lines_24"
                 style="@style/MyToolbar"
                 app:title="Events"
                 android:id="@+id/toolbar" />
 
+
+            <androidx.drawerlayout.widget.DrawerLayout
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                android:visibility="gone"
+                android:id="@+id/groupsDrawerLayout" >
+
+                <com.google.android.material.navigation.NavigationView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_gravity="start"
+                    android:fitsSystemWindows="true"
+
+                    app:menu="@menu/sample_menu"
+                    android:id="@+id/groupsNavigationView"/>
+
+            </androidx.drawerlayout.widget.DrawerLayout>
+
+            <ImageView
+                android:layout_width="@dimen/toolbar_icon_width"
+                android:layout_height="@dimen/toolbar_height"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/sortOption"
+                android:padding="6dp"
+
+                android:onClick="@{bindUI::onClick}"
+                style="@style/MyToolbar"
+                android:src="@drawable/grid_layout"
+                android:id="@+id/layoutButton" />
+
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="40dp"
+                android:layout_width="@dimen/toolbar_icon_width"
                 android:layout_height="@dimen/toolbar_height"
                 app:layout_constraintTop_toTopOf="@+id/toolbar"
                 app:layout_constraintBottom_toBottomOf="@+id/toolbar"
                 app:layout_constraintRight_toLeftOf="@id/menuImageView"
                 android:gravity="center"
+                android:padding="5dp"
 
                 style="@style/MyToolbar"
                 android:src="@drawable/sort_ascending"
@@ -70,7 +107,7 @@
                 android:paddingVertical="7dp"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
 
-                android:background="@color/miniTab"
+                android:background="@color/purple_200"
                 android:id="@+id/groupRecyclerView" />
 
             <androidx.recyclerview.widget.RecyclerView

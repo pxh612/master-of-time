@@ -3,7 +3,7 @@
 
 
     <item
-        android:icon="@drawable/sleep"
+        android:icon="@drawable/alarm"
         android:title="@string/alarmTabTitle"
         android:id="@+id/alarmFragment"/>
 

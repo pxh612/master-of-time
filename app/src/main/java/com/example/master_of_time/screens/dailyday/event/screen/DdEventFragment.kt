@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.coroutineScope
@@ -18,15 +19,16 @@ import com.example.master_of_time.database.AppDatabase
 import com.example.master_of_time.databinding.DdEventFragmentBinding
 import com.example.master_of_time.module.MyAnimator
 import com.example.master_of_time.module.dailyday.DdEventListSorter
-import com.example.master_of_time.screens.dailyday.event.DdEventLayoutManager
+import com.example.master_of_time.screens.dailyday.event.DdEventLayoutWrapper
 import com.example.master_of_time.screens.dailyday.event.DdEventViewModel
 import com.example.master_of_time.screens.dailyday.event.adapter.DdEventRecyclerViewAdapter
+import com.example.master_of_time.screens.dailyday.event.adapter.DdEventRecyclerViewGridLayoutAdapter
 import com.example.master_of_time.screens.dailyday.group.DisplayEventsDdGroupAdapter
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAdapter.Listener,
-    PopupMenu.OnMenuItemClickListener {
+    PopupMenu.OnMenuItemClickListener, DdEventRecyclerViewAdapter.Listener {
 
     /** Architecture */
     private lateinit var binding : DdEventFragmentBinding
@@ -40,14 +42,15 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
 
     /** View Classes */
     private val displayEventsDdGroupAdapter by lazy {  DisplayEventsDdGroupAdapter(this, viewModel) }
-    var ddEventRecyclerViewAdapter = DdEventRecyclerViewAdapter(emptyList(), { onDdEventItemClicked(it) })
+    var ddEventRecyclerViewAdapter = DdEventRecyclerViewAdapter(emptyList(), this)
 
     /** Custom Module */
-    private val ddEventLayoutManager: DdEventLayoutManager by lazy { DdEventLayoutManager(requireContext()) }
+    private val ddEventLayoutWrapper: DdEventLayoutWrapper by lazy { DdEventLayoutWrapper(requireContext(), this) }
     private val ddEventListSorter: DdEventListSorter by lazy {
         val sharedPreferences = requireActivity().getSharedPreferences("UserPreferences", MODE_PRIVATE)
         val ddEventListSortMethod = sharedPreferences
             .getInt("ddEventListSortMethod", DdEventListSorter.DEFAULT_SORT_METHOD)
+
         DdEventListSorter().apply {
             sortMethod = ddEventListSortMethod
         }
@@ -67,7 +70,7 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         set(value) { viewModel.selectedGroupId = value }
 
     private val mLayoutManager
-        get() = ddEventLayoutManager.layoutManager
+        get() = ddEventLayoutWrapper.layoutManager
 
 
 
@@ -85,6 +88,17 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         binding.run {
             this.bindUI = this@DdEventFragment
 
+
+            toolbar.setNavigationOnClickListener {
+                Timber.d("reponsive click")
+                displayDrawerLayout()
+            }
+
+            /*groupsNavigationView.setNavigationItemSelectedListener {
+                binding.groupsDrawerLayout.openDrawer(GravityCompat.START)
+                return@setNavigationItemSelectedListener true
+            }*/
+
             groupRecyclerView.run{
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = displayEventsDdGroupAdapter
@@ -96,6 +110,11 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         }
 
         initAnimationForAddButton()
+    }
+
+    private fun displayDrawerLayout() {
+        Timber.d("Display drawer layout")
+        binding.groupsDrawerLayout.openDrawer(GravityCompat.START)
     }
 
     private fun initFetchForGroupAdapter() {
@@ -128,28 +147,44 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         addAnimator.view = binding.add
 
         val onScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                when(newState){
-                    0 -> addAnimator.show()
-                    1 -> addAnimator.hide()
-                    2 -> addAnimator.show()
+                val offset = recyclerView.computeVerticalScrollOffset()
+                Timber.v("newState = $newState & vertical Offset = $offset")
+                when{
+                    (newState == 0 ) -> addAnimator.show()
+                    (newState >= 1 && offset != 0) -> addAnimator.hide()
                 }
             }
         }
         binding.eventRecyclerView.addOnScrollListener(onScrollListener)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun displayEvents(){
         /** Restore ScrollPosition using saveInstanceState */
         val layoutManagerState = mLayoutManager.onSaveInstanceState()
-        ddEventRecyclerViewAdapter.setList(ddEventListSorter.sort(ddEventList))
-        ddEventRecyclerViewAdapter.notifyDataSetChanged()
+        ddEventLayoutWrapper.setList(ddEventListSorter.sort(ddEventList))
         mLayoutManager.onRestoreInstanceState(layoutManagerState)
 
-        binding.eventRecyclerView.layoutManager = mLayoutManager
 
+
+        when(ddEventLayoutWrapper.mLayoutState) {
+            DdEventLayoutWrapper.LAYOUT_LINEAR -> {
+                binding.eventRecyclerView.adapter  = ddEventLayoutWrapper.adapterLinear
+                binding.layoutButton.setImageResource(R.drawable.three_column)
+            }
+            DdEventLayoutWrapper.LAYOUT_GRID -> {
+                binding.eventRecyclerView.adapter  = ddEventLayoutWrapper.adapterGrid
+                binding.layoutButton.setImageResource(R.drawable.grid_layout)
+
+            }
+            else -> throw Exception("Illegal argument for layout")
+        }
+
+        binding.eventRecyclerView.run{
+            layoutManager = mLayoutManager
+        }
 
         when(ddEventList.size){
             0 -> binding.noEventLayout.visibility = View.VISIBLE
@@ -163,9 +198,16 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
             R.id.sortOption -> {
                 displaySortOption(v)
             }
+            R.id.layoutButton -> {
+                ddEventLayoutWrapper.circleLayout()
+                displayEvents()
+            }
             R.id.group -> navigateToGroupList()
             R.id.noEventLayout -> navigateToAddDdEvent(selectedGroupId)
-            R.id.menuImageView -> displayFragmentOption(v)
+            R.id.menuImageView -> {
+//                displayDrawerLayout()
+                displayMenuOptions(v)
+            }
         }
     }
     override fun onMenuItemClick(item: MenuItem?): Boolean {
@@ -178,13 +220,11 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         }
     }
 
-
-
-    private fun onDdEventItemClicked(ddEvent: DdEvent) {
+    override fun onDdEventItemClicked(ddEvent: DdEvent) {
         navigateToEditScreen(ddEvent.id)
     }
 
-    private fun displayFragmentOption(v: View) {
+    private fun displayMenuOptions(v: View) {
         val popup = PopupMenu(requireContext(), v)
         popup.setOnMenuItemClickListener(this@DdEventFragment)
         popup.menuInflater.inflate(R.menu.dd_event_fragment_actionbar_menu, popup.menu)

@@ -25,7 +25,6 @@ class DdEventEditViewModel(
     }
 
     fun insertItem(ddEvent: DdEvent) {
-        Timber.d("> insert new event")
         viewModelScope.launch(Dispatchers.IO){
             dailyDayDao.insert(ddEvent)
         }

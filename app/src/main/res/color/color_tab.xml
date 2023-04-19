@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/blue" android:state_checked="true" />
+    <item android:color="@android:color/darker_gray" android:state_checked="false" />
+</selector>
+
+<!--
+ https://acomputerengineer.wordpress.com/2020/01/13/different-colors-for-selected-tab-in-bottomnavigationview-in-android-kotlinprogrammatically/
+ -->

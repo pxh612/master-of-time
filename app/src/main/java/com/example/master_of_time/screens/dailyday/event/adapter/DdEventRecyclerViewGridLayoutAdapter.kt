@@ -4,21 +4,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.master_of_time.database.table.DdEvent
-import com.example.master_of_time.databinding.DdEventItemBinding
+import com.example.master_of_time.databinding.DdEventItemGridLayoutBinding
 import com.example.master_of_time.module.dailyday.DdEventCalculation
 
-class DdEventRecyclerViewAdapter(
+class DdEventRecyclerViewGridLayoutAdapter (
     private var eventList: List<DdEvent>,
-    private val listener: Listener
-): RecyclerView.Adapter<DdEventRecyclerViewAdapter.MyViewHolder>() {
+    private val listener: DdEventRecyclerViewAdapter.Listener
+): RecyclerView.Adapter<DdEventRecyclerViewGridLayoutAdapter.MyViewHolder>() {
 
-    interface Listener{
-        fun onDdEventItemClicked(ddEvent: DdEvent)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
-            DdEventItemBinding.inflate(
+            DdEventItemGridLayoutBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             ),
             listener
@@ -39,8 +36,8 @@ class DdEventRecyclerViewAdapter(
     }
 
     class MyViewHolder(
-        private val binding: DdEventItemBinding,
-        private val listener: Listener
+        private val binding: DdEventItemGridLayoutBinding,
+        private val listener: DdEventRecyclerViewAdapter.Listener
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: DdEvent) {
@@ -48,13 +45,15 @@ class DdEventRecyclerViewAdapter(
                 title.text = item.title
 
                 val ddEventCalculation = DdEventCalculation(item.calculationTypeId, item.date)
-                date.text = ddEventCalculation.displayPickedDate()
                 calculate.text = ddEventCalculation.displayCalculation()
                 searchedDate.text = ddEventCalculation.displaySearchedDate()
             }
 
-            itemView.setOnClickListener { listener.onDdEventItemClicked(item) }
+            itemView.setOnClickListener {
+                listener.onDdEventItemClicked(item)
+            }
         }
     }
-}
 
+
+}

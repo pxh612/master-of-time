@@ -73,10 +73,13 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         binding.run {
             bindUI = this@DdEventEditFragment
 
-            toolbar.setNavigationOnClickListener { findNavController().popBackStack() }
+            toolbar.setNavigationOnClickListener {
+                findNavController().popBackStack()
+            }
 
             initCalculationTypePicker()
         }
+
 
         retrieveParentData()
         retrieveChildData()

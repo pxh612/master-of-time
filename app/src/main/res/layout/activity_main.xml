@@ -33,7 +33,10 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
 
-            android:background="?android:attr/windowBackground"
+            android:foreground="?attr/selectableItemBackground"
+            app:itemIconTint="@color/color_tab"
+            app:itemTextColor="@color/color_tab"
+            app:labelVisibilityMode="labeled"
             app:menu="@menu/bottom_nav_menu"
             android:id="@+id/bottomNav"/>
 
