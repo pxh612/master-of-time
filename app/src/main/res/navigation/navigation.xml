@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_ddEventFragment_to_ddGroupFragment"
             app:destination="@id/ddGroupFragment" />
+        <action
+            android:id="@+id/action_ddEventFragment_to_ddEventDetailFragment"
+            app:destination="@id/ddEventDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/ddEventEditFragment"
@@ -108,4 +111,33 @@
         android:name="com.example.master_of_time.screens.alarm.AlarmEditFragment"
         android:label="AlarmEditFragment"
         tools:layout="@layout/alarm_edit_fragment"/>
+    <fragment
+        android:id="@+id/ddEventDetailFragment"
+        android:name="com.example.master_of_time.screens.dailyday.event.screen.DdEventDetailFragment"
+        android:label="DdEventDetailFragment"
+        tools:layout="@layout/dd_event_detail_fragment">
+        <argument
+            android:name="eventId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <action
+            android:id="@+id/action_ddEventDetailFragment_to_ddEventEditFragment"
+            app:destination="@id/ddEventEditFragment" />
+        <action
+            android:id="@+id/action_ddEventDetailFragment_to_ddEventHistoryEditFragment"
+            app:destination="@id/ddEventHistoryEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ddEventHistoryEditFragment"
+        android:name="com.example.master_of_time.screens.dailyday.history.DdEventHistoryEditFragment"
+        android:label="DdEventHistoryEditFragment"
+        tools:layout="@layout/dd_event_history_edit_fragment">
+        <argument
+            android:name="eventHistoryId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="eventId"
+            app:argType="long" />
+    </fragment>
 </navigation>

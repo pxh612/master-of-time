@@ -3,8 +3,6 @@ package com.example.master_of_time
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.master_of_time.databinding.ActivityMainBinding
@@ -37,24 +35,17 @@ class MainActivity : AppCompatActivity(){
         val bottomNavSelectedItemId = sharedPreferences
             .getInt("bottomNavSelectedItemId", DdEventListSorter.DEFAULT_SORT_METHOD)
 
+
         binding.bottomNav.run {
             setupWithNavController(navController)
             selectedItemId = bottomNavSelectedItemId
-//            selectedItemId = R.id.ddEventFragment // this is dumb but it'll do for now
         }
 
-        navController.addOnDestinationChangedListener(object : NavController.OnDestinationChangedListener{
-            override fun onDestinationChanged(
-                controller: NavController,
-                destination: NavDestination,
-                arguments: Bundle?,
-            ) {
-                /** write data to SharePreferences */
-                val sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE)
-                sharedPreferences.edit().putInt("bottomNavSelectedItemId", destination.id).apply()
-            }
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            /** write data to SharePreferences */
+            sharedPreferences.edit().putInt("bottomNavSelectedItemId", destination.id).apply()
 
-        })
+        }
 
     }
 }

@@ -53,5 +53,6 @@
     <dimen name="alarmEditFragment_textSize">23sp</dimen>
     <dimen name="ddEventItemGridLayout_margin_toItemContainer">20dp</dimen>
     <dimen name="ddEventItemGridLayout_marginVertical_toItemContainer">5dp</dimen>
+    <dimen name="checkImageView_padding">7dp</dimen>
 
 </resources>

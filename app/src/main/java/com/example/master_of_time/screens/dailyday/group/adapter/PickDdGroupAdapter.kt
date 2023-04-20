@@ -15,7 +15,6 @@ import timber.log.Timber
 
 
 class PickDdGroupAdapter(
-    private val lifecycleOwner: LifecycleOwner,
     private val viewModel: DdGroupViewModel,
     private val listener: Listener
 ): ListAdapter<DdGroup, PickDdGroupAdapter.MyViewHolder>(DdGroupDiffUtil()) {
@@ -25,6 +24,14 @@ class PickDdGroupAdapter(
     }
 
     var selectedPosition: Int? = null
+
+    private fun reselectPosition(newPosition: Int) {
+        val lastSelectedPosition = selectedPosition
+        selectedPosition = newPosition
+
+        lastSelectedPosition?.let { if(it >= 0) notifyItemChanged(it) }
+        newPosition.let { if(it >= 0) notifyItemChanged(it) }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
@@ -40,12 +47,6 @@ class PickDdGroupAdapter(
         val item = getItem(position)
         holder.bind(item)
     }
-
-    private fun notifyNewPosition(newPosition: Int) {
-        selectedPosition?.let { notifyItemChanged(it) }
-        notifyItemChanged(newPosition)
-    }
-
 
     class MyViewHolder(
         internal val binding: DdGroupPickerItemBinding,
@@ -63,6 +64,8 @@ class PickDdGroupAdapter(
             when(ddGroup.id){
                 viewModel.selectedGroupId -> {
                     binding.isPicked.visibility = View.VISIBLE
+
+                    // this is the problem?
                     adapter.selectedPosition = bindingAdapterPosition
                 }
                 else -> binding.isPicked.visibility = View.INVISIBLE
@@ -81,11 +84,12 @@ class PickDdGroupAdapter(
                         }
                     }
                 }
-                adapter.notifyNewPosition(bindingAdapterPosition)
+                adapter.reselectPosition(bindingAdapterPosition)
             }
         }
 
     }
+
 
 
 }

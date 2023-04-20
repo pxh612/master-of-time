@@ -26,7 +26,7 @@
                 android:layout_height="@dimen/toolbar_height"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:padding="7dp"
+                android:padding="@dimen/checkImageView_padding"
 
                 android:src="@drawable/ic_baseline_check_24" />
 

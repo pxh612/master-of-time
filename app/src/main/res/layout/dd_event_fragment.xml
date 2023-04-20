@@ -23,33 +23,9 @@
                 android:layout_height="@dimen/toolbar_height"
                 app:layout_constraintTop_toTopOf="parent"
 
-                app:navigationIcon="@drawable/menu_symbol_of_three_parallel_lines_24"
                 style="@style/MyToolbar"
                 app:title="Events"
                 android:id="@+id/toolbar" />
-
-
-            <androidx.drawerlayout.widget.DrawerLayout
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-
-                android:visibility="gone"
-                android:id="@+id/groupsDrawerLayout" >
-
-                <com.google.android.material.navigation.NavigationView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_gravity="start"
-                    android:fitsSystemWindows="true"
-
-                    app:menu="@menu/sample_menu"
-                    android:id="@+id/groupsNavigationView"/>
-
-            </androidx.drawerlayout.widget.DrawerLayout>
 
             <ImageView
                 android:layout_width="@dimen/toolbar_icon_width"
@@ -159,19 +135,19 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@id/add"
-                style="@style/MyFloatingActionButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginRight="@dimen/addButton_marginRight"
                 android:layout_marginBottom="@dimen/addButton_marginBottom"
 
+                style="@style/MyFloatingActionButton"
                 android:onClick="@{bindUI::onClick}"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
                 app:srcCompat="@android:drawable/ic_input_add"
-                tools:visibility="visible" />
+                tools:visibility="visible"
+                android:id="@id/addButton"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

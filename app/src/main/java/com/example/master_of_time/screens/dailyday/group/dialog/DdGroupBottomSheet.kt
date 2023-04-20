@@ -39,7 +39,7 @@ class DdGroupBottomSheet: BottomSheetDialogFragment(), View.OnClickListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = PickDdGroupAdapter(viewLifecycleOwner, viewModel, this)
+        val adapter = PickDdGroupAdapter(viewModel, this)
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup().collect() {
                 adapter.submitList(it)

@@ -36,8 +36,7 @@ class DdEventEditViewModel(
         }
     }
 
-    fun getGroupName_byGroupId(id: Long): LiveData<String?> = dailyDayDao.getGroupName_byGroupId(id).asLiveData()
-
+    fun getGroupNameByGroupId(id: Long): LiveData<String?> = dailyDayDao.getGroupName_byGroupId(id).asLiveData()
 }
 
 class DdEventEditViewModelFactory(

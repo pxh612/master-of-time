@@ -34,8 +34,8 @@ class DdEventListSorter {
             SORT_BY_NEAREST_EVENT -> {
                 /** Deprecated: superseded by SORT_BY_DATE */
                 resultList = resultList.sortedBy {
-                    val ddEventCalculation = DdEventCalculation(it.calculationTypeId, it.date)
-                    ddEventCalculation.getDayDistanceFromPresentAbsolute()
+                    val targetDate = DdEventCalculation(it.calculationTypeId, it.date).targetDate
+                    DdEventCalculation(targetDate).getDayDistanceFromPresentAbsolute()
                 }
             }
             SORT_BY_ALPHABET -> {

@@ -55,6 +55,7 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
             sortMethod = ddEventListSortMethod
         }
     }
+
     private val addAnimator: MyAnimator
         get() = viewModel.addMyAnimator
 
@@ -88,17 +89,6 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         binding.run {
             this.bindUI = this@DdEventFragment
 
-
-            toolbar.setNavigationOnClickListener {
-                Timber.d("reponsive click")
-                displayDrawerLayout()
-            }
-
-            /*groupsNavigationView.setNavigationItemSelectedListener {
-                binding.groupsDrawerLayout.openDrawer(GravityCompat.START)
-                return@setNavigationItemSelectedListener true
-            }*/
-
             groupRecyclerView.run{
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = displayEventsDdGroupAdapter
@@ -112,15 +102,15 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         initAnimationForAddButton()
     }
 
-    private fun displayDrawerLayout() {
-        Timber.d("Display drawer layout")
-        binding.groupsDrawerLayout.openDrawer(GravityCompat.START)
-    }
 
     private fun initFetchForGroupAdapter() {
         lifecycle.coroutineScope.launch {
             viewModel.getAllDdGroup().collect() {
                 displayEventsDdGroupAdapter.submitList(it)
+                when(it.size){
+                    0 -> binding.groupRecyclerView.visibility = View.GONE
+                    else -> binding.groupRecyclerView.visibility = View.VISIBLE
+                }
             }
         }
     }
@@ -144,7 +134,7 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
     }
 
     private fun initAnimationForAddButton() {
-        addAnimator.view = binding.add
+        addAnimator.view = binding.addButton
 
         val onScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
 
@@ -164,11 +154,13 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
     private fun displayEvents(){
         /** Saved ScrollPosition using saveInstanceState */
         val layoutManagerState = mLayoutManager.onSaveInstanceState()
-        Timber.d("layoutManagerState = $layoutManagerState")
-        Timber.d("mLayoutManager (before) = $mLayoutManager")
 
-        /** what changed: adapter get assigned new value instead of modify existing one */
+
+        /** Bug (unfix): screen change abruptly after sorting
+            What changed: adapter get assigned new value instead of modify existing one
+         */
         ddEventLayoutWrapper.setList(ddEventListSorter.sort(ddEventList))
+
         when(ddEventLayoutWrapper.mLayoutState) {
             DdEventLayoutWrapper.LAYOUT_LINEAR -> {
                 binding.eventRecyclerView.adapter  = ddEventLayoutWrapper.adapterLinear
@@ -177,10 +169,10 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
             DdEventLayoutWrapper.LAYOUT_GRID -> {
                 binding.eventRecyclerView.adapter  = ddEventLayoutWrapper.adapterGrid
                 binding.layoutButton.setImageResource(R.drawable.grid_layout)
-
             }
             else -> throw Exception("Illegal argument for layout")
         }
+
 //        ddEventLayoutWrapper.adapterLinear.setList(ddEventListSorter.sort(ddEventList))
 //        ddEventLayoutWrapper.adapterLinear.notifyDataSetChanged()
 
@@ -188,7 +180,6 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         /** Restore ScrollPosition using saveInstanceState */
         mLayoutManager.onRestoreInstanceState(layoutManagerState)
         binding.eventRecyclerView.layoutManager = mLayoutManager
-        Timber.d("mLayoutManager (after) = $mLayoutManager")
 
 
         when(ddEventList.size){
@@ -199,7 +190,7 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
 
     override fun onClick(v: View) {
         when(v.id){
-            R.id.add -> navigateToAddDdEvent(selectedGroupId)
+            R.id.addButton -> navigateToAddDdEvent(selectedGroupId)
             R.id.sortOption -> {
                 displaySortOption(v)
             }
@@ -223,7 +214,7 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
     }
 
     override fun onDdEventItemClicked(ddEvent: DdEvent) {
-        navigateToEditScreen(ddEvent.id)
+        navigateToDetailScreen(ddEvent.id)
     }
 
     private fun displayMenuOptions(v: View) {
@@ -295,6 +286,12 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
 
     private fun navigateToEditScreen(eventId: Long) {
         val action = DdEventFragmentDirections.actionDdEventFragmentToDdEventEditFragment(isAdd = false, eventId = eventId)
+        requireView().findNavController().navigate(action)
+    }
+
+    private fun navigateToDetailScreen(eventId: Long){
+        if(eventId < 0) throw Exception("eventId is NULL")
+        val action = DdEventFragmentDirections.actionDdEventFragmentToDdEventDetailFragment(eventId = eventId)
         requireView().findNavController().navigate(action)
     }
 

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.master_of_time.database.table.DdEvent
 import com.example.master_of_time.databinding.DdEventItemBinding
 import com.example.master_of_time.module.dailyday.DdEventCalculation
+import com.example.master_of_time.toDateFormat
 
 class DdEventRecyclerViewAdapter(
     private var eventList: List<DdEvent>,
@@ -48,9 +49,14 @@ class DdEventRecyclerViewAdapter(
                 title.text = item.title
 
                 val ddEventCalculation = DdEventCalculation(item.calculationTypeId, item.date)
-                date.text = ddEventCalculation.displayPickedDate()
-                calculate.text = ddEventCalculation.displayCalculation()
-                searchedDate.text = ddEventCalculation.displaySearchedDate()
+                date.text = when(item.calculationTypeId){
+                    DdEventCalculation.ONE_TIME.id -> ""
+                    else -> ddEventCalculation.displayPickedDate()
+                }
+
+                val targetDate = ddEventCalculation.targetDate
+                calculate.text = DdEventCalculation(targetDate).displayDayDistanceFromPresent()
+                searchedDate.text = targetDate.toDateFormat()
             }
 
             itemView.setOnClickListener { listener.onDdEventItemClicked(item) }

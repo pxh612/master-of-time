@@ -1,12 +1,10 @@
 package com.example.master_of_time.screens.dailyday.event.screen
 
 import android.app.DatePickerDialog
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
@@ -137,7 +135,7 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
                         ddGroupPicker.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_gray))
                     }
                     else -> {
-                        viewModel.getGroupName_byGroupId(it).observe(viewLifecycleOwner) { groupName ->
+                        viewModel.getGroupNameByGroupId(it).observe(viewLifecycleOwner) { groupName ->
                                 ddGroupPicker.text = groupName
                         }
                         ddGroupPicker.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
@@ -205,6 +203,7 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
                 viewModel.getDdEvent(id).observe(this.viewLifecycleOwner) {
 
                     ddEvent = it
+                    Timber.d("editting: $ddEvent")
                     originalDdEvent = ddEvent
                     binding.run{
                         toolbar.subtitle = it.title
@@ -274,7 +273,6 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         val action = DdEventEditFragmentDirections.actionDdEventEditFragmentToDdGroupEditDialogFragment(isAdd = true)
         requireView().findNavController().navigate(action)
     }
-
 
 }
 
