@@ -16,7 +16,7 @@ data class DdEventHistory (
     var id: Long = 0,
 
     @ColumnInfo
-    var eventId: Long,
+    var eventId: Long = -1,
 
     @ColumnInfo
     var date: Long = Instant.now().epochSecond,

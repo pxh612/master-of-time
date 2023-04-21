@@ -6,13 +6,14 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.master_of_time.database.dao.DailyDayDao
 import com.example.master_of_time.database.table.DdEvent
+import com.example.master_of_time.database.table.DdEventHistory
 import com.example.master_of_time.database.table.DdGroup
 
 //@Database(entities = [GardenPlanting::class, Plant::class], version = 1, exportSchema = false)
 // Fatal: need to update the version number
 // Fatal:  FOREIGN KEY constraint failed
 
-@Database(entities = [DdEvent::class, DdGroup::class], version = 15, exportSchema = false)
+@Database(entities = [DdEvent::class, DdGroup::class, DdEventHistory::class], version = 16, exportSchema = false)
 abstract class AppDatabase : RoomDatabase(){
 
     abstract fun dailyDayDao(): DailyDayDao

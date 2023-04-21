@@ -138,6 +138,10 @@
             android:defaultValue="-1L" />
         <argument
             android:name="eventId"
-            app:argType="long" />
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="fragmentIntent"
+            app:argType="integer" />
     </fragment>
 </navigation>

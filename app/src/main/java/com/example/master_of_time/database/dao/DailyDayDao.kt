@@ -2,6 +2,7 @@ package com.example.master_of_time.database.dao
 
 import androidx.room.*
 import com.example.master_of_time.database.table.DdEvent
+import com.example.master_of_time.database.table.DdEventHistory
 import com.example.master_of_time.database.table.DdGroup
 import kotlinx.coroutines.flow.Flow
 
@@ -66,6 +67,24 @@ interface DailyDayDao {
     @Query(" SELECT name FROM DdGroup WHERE id = :groupId ")
     fun getGroupName_byGroupId(groupId: Long): Flow<String>
 
+
+
+    /** DdEventHistory */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(ddEventHistory: DdEventHistory) : Long
+
+    @Update
+    suspend fun update(ddEventHistory: DdEventHistory)
+
+    @Delete
+    suspend fun delete(ddEventHistory: DdEventHistory)
+
+
+    @Query(" SELECT * FROM DdEventHistory WHERE id = :id ")
+    fun getDdEventHistory(id: Long): Flow<DdEventHistory>
+
+    @Query(" SELECT * FROM DdEventHistory WHERE eventId = :eventId ORDER BY date")
+    fun getDdEventHistoryOfEventId(eventId: Long): Flow<List<DdEventHistory>>
 
 
 }

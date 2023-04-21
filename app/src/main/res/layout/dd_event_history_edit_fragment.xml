@@ -19,9 +19,7 @@
 
             app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
             style="@style/MyToolbar"
-            app:title="History"
             android:id="@+id/toolbar" />
-
 
         <ImageView
             android:layout_width="@dimen/toolbar_icon_width"
@@ -34,6 +32,17 @@
             android:src="@drawable/ic_baseline_check_24"
             android:id="@+id/submitButton" />
 
+        <ImageView
+            android:layout_width="@dimen/toolbar_icon_width"
+            android:layout_height="@dimen/toolbar_height"
+            app:layout_constraintTop_toTopOf="parent "
+            app:layout_constraintRight_toLeftOf="@id/submitButton"
+            android:padding="9dp"
+
+            android:onClick="@{bindUI::onClick}"
+            android:src="@drawable/ic_baseline_delete_24_white"
+            android:id="@+id/deleteButton" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -43,12 +52,16 @@
             app:layout_constraintVertical_bias="1.0"
             tools:layout_editor_absoluteX="-16dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="0dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/dateEdit"
 
+                android:src="@drawable/calendar"
                 android:text="Date"
                 android:textSize="20sp"
                 android:id="@+id/dateTextView" />
@@ -63,20 +76,20 @@
 
                 android:onClick="@{bindUI::onClick}"
                 tools:text="2022-5-7"
-                android:textSize="20sp"
+                android:textSize="28sp"
                 android:id="@+id/dateEdit"/>
 
 
             <TextView
-
                 android:layout_width="45dp"
                 android:layout_height="28dp"
-                android:text="Title"
-                android:textSize="20sp"
-
+                android:layout_marginTop="35dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dateEdit"
+
+                android:text="Title"
+                android:visibility="gone"
                 android:id="@+id/titleTextView" />
 
             <EditText
@@ -86,7 +99,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/titleTextView"
 
-
+                android:visibility="gone"
                 android:id="@+id/titleEditText" />
 
             <TextView
@@ -95,6 +108,7 @@
                 android:layout_height="wrap_content"
                 android:text="Description"
 
+                android:layout_marginTop="30dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/titleEditText" />
 

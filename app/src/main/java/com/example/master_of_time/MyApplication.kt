@@ -4,6 +4,7 @@ import android.app.Application
 import android.text.Editable
 import android.widget.DatePicker
 import java.time.*
+import java.time.LocalTime.ofInstant
 import java.time.format.DateTimeFormatter
 
 class MyApplication: Application(){
@@ -20,6 +21,10 @@ fun Long.toDateFormat(): String {
     return ZonedDateTime.ofInstant(Instant.ofEpochSecond(this), ZoneId.systemDefault()).run{
         "$dayOfMonth/$monthValue/$year"
     }
+}
+fun Long.toEpochDay(): Long{
+    val zdt = ZonedDateTime.ofInstant(Instant.ofEpochSecond(this), ZoneId.systemDefault())
+    return zdt.toLocalDate().toEpochDay()
 }
 fun Long.toZonedDateTime(): ZonedDateTime{
     return ZonedDateTime.ofInstant(Instant.ofEpochSecond(this), ZoneId.systemDefault())

@@ -54,5 +54,6 @@
     <dimen name="ddEventItemGridLayout_margin_toItemContainer">20dp</dimen>
     <dimen name="ddEventItemGridLayout_marginVertical_toItemContainer">5dp</dimen>
     <dimen name="checkImageView_padding">7dp</dimen>
+    <dimen name="DdEventHistoryEditFragment_textSize_1">15sp</dimen>
 
 </resources>
