@@ -13,7 +13,8 @@ import com.example.master_of_time.screens.dailyday.event.adapter.DdEventRecycler
 
 class DdEventLayoutWrapper(
     private val context: Context,
-    private val listener: DdEventRecyclerViewAdapter.Listener
+    private val listener: DdEventRecyclerViewAdapter.Listener,
+    private val viewModel: DdEventViewModel
 ) {
 
     companion object{
@@ -24,7 +25,7 @@ class DdEventLayoutWrapper(
         private val SPAN_COUNT = 3
     }
 
-    val adapterLinear = DdEventRecyclerViewAdapter(emptyList(), listener)
+    val adapterLinear = DdEventRecyclerViewAdapter(emptyList(), listener, viewModel)
     val adapterGrid = DdEventRecyclerViewGridLayoutAdapter(emptyList(), listener)
 
 

@@ -42,10 +42,9 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
 
     /** View Classes */
     private val displayEventsDdGroupAdapter by lazy {  DisplayEventsDdGroupAdapter(this, viewModel) }
-    var ddEventRecyclerViewAdapter = DdEventRecyclerViewAdapter(emptyList(), this)
 
     /** Custom Module */
-    private val ddEventLayoutWrapper: DdEventLayoutWrapper by lazy { DdEventLayoutWrapper(requireContext(), this) }
+    private val ddEventLayoutWrapper: DdEventLayoutWrapper by lazy { DdEventLayoutWrapper(requireContext(), this, viewModel) }
     private val ddEventListSorter: DdEventListSorter by lazy {
         val sharedPreferences = requireActivity().getSharedPreferences("UserPreferences", MODE_PRIVATE)
         val ddEventListSortMethod = sharedPreferences

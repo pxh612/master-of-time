@@ -78,8 +78,6 @@ class DdEventHistoryEditFragment: Fragment(), View.OnClickListener,
     private var eventId = -1L
         set(value){
             field = value
-
-
         }
 
     private val datePickerDialog: DatePickerDialog by lazy {
@@ -99,6 +97,10 @@ class DdEventHistoryEditFragment: Fragment(), View.OnClickListener,
             bindUI = this@DdEventHistoryEditFragment
 
             toolbar.setNavigationOnClickListener {
+                retrieveEditText()
+                when(intent){
+                    EDIT_INTENT -> viewModel.updateEventHistory(ddEventHistory)
+                }
                 findNavController().popBackStack()
             }
         }
@@ -137,26 +139,12 @@ class DdEventHistoryEditFragment: Fragment(), View.OnClickListener,
     override fun onClick(v: View) {
         when(v.id){
             R.id.submitButton -> {
-                val title: String = binding.titleEditText.text.toString().trim()
-                val description: String = binding.descriptionEditText.text.toString()
-                Timber.d("title = $title & description = $description" )
-                when{
-                    (title.isBlank() && description.isBlank()) -> {
-                         val message = "Empty content!"
-                         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                    }
-                    else -> {
-                        ddEventHistory = ddEventHistory.copy(title = title, description = description)
-
-                        when(intent){
-                            ADD_INTENT -> viewModel.insertEventHistory(ddEventHistory)
-                            EDIT_INTENT -> viewModel.updateEventHistory(ddEventHistory)
-                        }
-
-
-                        findNavController().popBackStack()
-                    }
+                retrieveEditText()
+                when(intent){
+                    ADD_INTENT -> viewModel.insertEventHistory(ddEventHistory)
+                    EDIT_INTENT -> viewModel.updateEventHistory(ddEventHistory)
                 }
+                findNavController().popBackStack()
             }
             R.id.dateEdit -> {
                 datePickerDialog.show()
@@ -166,5 +154,12 @@ class DdEventHistoryEditFragment: Fragment(), View.OnClickListener,
                 findNavController().popBackStack()
             }
         }
+    }
+
+    private fun retrieveEditText() {
+        val title: String = binding.titleEditText.text.toString().trim()
+        val description: String = binding.descriptionEditText.text.toString()
+        ddEventHistory = ddEventHistory.copy(title = title, description = description)
+
     }
 }

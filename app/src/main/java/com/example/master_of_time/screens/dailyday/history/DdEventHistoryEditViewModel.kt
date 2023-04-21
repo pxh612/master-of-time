@@ -29,6 +29,8 @@ class DdEventHistoryEditViewModel(
         }
     }
 
+    fun getDdEventHistoriesOfEventId(eventId: Long) = dailyDayDao.getDdEventHistoriesOfEventId(eventId).asLiveData()
+
     fun getDdEventHistory(ddEventHistoryId: Long) = dailyDayDao.getDdEventHistory(ddEventHistoryId).asLiveData()
 
     fun getDdEvent(id: Long): LiveData<DdEvent> = dailyDayDao.getDdEvent(id).asLiveData()

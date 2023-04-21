@@ -20,7 +20,7 @@ class DdGroupTouchHelperCallback(
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        adapter.onRowMoved(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
+//        adapter.onRowMoved(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
         return true
     }
 

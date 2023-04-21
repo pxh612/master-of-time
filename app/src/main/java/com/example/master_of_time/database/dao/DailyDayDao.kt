@@ -83,8 +83,10 @@ interface DailyDayDao {
     @Query(" SELECT * FROM DdEventHistory WHERE id = :id ")
     fun getDdEventHistory(id: Long): Flow<DdEventHistory>
 
-    @Query(" SELECT * FROM DdEventHistory WHERE eventId = :eventId ORDER BY date")
-    fun getDdEventHistoryOfEventId(eventId: Long): Flow<List<DdEventHistory>>
+    @Query(" SELECT * FROM DdEventHistory WHERE eventId = :eventId ORDER BY date DESC")
+    fun getDdEventHistoriesOfEventId(eventId: Long): Flow<List<DdEventHistory>>
 
+    @Query(" SELECT COUNT(*) FROM DdEventHistory WHERE eventId = :eventId")
+    fun getDdEventHistoryCountOfEventId(eventId: Long): Flow<Int>
 
 }

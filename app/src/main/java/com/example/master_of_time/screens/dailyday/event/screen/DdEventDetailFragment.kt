@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams
+import androidx.core.view.marginTop
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -62,7 +64,7 @@ class DdEventDetailFragment: Fragment(), View.OnClickListener,
             }
 
             /** init View */
-            initEventTimeline()
+//            initEventTimeline()
             initEventHistory()
         }
 
@@ -95,28 +97,6 @@ class DdEventDetailFragment: Fragment(), View.OnClickListener,
         retrieveParentData()
     }
 
-    private fun initEventTimeline(){
-        /*val ddEventCalculation = DdEventCalculation(ddEvent)
-        var dateList = mutableListOf<String>()
-        var dateDistanceList = mutableListOf<String>()
-
-        for(i in 5 downTo 1){
-            val dateJumped = ddEventCalculation.minus(i.toLong())
-            val displayString = DdEventCalculation(date = dateJumped).displayDayDistanceFromPresent()
-            dateList.add(dateJumped.toDateFormat())
-            dateDistanceList.add(displayString.toString())
-//            Timber.d("i=$i & result = ${dateJumped.toDateFormat()} & display = $displayString")
-        }
-        for(i in 0..5){
-            val dateJumped = ddEventCalculation.plus(i.toLong())
-            val displayString = DdEventCalculation(date = dateJumped).displayDayDistanceFromPresent()
-            dateList.add(dateJumped.toDateFormat())
-            dateDistanceList.add(displayString.toString())
-//            Timber.d("i=$i & result = ${dateJumped.toDateFormat()} & display = $displayString")
-        }
-        binding.eventTimelineRecyclerView.adapter = DdEventTimelineAdapter(dateList, dateDistanceList)*/
-    }
-
 
     private fun initEventHistory() {
         val ddEventDetailHistoryAdapter = DdEventDetailHistoryAdapter(this)
@@ -124,11 +104,15 @@ class DdEventDetailFragment: Fragment(), View.OnClickListener,
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = ddEventDetailHistoryAdapter
         }
-        viewModel.getDdEventHistoryOfEventId(ddEvent.id).observe(viewLifecycleOwner){
+        viewModel.getDdEventHistoriesOfEventId(ddEvent.id).observe(viewLifecycleOwner){
             ddEventDetailHistoryAdapter.submitList(it)
             when(it.size){
-                0 -> binding.emptyEventHistoryMessage.visibility = View.VISIBLE
-                else ->  binding.emptyEventHistoryMessage.visibility = View.GONE
+                0 -> {
+                    binding.emptyEventHistoryMessage.visibility = View.VISIBLE
+                }
+                else ->  {
+                    binding.emptyEventHistoryMessage.visibility = View.GONE
+                }
             }
         }
     }

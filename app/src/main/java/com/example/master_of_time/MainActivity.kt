@@ -28,8 +28,6 @@ class MainActivity : AppCompatActivity(){
     private fun initBottomNavigationView(){
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment
         val navController = navHostFragment.navController
-        /*val navInflater = navController.navInflater
-        val navGraph = navInflater.inflate(R.navigation.navigation)*/
 
         val sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE)
         val bottomNavSelectedItemId = sharedPreferences
@@ -38,7 +36,8 @@ class MainActivity : AppCompatActivity(){
 
         binding.bottomNav.run {
             setupWithNavController(navController)
-            selectedItemId = bottomNavSelectedItemId
+//            selectedItemId = bottomNavSelectedItemId
+            selectedItemId = R.id.ddEventFragment
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->

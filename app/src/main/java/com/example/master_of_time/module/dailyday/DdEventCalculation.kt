@@ -1,11 +1,9 @@
 package com.example.master_of_time.module.dailyday
-
 import com.example.master_of_time.database.table.DdEvent
 import com.example.master_of_time.plural
 import com.example.master_of_time.toDateFormat
+import com.example.master_of_time.toEpochDay
 import com.example.master_of_time.toZonedDateTime
-import timber.log.Timber
-import java.lang.IllegalArgumentException
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -43,45 +41,30 @@ class DdEventCalculation(
 
     var zonedDateTime: ZonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochSecond(date), ZoneId.systemDefault())
     val nowZonedDateTime: ZonedDateTime = ZonedDateTime.ofInstant(Instant.now(), ZoneId.systemDefault())
+
     val targetDate: Long by lazy {
         when (calculationTypeId) {
             ONE_TIME.id -> {
                 date
             }
             MONTHLY.id -> {
-                // TODO: nowZonedDateTime is always after targetZonedDateTime, so it will be off by one calculation even when they're in the same day
-                var targetZonedDateTime = zonedDateTime
-
-                while (targetZonedDateTime.isAfter(nowZonedDateTime)) targetZonedDateTime =
-                    targetZonedDateTime.minusMonths(1)
-
-                while (targetZonedDateTime.isBefore(nowZonedDateTime)) targetZonedDateTime =
-                    targetZonedDateTime.plusMonths(1)
-
-                targetZonedDateTime.toEpochSecond()
+                var targetZdt = zonedDateTime
+                while (targetZdt.toEpochDay() > nowZonedDateTime.toEpochDay()) targetZdt = targetZdt.minusMonths(1)
+                while (targetZdt.toEpochDay() < nowZonedDateTime.toEpochDay()) targetZdt = targetZdt.plusMonths(1)
+                targetZdt.toEpochSecond()
             }
             YEARLY.id -> {
-                var targetZonedDateTime = zonedDateTime
-
-                while (targetZonedDateTime.isAfter(nowZonedDateTime)) targetZonedDateTime =
-                    targetZonedDateTime.minusYears(1)
-
-                while (targetZonedDateTime.isBefore(nowZonedDateTime)) targetZonedDateTime =
-                    targetZonedDateTime.plusYears(1)
-
-                targetZonedDateTime.toEpochSecond()
+                var targetZdt = zonedDateTime
+                while (targetZdt.toEpochDay() > nowZonedDateTime.toEpochDay()) targetZdt = targetZdt.minusYears(1)
+                while (targetZdt.toEpochDay() < nowZonedDateTime.toEpochDay()) targetZdt = targetZdt.plusYears(1)
+                targetZdt.toEpochSecond()
             }
             else -> throw MissingCalculationTypeException
         }
     }
+    val targetDateEpochDay: Long
+        get() = targetDate.toEpochDay()
 
-
-
-    fun ZonedDateTime.toEpochDay(): Long{
-        this.run{
-            return LocalDate.of(year, monthValue, dayOfMonth).toEpochDay()
-        }
-    }
 
     fun minus(value: Long): Long{
         return when(calculationTypeId){

@@ -29,6 +29,10 @@ class DdEventViewModel(
 
     fun getDdEventListByGroupId(groupId: Long?) = dailyDayDao.getDdEventListByGroupId(groupId)
 
+    fun getDdEventHistoryCountOfEventId(eventId: Long) = dailyDayDao.getDdEventHistoryCountOfEventId(eventId).asLiveData()
+
+
+
     class Factory(
         private val dailyDayDao: DailyDayDao
     ) : ViewModelProvider.Factory {
