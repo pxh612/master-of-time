@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity(){
             R.layout.activity_main
         )
 
+        Logger.d("test")
+
         initBottomNavigationView()
     }
 

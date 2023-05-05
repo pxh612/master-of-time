@@ -72,8 +72,6 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
     private val mLayoutManager
         get() = ddEventLayoutWrapper.layoutManager
 
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.dd_event_fragment, container, false)
         return binding.root
@@ -83,7 +81,6 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         super.onViewCreated(view, savedInstanceState)
 
         initFetchForGroupAdapter()
-        onGroupDisplayClick(groupId = selectedGroupId)
 
         binding.run {
             this.bindUI = this@DdEventFragment
@@ -99,6 +96,11 @@ class DdEventFragment : Fragment(), View.OnClickListener, DisplayEventsDdGroupAd
         }
 
         initAnimationForAddButton()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        onGroupDisplayClick(groupId = selectedGroupId)
     }
 
 

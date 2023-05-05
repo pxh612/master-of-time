@@ -105,7 +105,11 @@
         android:id="@+id/timerFragment"
         android:name="com.example.master_of_time.screens.timer.TimerFragment"
         android:label="TimerFragment"
-        tools:layout="@layout/timer_fragment"/>
+        tools:layout="@layout/timer_fragment">
+        <action
+            android:id="@+id/action_timerFragment_to_timerEditFragment"
+            app:destination="@id/timerEditFragment" />
+    </fragment>
     <fragment
         android:id="@+id/alarmEditFragment"
         android:name="com.example.master_of_time.screens.alarm.AlarmEditFragment"
@@ -142,6 +146,15 @@
             android:defaultValue="-1L" />
         <argument
             android:name="fragmentIntent"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/timerEditFragment"
+        android:name="com.example.master_of_time.screens.timer.TimerEditFragment"
+        android:label="TimerEditFragment"
+        tools:layout="@layout/timer_edit_fragment">
+        <argument
+            android:name="intent"
             app:argType="integer" />
     </fragment>
 </navigation>

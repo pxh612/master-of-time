@@ -21,8 +21,6 @@ class DdEventViewModel(
     var selectedGroupId: Long = -1L
     val addMyAnimator = MyAnimator()
 
-//    fun sortSomething() { return ddEventListSorter.sortSomething()}
-
     fun getAllDdEvent() = dailyDayDao.getAllDdEvent()
 
     fun getAllDdGroup() = dailyDayDao.getAllDdGroup()

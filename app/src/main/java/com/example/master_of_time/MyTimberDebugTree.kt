@@ -2,7 +2,6 @@ package com.example.master_of_time
 
 import android.util.Log
 import timber.log.Timber
-import java.util.regex.Pattern
 
 open class MyTimberDebugTree : Timber.DebugTree() {
     /** Installation:
@@ -15,7 +14,7 @@ open class MyTimberDebugTree : Timber.DebugTree() {
     */
 
     /** Log searching:
-    package:mine ( message:logged_by_pxh612 | FATAL )
+    package:mine ( message:log_by_pxh612 | FATAL )
      */
 
 
@@ -25,7 +24,7 @@ open class MyTimberDebugTree : Timber.DebugTree() {
         Timber.Tree::class.java.name,
         MyTimberDebugTree::class.java.name
     )
-    private val logSearching = "\t".repeat(20) + "logged_by_pxh612"
+    private val logSearching = "\t".repeat(20) + "log_by_pxh612"
 
 
     fun methodLocation(element: StackTraceElement): String{

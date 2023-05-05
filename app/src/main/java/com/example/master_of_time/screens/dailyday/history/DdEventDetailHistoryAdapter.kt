@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.master_of_time.Logger
 import com.example.master_of_time.database.table.DdEvent
 import com.example.master_of_time.database.table.DdEventHistory
 import com.example.master_of_time.databinding.DdEventDetailHistoryItemBinding
@@ -44,6 +45,7 @@ class DdEventDetailHistoryAdapter(
 
         fun bind(ddEventHistory: DdEventHistory){
             Timber.d("testing epochDay: ${ddEventHistory.date.toEpochDay()}")
+            Logger.d("testing epochDay: ${ddEventHistory.date.toEpochDay()}")
 
             binding.run {
                 dateInfo.text = ddEventHistory.date.toDateFormat()

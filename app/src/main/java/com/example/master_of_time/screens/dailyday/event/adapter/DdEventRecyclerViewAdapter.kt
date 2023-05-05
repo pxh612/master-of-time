@@ -61,9 +61,7 @@ class DdEventRecyclerViewAdapter(
 
                 /** Date */
                 val ddEventCalculation = DdEventCalculation(item.calculationTypeId, item.date)
-
                 date.text = ddEventCalculation.displayPickedDate()
-
                 val targetDate = ddEventCalculation.targetDate
                 calculate.text = DdEventCalculation(targetDate).displayDayDistanceFromPresent()
                 searchedDate.text = targetDate.toDateFormat()

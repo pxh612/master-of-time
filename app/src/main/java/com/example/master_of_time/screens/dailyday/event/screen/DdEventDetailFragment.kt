@@ -45,7 +45,7 @@ class DdEventDetailFragment: Fragment(), View.OnClickListener,
             field = value
 
             /** toolbar */
-            binding.toolbar.title = value.title
+            binding.toolbar.title = value.title.take(20)
             binding.toolbar.subtitle = "Details"
 
             /** group */
@@ -123,9 +123,13 @@ class DdEventDetailFragment: Fragment(), View.OnClickListener,
         val id = navigationArgs.eventId
         if(id < 0) throw Exception("eventId is null")
 
-        viewModel.getDdEvent(id).observe(this.viewLifecycleOwner) {
-            ddEvent = it
+        viewModel.getDdEvent(id)?.observe(this.viewLifecycleOwner) {
+            when(it) {
+                null -> findNavController().popBackStack()
+                else -> ddEvent = it
+            }
         }
+
     }
 
     override fun onClick(v: View) {

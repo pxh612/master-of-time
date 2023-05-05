@@ -6,7 +6,7 @@
     <data>
         <variable
             name="bindUI"
-            type="com.example.master_of_time.screens.timer.TimerFragment" />
+            type="com.example.master_of_time.screens.timer.TimerEditFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,9 +19,20 @@
             android:layout_height="@dimen/toolbar_height"
             app:layout_constraintTop_toTopOf="parent"
 
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
             style="@style/MyToolbar"
             app:title="Timer"
             android:id="@+id/toolbar" />
+
+        <ImageView
+            android:layout_width="@dimen/toolbar_icon_width"
+            android:layout_height="@dimen/toolbar_height"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+
+            android:src="@drawable/ic_baseline_check_24"
+            android:padding="@dimen/checkImageView_padding"
+            android:id="@+id/submitButton"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -40,18 +51,7 @@
                 android:textSize="50sp"
                 android:id="@+id/mainTimerTextView" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                style="@style/MyFloatingActionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/addButton_marginRight"
-                android:layout_marginBottom="@dimen/addButton_marginBottom"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
 
-                android:onClick="@{bindUI::onClick}"
-                app:srcCompat="@android:drawable/ic_input_add"
-                android:id="@+id/addButton" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

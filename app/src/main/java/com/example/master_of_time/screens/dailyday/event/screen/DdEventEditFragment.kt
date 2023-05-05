@@ -11,6 +11,7 @@ import android.widget.DatePicker
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -172,6 +173,7 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
             R.id.date -> datePickerDialog.show()
             R.id.delete -> {
                 viewModel.deleteItem(ddEvent)
+
                 findNavController().popBackStack()
             }
             R.id.ddGroupPicker -> navigateGroupPicker()
@@ -201,6 +203,11 @@ class DdEventEditFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
                 binding.toolbar.title = "Edit event"
                 binding.delete.visibility = View.VISIBLE
                 viewModel.getDdEvent(id).observe(this.viewLifecycleOwner) {
+
+                    if(it == null){
+                        Timber.w("Catched: DdEvent == null in DdEventEditFragment's retrieveParentData() ")
+                        return@observe
+                    }
 
                     ddEvent = it
                     Timber.d("editting: $ddEvent")

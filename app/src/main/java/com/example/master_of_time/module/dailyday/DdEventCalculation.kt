@@ -25,6 +25,7 @@ class DdEventCalculation(
 
     companion object {
         val ONE_TIME = DdEventCalculationType( 0, "ONE TIME", "You only live once")
+        val WEEKLY = DdEventCalculationType( 3, "WEEKLY")
         val MONTHLY = DdEventCalculationType( 1, "MONTHLY", "Remind each month")
         val YEARLY = DdEventCalculationType( 2, "ANNUALLY", "Remind each year")
 
@@ -33,10 +34,10 @@ class DdEventCalculation(
             if(result == -1) throw Exception("No found DdEventCalculationType of \"$name\"")
             else return result
         }
-        private val GivenList: List<DdEventCalculationType> = listOf(ONE_TIME, MONTHLY, YEARLY)
+        private val GivenList: List<DdEventCalculationType> = listOf(ONE_TIME, MONTHLY, YEARLY, WEEKLY)
     }
 
-    val MissingCalculationTypeException = Exception("missing calculationTypeId")
+    val MissingCalculationTypeException = Exception("Missing calculationTypeId/ Unhandled calculationTypeId")
     private val JUMP_LENGTH = 100
 
     var zonedDateTime: ZonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochSecond(date), ZoneId.systemDefault())
@@ -57,6 +58,12 @@ class DdEventCalculation(
                 var targetZdt = zonedDateTime
                 while (targetZdt.toEpochDay() > nowZonedDateTime.toEpochDay()) targetZdt = targetZdt.minusYears(1)
                 while (targetZdt.toEpochDay() < nowZonedDateTime.toEpochDay()) targetZdt = targetZdt.plusYears(1)
+                targetZdt.toEpochSecond()
+            }
+            WEEKLY.id -> {
+                var targetZdt = zonedDateTime
+                while (targetZdt.toEpochDay() > nowZonedDateTime.toEpochDay()) targetZdt = targetZdt.minusDays(7)
+                while (targetZdt.toEpochDay() < nowZonedDateTime.toEpochDay()) targetZdt = targetZdt.plusDays(7)
                 targetZdt.toEpochSecond()
             }
             else -> throw MissingCalculationTypeException
